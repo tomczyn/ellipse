@@ -5,40 +5,27 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-const val RES_STRING = "string"
-const val CONFIG_STRING = "String"
-const val CONFIG_BOOL = "Boolean"
-const val CONFIG_INT = "int"
-
 fun Project.addPlugin(name: String) {
     plugins.apply(name)
 }
 
-fun Project.androidConfiguration(block: BaseExtension.() -> Unit) {
-    val android = project.extensions.getByName("android")
-    if (android is BaseExtension) android.apply(block)
+fun Project.androidConfiguration(block: BaseExtension.() -> Unit) =
+    (project.extensions.getByName("android") as BaseExtension).apply(block)
+
+fun Project.kotlinCompileOptions() = tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions.jvmTarget = AndroidConfig.JVM_TARGET
 }
 
-fun Project.kotlinCompileOptions() {
-    tasks.withType<KotlinCompile>().configureEach {
-        kotlinOptions.jvmTarget = AndroidConfig.JVM_TARGET
-    }
+fun Project.kotlinCompileExperimentalCoroutines() = tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions.freeCompilerArgs = kotlinOptions.freeCompilerArgs + listOf(
+        "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
+        "-Xuse-experimental=kotlinx.coroutines.FlowPreview"
+    )
 }
 
-fun Project.kotlinCompileExperimentalCoroutines() {
-    tasks.withType<KotlinCompile>().configureEach {
-        kotlinOptions.freeCompilerArgs = kotlinOptions.freeCompilerArgs + listOf(
-            "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-Xuse-experimental=kotlinx.coroutines.FlowPreview"
-        )
-    }
-}
-
-fun Project.kotlinIRBackend() {
-    tasks.withType<KotlinCompile>().configureEach {
-        kotlinOptions {
-            useIR = true
-        }
+fun Project.kotlinIRBackend() = tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions {
+        useIR = true
     }
 }
 
