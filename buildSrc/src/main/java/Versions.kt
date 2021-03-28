@@ -10,4 +10,5 @@ object Versions {
     const val ESPRESSO = "3.3.0"
     const val APP_COMPAT = "1.2.0"
     const val MATERIAL = "1.3.0"
+    const val KTLINT = "10.0.0"
 }

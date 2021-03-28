@@ -5,6 +5,8 @@ object Libs {
         const val KOTLIN_GRADLE = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.KOTLIN}"
         const val JUNIT_5 =
             "de.mannodermaus.gradle.plugins:android-junit5:${Versions.JUNIT_5_GRADLE}"
+        const val KTLINT_GRADLE = "org.jlleitschuh.gradle:ktlint-gradle:${Versions.KTLINT}"
+        const val KTLINT = "org.jlleitschuh.gradle.ktlint"
     }
 
     object AndroidX {
