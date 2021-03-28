@@ -13,6 +13,10 @@ gradlePlugin {
             id = "android-library-plugin"
             implementationClass = "AndroidLibraryPlugin"
         }
+        register("kotlin-library-plugin") {
+            id = "kotlin-library-plugin"
+            implementationClass = "KotlinLibraryPlugin"
+        }
     }
 }
 

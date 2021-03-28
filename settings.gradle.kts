@@ -6,7 +6,8 @@ dependencyResolutionManagement {
     }
 }
 
+rootProject.name = "MVI"
+
 include(":sample")
 include(":mvi_test")
 include(":mvi_core")
-rootProject.name = "MVI"
