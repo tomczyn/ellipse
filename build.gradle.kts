@@ -2,20 +2,13 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
         classpath(Libs.Plugins.BUILD_GRADLE)
         classpath(Libs.Plugins.KOTLIN_GRADLE)
         classpath(Libs.Plugins.JUNIT_5)
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        jcenter()
     }
 }
 

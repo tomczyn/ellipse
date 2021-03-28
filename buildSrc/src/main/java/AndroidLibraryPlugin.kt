@@ -8,6 +8,7 @@ class AndroidLibraryPlugin : Plugin<Project> {
         project.addPlugin(AndroidConfig.Plugin.KAPT)
         project.kotlinCompileOptions()
         project.kotlinCompileExperimentalCoroutines()
+        project.kotlinIRBackend()
         project.androidConfiguration {
             defaultConfig()
             buildTypesConfig()

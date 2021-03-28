@@ -34,6 +34,14 @@ fun Project.kotlinCompileExperimentalCoroutines() {
     }
 }
 
+fun Project.kotlinIRBackend() {
+    tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions {
+            useIR = true
+        }
+    }
+}
+
 fun BaseExtension.defaultConfig() {
     compileSdkVersion(AndroidConfig.SDK_VERSION)
     compileOptions {

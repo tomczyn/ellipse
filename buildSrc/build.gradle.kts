@@ -18,11 +18,11 @@ gradlePlugin {
 
 repositories {
     google()
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
     compileOnly(gradleApi())
-    implementation("com.android.tools.build:gradle:4.1.3")
-    implementation(kotlin("gradle-plugin", "1.4.31"))
+    implementation("com.android.tools.build:gradle:7.0.0-alpha12")
+    implementation(kotlin("gradle-plugin", "1.4.32"))
 }
