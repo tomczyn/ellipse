@@ -1,4 +1,5 @@
 object Libs {
+
     object Plugins {
         const val BUILD_GRADLE = "com.android.tools.build:gradle:${Versions.GRADLE}"
         const val KOTLIN_GRADLE = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.KOTLIN}"
@@ -6,9 +7,29 @@ object Libs {
             "de.mannodermaus.gradle.plugins:android-junit5:${Versions.JUNIT_5_GRADLE}"
     }
 
-    object Coroutines {
+    object AndroidX {
+        const val CORE_KTX = "androidx.core:core-ktx:${Versions.KTX}"
+        const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:${Versions.KTX}"
+        const val VM_KTX = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.KTX_VM}"
+        const val LIFECYCLE_RUNTIME_KTX =
+            "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.KTX_VM}"
+        const val APP_COMPAT = "androidx.appcompat:appcompat:${Versions.APP_COMPAT}"
+
+        object AndroidTest {
+            const val JUNIT = "androidx.test.ext:junit:${Versions.ANDROIDX_JUNIT}"
+            const val ESPRESSO = "androidx.test.espresso:espresso-core:${Versions.ESPRESSO}"
+        }
+    }
+
+    object Google {
+        const val MATERIAL = "com.google.android.material:material:${Versions.MATERIAL}"
+    }
+
+    object Jetbrains {
+        const val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.KOTLIN}"
         const val CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES}"
-        const val ANDROID = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.COROUTINES}"
+        const val ANDROID =
+            "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.COROUTINES}"
         const val TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.COROUTINES}"
     }
 

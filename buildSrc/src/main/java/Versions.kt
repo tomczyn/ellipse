@@ -6,4 +6,8 @@ object Versions {
     const val COROUTINES = "1.4.3"
     const val KTX = "1.3.2"
     const val KTX_VM = "2.3.1"
+    const val ANDROIDX_JUNIT = "1.1.2"
+    const val ESPRESSO = "3.3.0"
+    const val APP_COMPAT = "1.2.0"
+    const val MATERIAL = "1.3.0"
 }
