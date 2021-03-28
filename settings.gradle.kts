@@ -3,6 +3,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven("https://kotlin.bintray.com/kotlinx")
     }
 }
 

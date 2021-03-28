@@ -42,6 +42,13 @@ fun BaseExtension.defaultConfig() {
     }
 }
 
+fun BaseExtension.compose() {
+    buildFeatures.compose = true
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.COMPOSE
+    }
+}
+
 fun DependencyHandler.kaptAndroidTest(dependency: String) {
     add("kaptAndroidTest", dependency)
 }

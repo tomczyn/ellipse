@@ -1,5 +1,5 @@
 object Versions {
-    const val KOTLIN = "1.4.32"
+    const val KOTLIN = "1.4.30"
     const val GRADLE = "7.0.0-alpha12"
     const val JUNIT_5_GRADLE = "1.7.1.1"
     const val JUNIT_5 = "5.7.1"
@@ -11,4 +11,7 @@ object Versions {
     const val APP_COMPAT = "1.2.0"
     const val MATERIAL = "1.3.0"
     const val KTLINT = "10.0.0"
+    const val COMPOSE = "1.0.0-beta01"
+    const val COMPOSE_ACTIVITIES = "1.3.0-alpha03"
+    const val COMPOSE_VM = "1.0.0-alpha02"
 }

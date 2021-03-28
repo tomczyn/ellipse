@@ -12,6 +12,8 @@ class AndroidApplicationPlugin : Plugin<Project> {
         project.androidConfiguration {
             defaultConfig()
             buildTypesConfig()
+            buildFeatures.compose = true
+
         }
     }
 }

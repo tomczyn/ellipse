@@ -7,4 +7,5 @@ dependencies {
     kotlin()
     baseAndroid()
     coroutines()
+    compose()
 }

@@ -17,6 +17,22 @@ object Libs {
             "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.KTX_VM}"
         const val APP_COMPAT = "androidx.appcompat:appcompat:${Versions.APP_COMPAT}"
 
+        object Compose {
+            const val UI = "androidx.compose.ui:ui:${Versions.COMPOSE}"
+            const val UI_TOOLING = "androidx.compose.ui:ui-tooling:${Versions.COMPOSE}"
+            const val FOUNDATION = "androidx.compose.foundation:foundation:${Versions.COMPOSE}"
+            const val MATERIAL = "androidx.compose.material:material:${Versions.COMPOSE}"
+            const val MATERIAL_ICONS_CORE = "androidx.compose.material:material-icons-core:${Versions.COMPOSE}"
+            const val MATERIAL_ICONS_EXTENDED = "androidx.compose.material:material-icons-extended:${Versions.COMPOSE}"
+
+            const val ACTIVITY = "androidx.activity:activity-compose:${Versions.COMPOSE_ACTIVITIES}"
+            const val VM = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.COMPOSE_VM}"
+
+            object AndroidTest {
+                const val UI_TESTS = "androidx.compose.ui:ui-test-junit4:${Versions.COMPOSE}"
+            }
+        }
+
         object AndroidTest {
             const val JUNIT = "androidx.test.ext:junit:${Versions.ANDROIDX_JUNIT}"
             const val ESPRESSO = "androidx.test.espresso:espresso-core:${Versions.ESPRESSO}"

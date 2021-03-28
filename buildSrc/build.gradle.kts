@@ -28,5 +28,5 @@ repositories {
 dependencies {
     compileOnly(gradleApi())
     implementation("com.android.tools.build:gradle:7.0.0-alpha12")
-    implementation(kotlin("gradle-plugin", "1.4.32"))
+    implementation(kotlin("gradle-plugin", "1.4.30"))
 }
