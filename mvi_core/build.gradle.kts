@@ -4,6 +4,8 @@ plugins {
 
 dependencies {
     kotlin()
+    baseAndroid()
     coroutines()
     test()
+    testImplementation(project(":mvi_test"))
 }
