@@ -1,5 +1,5 @@
+
 import com.android.build.gradle.BaseExtension
-import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.DependencyHandler
 import org.gradle.kotlin.dsl.withType
@@ -13,7 +13,7 @@ fun Project.androidConfiguration(block: BaseExtension.() -> Unit) =
     (project.extensions.getByName("android") as BaseExtension).apply(block)
 
 fun Project.kotlinCompileOptions() = tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.jvmTarget = AndroidConfig.JVM_TARGET
+    kotlinOptions.jvmTarget = "1.8"
 }
 
 fun Project.kotlinCompileExperimentalCoroutines() = tasks.withType<KotlinCompile>().configureEach {
@@ -32,11 +32,11 @@ fun Project.kotlinIRBackend() = tasks.withType<KotlinCompile>().configureEach {
 fun BaseExtension.defaultConfig() {
     compileSdkVersion(AndroidConfig.SDK_VERSION)
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = AndroidConfig.JVM_TARGET
+        targetCompatibility = AndroidConfig.JVM_TARGET
     }
     defaultConfig {
-        minSdkVersion(AndroidConfig.MIND_SDK_VERSION)
+        minSdkVersion(AndroidConfig.MIN_SDK_VERSION)
         targetSdkVersion(AndroidConfig.SDK_VERSION)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -6,14 +6,14 @@ class AndroidApplicationPlugin : Plugin<Project> {
         project.addPlugin(AndroidConfig.Plugin.ANDROID_APP)
         project.addPlugin(AndroidConfig.Plugin.KOTLIN_ANDROID)
         project.addPlugin(AndroidConfig.Plugin.KAPT)
-        project.kotlinCompileOptions()
-        project.kotlinCompileExperimentalCoroutines()
-        project.kotlinIRBackend()
         project.androidConfiguration {
             defaultConfig()
             buildTypesConfig()
             buildFeatures.compose = true
 
         }
+        project.kotlinCompileOptions()
+        project.kotlinIRBackend()
+        project.kotlinCompileExperimentalCoroutines()
     }
 }

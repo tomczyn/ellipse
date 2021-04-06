@@ -18,6 +18,7 @@ fun DependencyHandler.compose() {
     implementation(Libs.AndroidX.Compose.UI_TOOLING)
     implementation(Libs.AndroidX.Compose.FOUNDATION)
     implementation(Libs.AndroidX.Compose.MATERIAL)
+    implementation(Libs.AndroidX.Compose.CONSTRAINT)
     implementation(Libs.AndroidX.Compose.MATERIAL_ICONS_CORE)
     implementation(Libs.AndroidX.Compose.MATERIAL_ICONS_EXTENDED)
     implementation(Libs.AndroidX.Compose.ACTIVITY)

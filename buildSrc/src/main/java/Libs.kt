@@ -22,8 +22,12 @@ object Libs {
             const val UI_TOOLING = "androidx.compose.ui:ui-tooling:${Versions.COMPOSE}"
             const val FOUNDATION = "androidx.compose.foundation:foundation:${Versions.COMPOSE}"
             const val MATERIAL = "androidx.compose.material:material:${Versions.COMPOSE}"
-            const val MATERIAL_ICONS_CORE = "androidx.compose.material:material-icons-core:${Versions.COMPOSE}"
-            const val MATERIAL_ICONS_EXTENDED = "androidx.compose.material:material-icons-extended:${Versions.COMPOSE}"
+            const val CONSTRAINT =
+                "androidx.constraintlayout:constraintlayout-compose:${Versions.COMPOSE_CONSTRAINT}"
+            const val MATERIAL_ICONS_CORE =
+                "androidx.compose.material:material-icons-core:${Versions.COMPOSE}"
+            const val MATERIAL_ICONS_EXTENDED =
+                "androidx.compose.material:material-icons-extended:${Versions.COMPOSE}"
 
             const val ACTIVITY = "androidx.activity:activity-compose:${Versions.COMPOSE_ACTIVITIES}"
             const val VM = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.COMPOSE_VM}"

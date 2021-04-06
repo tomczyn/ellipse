@@ -1,3 +1,5 @@
+import org.gradle.api.JavaVersion
+
 object AndroidConfig {
 
     object Plugin {
@@ -10,6 +12,6 @@ object AndroidConfig {
     }
 
     const val SDK_VERSION = 30
-    const val MIND_SDK_VERSION = 23
-    const val JVM_TARGET = "1.8"
+    const val MIN_SDK_VERSION = 30
+    val JVM_TARGET = JavaVersion.VERSION_1_8
 }
