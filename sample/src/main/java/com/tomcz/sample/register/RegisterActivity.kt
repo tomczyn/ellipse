@@ -58,6 +58,8 @@ fun RegisterScreen() {
             .fillMaxSize()
             .padding(QuadruplePadding)
     ) {
+        Log.d("Maciek", "compose column")
+
         RegisterTitle()
         Spacer(modifier = Modifier.height(DoublePadding))
         EmailField(
@@ -92,9 +94,8 @@ private fun RegisterTitle() {
 private fun EmailField(
     keyboardActions: KeyboardActions
 ) {
-    val viewModel: RegisterViewModel = viewModel()
-    val processor = viewModel.processor
-    val email by viewModel.processor.collectState("") { it.email }
+    val processor = viewModel<RegisterViewModel>().processor
+    val email by processor.collectState("") { it.email }
     Log.d("Maciek", "compose email")
     TextField(
         value = email,
@@ -112,9 +113,8 @@ private fun PasswordField(
     modifier: Modifier,
     keyboardActions: KeyboardActions
 ) {
-    val viewModel: RegisterViewModel = viewModel()
-    val processor = viewModel.processor
-    val password by viewModel.processor.collectState("") { it.password }
+    val processor = viewModel<RegisterViewModel>().processor
+    val password by processor.collectState("") { it.password }
     Log.d("Maciek", "compose password")
     TextField(
         value = password,
@@ -133,9 +133,8 @@ private fun RepeatPasswordField(
     modifier: Modifier,
     keyboardActions: KeyboardActions
 ) {
-    val viewModel: RegisterViewModel = viewModel()
-    val processor = viewModel.processor
-    val repeatPassword by viewModel.processor.collectState("") { it.repeatPassword }
+    val processor = viewModel<RegisterViewModel>().processor
+    val repeatPassword by processor.collectState("") { it.repeatPassword }
     Log.d("Maciek", "compose repeat password")
     TextField(
         value = repeatPassword,
