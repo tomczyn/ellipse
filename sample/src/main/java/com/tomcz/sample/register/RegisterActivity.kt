@@ -47,15 +47,15 @@ class RegisterActivity : ComponentActivity() {
 
 @Composable
 fun RegisterScreen() {
-    val focusManager = LocalFocusManager.current
-    val passwordFocus = FocusRequester()
-    val repeatPasswordFocus = FocusRequester()
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(QuadruplePadding)
     ) {
+        val focusManager = LocalFocusManager.current
+        val passwordFocus = FocusRequester()
+        val repeatPasswordFocus = FocusRequester()
+
         RegisterTitle()
         Spacer(modifier = Modifier.height(DoublePadding))
         EmailField(
