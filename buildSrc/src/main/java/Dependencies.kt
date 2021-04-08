@@ -1,44 +1,44 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
 fun DependencyHandler.kotlin() {
-    implementation(Libs.Jetbrains.KOTLIN_STDLIB)
+    implementation(Libs.Jetbrains.kotlinStdlib)
 }
 
 fun DependencyHandler.baseAndroid() {
-    implementation(Libs.AndroidX.CORE_KTX)
-    implementation(Libs.AndroidX.FRAGMENT_KTX)
-    implementation(Libs.AndroidX.VM_KTX)
-    implementation(Libs.AndroidX.LIFECYCLE_RUNTIME_KTX)
-    implementation(Libs.AndroidX.APP_COMPAT)
-    implementation(Libs.Google.MATERIAL)
+    implementation(Libs.AndroidX.coreKtx)
+    implementation(Libs.AndroidX.fragmentKtx)
+    implementation(Libs.AndroidX.vmKtx)
+    implementation(Libs.AndroidX.lifecycleRuntimeKtx)
+    implementation(Libs.AndroidX.appCompat)
+    implementation(Libs.Google.material)
 }
 
 fun DependencyHandler.compose() {
-    implementation(Libs.AndroidX.Compose.UI)
-    implementation(Libs.AndroidX.Compose.UI_TOOLING)
-    implementation(Libs.AndroidX.Compose.FOUNDATION)
-    implementation(Libs.AndroidX.Compose.MATERIAL)
-    implementation(Libs.AndroidX.Compose.CONSTRAINT)
-    implementation(Libs.AndroidX.Compose.MATERIAL_ICONS_CORE)
-    implementation(Libs.AndroidX.Compose.MATERIAL_ICONS_EXTENDED)
-    implementation(Libs.AndroidX.Compose.ACTIVITY)
-    implementation(Libs.AndroidX.Compose.VM)
-    androidTestImplementation(Libs.AndroidX.Compose.AndroidTest.UI_TESTS)
+    implementation(Libs.AndroidX.Compose.ui)
+    implementation(Libs.AndroidX.Compose.uiTooling)
+    implementation(Libs.AndroidX.Compose.foundation)
+    implementation(Libs.AndroidX.Compose.material)
+    implementation(Libs.AndroidX.Compose.constraint)
+    implementation(Libs.AndroidX.Compose.materialIconsCore)
+    implementation(Libs.AndroidX.Compose.materialIconsExtended)
+    implementation(Libs.AndroidX.Compose.activity)
+    implementation(Libs.AndroidX.Compose.viewModel)
+    androidTestImplementation(Libs.AndroidX.Compose.AndroidTest.uiTest)
 }
 
 fun DependencyHandler.coroutines() {
-    implementation(Libs.Jetbrains.CORE)
-    implementation(Libs.Jetbrains.ANDROID)
+    implementation(Libs.Jetbrains.Coroutines.core)
+    implementation(Libs.Jetbrains.Coroutines.android)
 }
 
 fun DependencyHandler.test() {
-    testImplementation(Libs.Jetbrains.TEST)
-    testImplementation(Libs.JUnit5.JUPITER)
-    testImplementation(Libs.JUnit5.JUPITER_PARAMS)
-    testRuntimeOnly(Libs.JUnit5.Runtime.JUPITER_ENGINE)
+    testImplementation(Libs.Jetbrains.Coroutines.Test.coroutines)
+    testImplementation(Libs.JUnit5.jupiter)
+    testImplementation(Libs.JUnit5.jupiterParams)
+    testRuntimeOnly(Libs.JUnit5.Runtime.jupiterEngine)
 }
 
 fun DependencyHandler.androidTest() {
-    androidTestImplementation(Libs.AndroidX.AndroidTest.JUNIT)
-    androidTestImplementation(Libs.AndroidX.AndroidTest.ESPRESSO)
+    androidTestImplementation(Libs.AndroidX.AndroidTest.junit)
+    androidTestImplementation(Libs.AndroidX.AndroidTest.espresso)
 }

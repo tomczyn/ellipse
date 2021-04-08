@@ -1,14 +1,14 @@
 object AndroidConfig {
 
     object Plugin {
-        const val ANDROID_APP = "com.android.application"
-        const val ANDROID_LIB = "com.android.library"
-        const val KOTLIN_ANDROID = "kotlin-android"
-        const val KAPT = "kotlin-kapt"
-        const val JAVA_LIB = "java-library"
-        const val KOTLIN = "kotlin"
+        const val androidApp = "com.android.application"
+        const val androidLib = "com.android.library"
+        const val kotlinAndroid = "kotlin-android"
+        const val kapt = "kotlin-kapt"
+        const val javaLib = "java-library"
+        const val kotlin = "kotlin"
     }
 
-    const val SDK_VERSION = 30
-    const val MIN_SDK_VERSION = 26
+    const val sdkVersion = 30
+    const val minSdkVersion = 26
 }

@@ -3,8 +3,8 @@ import org.gradle.api.Project
 
 class KotlinLibraryPlugin : Plugin<Project> {
     override fun apply(project: Project) {
-        project.addPlugin(AndroidConfig.Plugin.JAVA_LIB)
-        project.addPlugin(AndroidConfig.Plugin.KOTLIN)
+        project.addPlugin(AndroidConfig.Plugin.javaLib)
+        project.addPlugin(AndroidConfig.Plugin.kotlin)
         project.kotlinCompileOptions()
     }
 }

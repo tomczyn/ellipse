@@ -7,15 +7,15 @@ buildscript {
     }
 
     dependencies {
-        classpath(Libs.Plugins.BUILD_GRADLE)
-        classpath(Libs.Plugins.KOTLIN_GRADLE)
-        classpath(Libs.Plugins.JUNIT_5)
-        classpath(Libs.Plugins.KTLINT_GRADLE)
+        classpath(Libs.Plugins.buildGradle)
+        classpath(Libs.Plugins.kotlinGradle)
+        classpath(Libs.Plugins.junit5)
+        classpath(Libs.Plugins.ktlintGradle)
     }
 }
 
-tasks.register(Tasks.CLEAN, Delete::class) {
+tasks.register(Tasks.clean, Delete::class) {
     delete(rootProject.buildDir)
 }
 
-apply(plugin = Libs.Plugins.KTLINT)
+apply(plugin = Libs.Plugins.ktlint)

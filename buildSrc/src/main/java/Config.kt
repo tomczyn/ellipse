@@ -19,15 +19,21 @@ fun Project.kotlinCompileOptions() = tasks.withType<KotlinCompile>().configureEa
 }
 
 fun BaseExtension.defaultConfig() {
-    compileSdkVersion(AndroidConfig.SDK_VERSION)
+    compileSdkVersion(AndroidConfig.sdkVersion)
     defaultConfig {
-        minSdkVersion(AndroidConfig.MIN_SDK_VERSION)
-        targetSdkVersion(AndroidConfig.SDK_VERSION)
+        minSdkVersion(AndroidConfig.minSdkVersion)
+        targetSdkVersion(AndroidConfig.sdkVersion)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions()
     buildTypes()
-    compose()
+}
+
+fun BaseExtension.enableCompose() {
+    buildFeatures.compose = true
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.compose
+    }
 }
 
 private fun BaseExtension.compileOptions() {
@@ -47,13 +53,6 @@ private fun BaseExtension.buildTypes() {
             )
         }
         getByName(DEBUG) { }
-    }
-}
-
-private fun BaseExtension.compose() {
-    buildFeatures.compose = true
-    composeOptions {
-        kotlinCompilerExtensionVersion = Versions.COMPOSE
     }
 }
 

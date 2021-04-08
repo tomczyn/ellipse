@@ -1,67 +1,75 @@
 object Libs {
 
     object Plugins {
-        const val BUILD_GRADLE = "com.android.tools.build:gradle:${Versions.GRADLE}"
-        const val KOTLIN_GRADLE = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.KOTLIN}"
-        const val JUNIT_5 =
-            "de.mannodermaus.gradle.plugins:android-junit5:${Versions.JUNIT_5_GRADLE}"
-        const val KTLINT_GRADLE = "org.jlleitschuh.gradle:ktlint-gradle:${Versions.KTLINT}"
-        const val KTLINT = "org.jlleitschuh.gradle.ktlint"
+        const val buildGradle = "com.android.tools.build:gradle:${Versions.gradle}"
+        const val kotlinGradle = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+        const val junit5 =
+            "de.mannodermaus.gradle.plugins:android-junit5:${Versions.junit5Gradle}"
+        const val ktlintGradle = "org.jlleitschuh.gradle:ktlint-gradle:${Versions.ktlint}"
+        const val ktlint = "org.jlleitschuh.gradle.ktlint"
     }
 
     object AndroidX {
-        const val CORE_KTX = "androidx.core:core-ktx:${Versions.KTX}"
-        const val FRAGMENT_KTX = "androidx.fragment:fragment-ktx:${Versions.KTX}"
-        const val VM_KTX = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.KTX_VM}"
-        const val LIFECYCLE_RUNTIME_KTX =
-            "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.KTX_VM}"
-        const val APP_COMPAT = "androidx.appcompat:appcompat:${Versions.APP_COMPAT}"
+        const val coreKtx = "androidx.core:core-ktx:${Versions.ktx}"
+        const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.ktx}"
+        const val vmKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.ktxViewModel}"
+        const val lifecycleRuntimeKtx =
+            "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.ktxViewModel}"
+        const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
 
         object Compose {
-            const val UI = "androidx.compose.ui:ui:${Versions.COMPOSE}"
-            const val UI_TOOLING = "androidx.compose.ui:ui-tooling:${Versions.COMPOSE}"
-            const val FOUNDATION = "androidx.compose.foundation:foundation:${Versions.COMPOSE}"
-            const val MATERIAL = "androidx.compose.material:material:${Versions.COMPOSE}"
-            const val CONSTRAINT =
-                "androidx.constraintlayout:constraintlayout-compose:${Versions.COMPOSE_CONSTRAINT}"
-            const val MATERIAL_ICONS_CORE =
-                "androidx.compose.material:material-icons-core:${Versions.COMPOSE}"
-            const val MATERIAL_ICONS_EXTENDED =
-                "androidx.compose.material:material-icons-extended:${Versions.COMPOSE}"
+            const val ui = "androidx.compose.ui:ui:${Versions.compose}"
+            const val uiTooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
+            const val foundation = "androidx.compose.foundation:foundation:${Versions.compose}"
+            const val material = "androidx.compose.material:material:${Versions.compose}"
+            const val constraint =
+                "androidx.constraintlayout:constraintlayout-compose:${Versions.composeConstraint}"
+            const val materialIconsCore =
+                "androidx.compose.material:material-icons-core:${Versions.compose}"
+            const val materialIconsExtended =
+                "androidx.compose.material:material-icons-extended:${Versions.compose}"
 
-            const val ACTIVITY = "androidx.activity:activity-compose:${Versions.COMPOSE_ACTIVITIES}"
-            const val VM = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.COMPOSE_VM}"
+            const val activity = "androidx.activity:activity-compose:${Versions.composeActivity}"
+            const val viewModel =
+                "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.composeViewModel}"
 
             object AndroidTest {
-                const val UI_TESTS = "androidx.compose.ui:ui-test-junit4:${Versions.COMPOSE}"
+                const val uiTest = "androidx.compose.ui:ui-test-junit4:${Versions.compose}"
             }
         }
 
         object AndroidTest {
-            const val JUNIT = "androidx.test.ext:junit:${Versions.ANDROIDX_JUNIT}"
-            const val ESPRESSO = "androidx.test.espresso:espresso-core:${Versions.ESPRESSO}"
+            const val junit = "androidx.test.ext:junit:${Versions.androidXJunit}"
+            const val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
         }
     }
 
     object Google {
-        const val MATERIAL = "com.google.android.material:material:${Versions.MATERIAL}"
+        const val material = "com.google.android.material:material:${Versions.material}"
     }
 
     object Jetbrains {
-        const val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.KOTLIN}"
-        const val CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.COROUTINES}"
-        const val ANDROID =
-            "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.COROUTINES}"
-        const val TEST = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.COROUTINES}"
+        const val kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}"
+
+        object Coroutines {
+            const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
+            const val android =
+                "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
+
+            object Test {
+                const val coroutines =
+                    "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}"
+            }
+        }
     }
 
     object JUnit5 {
 
-        const val JUPITER = "org.junit.jupiter:junit-jupiter-api:${Versions.JUNIT_5}"
-        const val JUPITER_PARAMS = "org.junit.jupiter:junit-jupiter-params:${Versions.JUNIT_5}"
+        const val jupiter = "org.junit.jupiter:junit-jupiter-api:${Versions.junit5}"
+        const val jupiterParams = "org.junit.jupiter:junit-jupiter-params:${Versions.junit5}"
 
         object Runtime {
-            const val JUPITER_ENGINE = "org.junit.jupiter:junit-jupiter-engine:${Versions.JUNIT_5}"
+            const val jupiterEngine = "org.junit.jupiter:junit-jupiter-engine:${Versions.junit5}"
         }
     }
 }

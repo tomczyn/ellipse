@@ -1,3 +1,3 @@
 object Tasks {
-    const val CLEAN = "clean"
+    const val clean = "clean"
 }
