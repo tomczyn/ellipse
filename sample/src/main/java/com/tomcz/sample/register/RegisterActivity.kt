@@ -1,7 +1,6 @@
 package com.tomcz.sample.register
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Canvas
@@ -38,7 +37,7 @@ class RegisterActivity : ComponentActivity() {
         setContent {
             MainAppTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    RegisterBackground()
+                    // RegisterBackground()
                     RegisterScreen()
                 }
             }
@@ -52,14 +51,11 @@ fun RegisterScreen() {
     val passwordFocus = FocusRequester()
     val repeatPasswordFocus = FocusRequester()
 
-    Log.d("Maciek", "compose screen")
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(QuadruplePadding)
     ) {
-        Log.d("Maciek", "compose column")
-
         RegisterTitle()
         Spacer(modifier = Modifier.height(DoublePadding))
         EmailField(
@@ -72,10 +68,9 @@ fun RegisterScreen() {
         )
         Spacer(modifier = Modifier.height(BasePadding))
         RepeatPasswordField(
-            modifier = Modifier.focusRequester(passwordFocus),
+            modifier = Modifier.focusRequester(repeatPasswordFocus),
             keyboardActions = KeyboardActions { focusManager.clearFocus() }
         )
-
         Spacer(modifier = Modifier.height(BasePadding * 6))
         ProceedButton()
     }
@@ -92,11 +87,10 @@ private fun RegisterTitle() {
 
 @Composable
 private fun EmailField(
-    keyboardActions: KeyboardActions
+    keyboardActions: KeyboardActions,
 ) {
     val processor = viewModel<RegisterViewModel>().processor
     val email by processor.collectState("") { it.email }
-    Log.d("Maciek", "compose email")
     TextField(
         value = email,
         modifier = Modifier.fillMaxWidth(),
@@ -115,7 +109,6 @@ private fun PasswordField(
 ) {
     val processor = viewModel<RegisterViewModel>().processor
     val password by processor.collectState("") { it.password }
-    Log.d("Maciek", "compose password")
     TextField(
         value = password,
         modifier = modifier.fillMaxWidth(),
@@ -135,7 +128,6 @@ private fun RepeatPasswordField(
 ) {
     val processor = viewModel<RegisterViewModel>().processor
     val repeatPassword by processor.collectState("") { it.repeatPassword }
-    Log.d("Maciek", "compose repeat password")
     TextField(
         value = repeatPassword,
         modifier = modifier.fillMaxWidth(),
@@ -168,7 +160,6 @@ private fun RegisterBackground() {
 
 @Composable
 private fun ProceedButton() {
-    Log.d("Maciek", "compose fab")
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.End,
