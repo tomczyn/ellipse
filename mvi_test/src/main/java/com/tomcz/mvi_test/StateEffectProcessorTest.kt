@@ -18,7 +18,7 @@ class StateEffectProcessorTest<E : Any, S : Any, EF : Any, T : StateEffectProces
     private val _effects: FlowTester<EF> = FlowTester(scope, processor.effect)
 
     init {
-        events.forEach { event -> processor.process(event) }
+        events.forEach { event -> processor.sendEvent(event) }
         _states.finish()
         _effects.finish()
     }

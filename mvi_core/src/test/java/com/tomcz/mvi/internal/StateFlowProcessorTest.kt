@@ -39,7 +39,7 @@ class StateFlowProcessorTest : BaseCoroutineTest() {
         val processor: StateProcessor<CounterEvent, CounterState> =
             stateProcessor(CounterState()) { flow { emit(IncreasePartialState) } }
         assertEquals(CounterState(0), processor.state.value)
-        processor.process(CounterEvent)
+        processor.sendEvent(CounterEvent)
         assertEquals(CounterState(1), processor.state.value)
     }
 
@@ -50,7 +50,7 @@ class StateFlowProcessorTest : BaseCoroutineTest() {
                 flow { emit(IncreasePartialState) }
             }
         assertEquals(CounterState(1), processor.state.value)
-        processor.process(CounterEvent)
+        processor.sendEvent(CounterEvent)
         assertEquals(CounterState(2), processor.state.value)
     }
 
@@ -63,7 +63,7 @@ class StateFlowProcessorTest : BaseCoroutineTest() {
         val stateEvents = mutableListOf<CounterState>()
         val job = launch { processor.state.collect { stateEvents.add(it) } }
         assertEquals(listOf(CounterState(1)), stateEvents)
-        processor.process(CounterEvent)
+        processor.sendEvent(CounterEvent)
         assertEquals(listOf(CounterState(1), CounterState(2)), stateEvents)
         job.cancel()
 

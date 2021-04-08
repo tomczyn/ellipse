@@ -40,7 +40,7 @@ internal class ChannelStateEffectProcessorTest : BaseCoroutineTest() {
         val processor: StateEffectProcessor<CounterEvent, CounterState, CounterEffect> =
             stateEffectProcessor(CounterState()) { _, _ -> flow { emit(IncreasePartialState) } }
         assertEquals(CounterState(0), processor.state.value)
-        processor.process(CounterEvent)
+        processor.sendEvent(CounterEvent)
         assertEquals(CounterState(1), processor.state.value)
     }
 
@@ -51,7 +51,7 @@ internal class ChannelStateEffectProcessorTest : BaseCoroutineTest() {
                 CounterState(), prepare = { flow { emit(IncreasePartialState) } }
             ) { _, _ -> flow { emit(IncreasePartialState) } }
         assertEquals(CounterState(1), processor.state.value)
-        processor.process(CounterEvent)
+        processor.sendEvent(CounterEvent)
         assertEquals(CounterState(2), processor.state.value)
     }
 
@@ -67,7 +67,7 @@ internal class ChannelStateEffectProcessorTest : BaseCoroutineTest() {
             }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
-        processor.process(CounterEvent)
+        processor.sendEvent(CounterEvent)
         assertEquals(listOf(CounterEffect), effects)
         effectJob.cancel()
     }
@@ -84,7 +84,7 @@ internal class ChannelStateEffectProcessorTest : BaseCoroutineTest() {
         val stateEvents = mutableListOf<CounterState>()
         val job = launch { processor.state.collect { stateEvents.add(it) } }
         assertEquals(listOf(CounterState(1)), stateEvents)
-        processor.process(CounterEvent)
+        processor.sendEvent(CounterEvent)
         assertEquals(listOf(CounterState(1), CounterState(2)), stateEvents)
         job.cancel()
 
@@ -107,7 +107,7 @@ internal class ChannelStateEffectProcessorTest : BaseCoroutineTest() {
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
         assertEquals(CounterState(1), processor.state.value)
-        processor.process(CounterEvent)
+        processor.sendEvent(CounterEvent)
         assertEquals(CounterState(2), processor.state.value)
         assertEquals(listOf(CounterEffect), effects)
         effectJob.cancel()

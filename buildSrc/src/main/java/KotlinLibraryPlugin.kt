@@ -6,7 +6,5 @@ class KotlinLibraryPlugin : Plugin<Project> {
         project.addPlugin(AndroidConfig.Plugin.JAVA_LIB)
         project.addPlugin(AndroidConfig.Plugin.KOTLIN)
         project.kotlinCompileOptions()
-        project.kotlinCompileExperimentalCoroutines()
-        project.kotlinIRBackend()
     }
 }

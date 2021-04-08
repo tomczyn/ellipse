@@ -25,7 +25,7 @@ internal class StateFlowProcessor<in EV : Any, ST : Any, out PA : Intent<ST>>(
         prepare?.let { flowWrapper -> scope.launch { flowWrapper().collect { _state.reduceAndSet(it) } } }
     }
 
-    override fun process(event: EV) {
+    override fun sendEvent(event: EV) {
         scope.launch { mapper(event).collect { _state.reduceAndSet(it) } }
     }
 }

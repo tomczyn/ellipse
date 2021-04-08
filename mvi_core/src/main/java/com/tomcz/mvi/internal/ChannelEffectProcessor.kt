@@ -28,7 +28,7 @@ internal class ChannelEffectProcessor<in EV : Any, EF : Any>(
         prepare?.let { scope.launch { it(effects) } }
     }
 
-    override fun process(event: EV) {
+    override fun sendEvent(event: EV) {
         scope.launch { mapper(effects, event) }
     }
 }

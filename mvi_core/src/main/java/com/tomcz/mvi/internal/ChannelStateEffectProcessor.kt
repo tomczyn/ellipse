@@ -41,7 +41,7 @@ internal class ChannelStateEffectProcessor<in EV : Any, ST : Any, out PA : Inten
         prepareEffect?.let { scope.launch { it(effects) } }
     }
 
-    override fun process(event: EV) {
+    override fun sendEvent(event: EV) {
         scope.launch { eventEffects(effects, event) }
         scope.launch { mapper(effects, event).collect { _state.reduceAndSet(it) } }
     }

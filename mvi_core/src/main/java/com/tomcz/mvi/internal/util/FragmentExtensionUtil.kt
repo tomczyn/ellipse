@@ -39,11 +39,11 @@ internal fun <EV : Any, EF : Any> CoroutineScope.consume(
 
 internal suspend fun <EV : Any, ST : Any> StateProcessor<EV, ST>.process(
     viewEvents: List<Flow<EV>> = emptyList()
-) = viewEvents.mergeEvents().collect { event -> process(event) }
+) = viewEvents.mergeEvents().collect { event -> sendEvent(event) }
 
 internal suspend fun <EV : Any, EF : Any> EffectProcessor<EV, EF>.process(
     viewEvents: List<Flow<EV>> = emptyList()
-) = viewEvents.mergeEvents().collect { event -> process(event) }
+) = viewEvents.mergeEvents().collect { event -> sendEvent(event) }
 
 internal suspend fun <EV : Any, ST : Any> StateProcessor<EV, ST>.onState(
     render: (ST) -> Unit
