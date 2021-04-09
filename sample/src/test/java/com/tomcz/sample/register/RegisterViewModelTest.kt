@@ -11,17 +11,14 @@ internal class RegisterViewModelTest : BaseCoroutineTest() {
     private val viewModel: RegisterViewModel = RegisterViewModel()
 
     @Test
-    fun `test changing email`() {
-        processorTest(
-            given = viewModel::processor,
-            whenEvent = RegisterEvent.EmailChanged("test@test.test"),
-            thenStates = {
-                assertValues(
-                    RegisterState(),
-                    RegisterState("test@test.test")
-                )
-            }
-        )
-    }
-
+    fun `test changing email`() = processorTest(
+        given = viewModel::processor,
+        whenEvent = RegisterEvent.EmailChanged("test@test.test"),
+        thenStates = {
+            assertValues(
+                RegisterState(),
+                RegisterState("test@test.test")
+            )
+        }
+    )
 }
