@@ -4,8 +4,8 @@ plugins {
 
 dependencies {
     implementation(project(":mvi-core"))
-    implementation(Libs.Jetbrains.Coroutines.Test.coroutines)
-    implementation(Libs.JUnit5.jupiter)
     kotlin()
     coroutines()
+    implementation(Libs.JUnit.jupiter)
+    implementation(Libs.Jetbrains.Coroutines.Test.coroutines)
 }

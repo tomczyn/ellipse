@@ -18,4 +18,4 @@ tasks.register(Tasks.clean, Delete::class) {
     delete(rootProject.buildDir)
 }
 
-apply(plugin = Libs.Plugins.ktlint)
+apply(plugin = AndroidConfig.Plugin.ktlint)

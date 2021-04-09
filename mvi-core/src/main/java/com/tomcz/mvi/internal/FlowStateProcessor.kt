@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-internal class StateFlowProcessor<in EV : Any, ST : Any, out PA : Intent<ST>>(
+internal class FlowStateProcessor<in EV : Any, ST : Any, out PA : Intent<ST>>(
     private val scope: CoroutineScope,
     defaultViewState: ST,
     prepare: (suspend () -> Flow<PA>)? = null,

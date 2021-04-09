@@ -11,4 +11,6 @@ dependencies {
     baseAndroid()
     coroutines()
     compose()
+    test()
+    testImplementation(project(":mvi-test"))
 }

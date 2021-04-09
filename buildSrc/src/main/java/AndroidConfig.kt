@@ -7,6 +7,8 @@ object AndroidConfig {
         const val kapt = "kotlin-kapt"
         const val javaLib = "java-library"
         const val kotlin = "kotlin"
+        const val junit5 = "de.mannodermaus.android-junit5"
+        const val ktlint = "org.jlleitschuh.gradle.ktlint"
     }
 
     const val sdkVersion = 30

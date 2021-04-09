@@ -6,7 +6,6 @@ object Libs {
         const val junit5 =
             "de.mannodermaus.gradle.plugins:android-junit5:${Versions.junit5Gradle}"
         const val ktlintGradle = "org.jlleitschuh.gradle:ktlint-gradle:${Versions.ktlint}"
-        const val ktlint = "org.jlleitschuh.gradle.ktlint"
     }
 
     object AndroidX {
@@ -63,7 +62,7 @@ object Libs {
         }
     }
 
-    object JUnit5 {
+    object JUnit {
 
         const val jupiter = "org.junit.jupiter:junit-jupiter-api:${Versions.junit5}"
         const val jupiterParams = "org.junit.jupiter:junit-jupiter-params:${Versions.junit5}"

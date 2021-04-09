@@ -33,9 +33,9 @@ fun DependencyHandler.coroutines() {
 
 fun DependencyHandler.test() {
     testImplementation(Libs.Jetbrains.Coroutines.Test.coroutines)
-    testImplementation(Libs.JUnit5.jupiter)
-    testImplementation(Libs.JUnit5.jupiterParams)
-    testRuntimeOnly(Libs.JUnit5.Runtime.jupiterEngine)
+    testImplementation(Libs.JUnit.jupiter)
+    testImplementation(Libs.JUnit.jupiterParams)
+    testRuntimeOnly(Libs.JUnit.Runtime.jupiterEngine)
 }
 
 fun DependencyHandler.androidTest() {

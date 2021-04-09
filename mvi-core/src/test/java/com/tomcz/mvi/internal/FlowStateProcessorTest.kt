@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 
-class StateFlowProcessorTest : BaseCoroutineTest() {
+class FlowStateProcessorTest : BaseCoroutineTest() {
 
     object CounterEvent
     data class CounterState(val counter: Int = 0)
