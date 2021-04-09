@@ -120,4 +120,23 @@ internal class FlowStateEffectProcessorTest : BaseCoroutineTest() {
         assertEquals(CounterState(2), processor.state.value)
         emptyEffectJob.cancel()
     }
+
+    @Test
+    fun `test having multiple subscribers`() = runBlockingTest {
+        val processor: StateEffectProcessor<CounterEvent, CounterState, CounterEffect> =
+            stateEffectProcessor(CounterState()) { effects, _ -> effects.send(CounterEffect); emptyFlow() }
+        val effects = mutableListOf<CounterEffect>()
+        val effectJob = launch { processor.effect.collect { effects.add(it) } }
+        val effect2Job = launch { processor.effect.collect { effects.add(it) } }
+        processor.sendEvent(CounterEvent)
+        assertEquals(listOf(CounterEffect, CounterEffect), effects)
+        effectJob.cancel()
+        effect2Job.cancel()
+
+        // Test resubscribing
+        val emptyEffects = mutableListOf<CounterEffect>()
+        val emptyEffectJob = launch { processor.effect.collect { emptyEffects.add(it) } }
+        assertEquals(emptyList<CounterEffect>(), emptyEffects)
+        emptyEffectJob.cancel()
+    }
 }
