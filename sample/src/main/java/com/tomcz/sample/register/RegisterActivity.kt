@@ -3,6 +3,7 @@ package com.tomcz.sample.register
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -25,12 +26,16 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.tomcz.mvi.common.onCreated
 import com.tomcz.mvi.compose.collectAsState
 import com.tomcz.sample.R
+import com.tomcz.sample.register.state.RegisterEffect
 import com.tomcz.sample.register.state.RegisterEvent
 import com.tomcz.sample.ui.*
 
 class RegisterActivity : ComponentActivity() {
+
+    private val viewModel: RegisterViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +47,11 @@ class RegisterActivity : ComponentActivity() {
                 }
             }
         }
+        onCreated(viewModel::processor, onEffect = ::trigger)
+    }
+
+    private fun trigger(effect: RegisterEffect) {
+        /* TODO */
     }
 }
 

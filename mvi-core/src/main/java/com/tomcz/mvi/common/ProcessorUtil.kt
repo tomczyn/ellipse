@@ -16,12 +16,11 @@ fun <EV : Any, ST : Any, PA : Intent<ST>> CoroutineScope.stateProcessor(
 
 fun <EV : Any, ST : Any, PA : Intent<ST>, EF : Any> CoroutineScope.stateEffectProcessor(
     defViewState: ST,
-    prepare: (suspend () -> Flow<PA>)? = null,
-    prepareEffect: (suspend (Effects<EF>) -> Unit)? = null,
+    prepare: (suspend (Effects<EF>) -> Flow<PA>)? = null,
     effects: suspend (Effects<EF>, EV) -> Unit = { _, _ -> },
     statesEffects: suspend (Effects<EF>, EV) -> Flow<PA> = { _, _ -> emptyFlow() },
 ): StateEffectProcessor<EV, ST, EF> =
-    FlowStateEffectProcessor(this, defViewState, prepare, prepareEffect, effects, statesEffects)
+    FlowStateEffectProcessor(this, defViewState, prepare, effects, statesEffects)
 
 fun <EV : Any, EF : Any> CoroutineScope.effectProcessor(
     prepare: (suspend (Effects<EF>) -> Unit)? = null,

@@ -8,11 +8,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : Intent<ST>, EF : Any>(
+internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : Intent<ST>, EF : Any> constructor(
     private val scope: CoroutineScope,
     defaultViewState: ST,
-    prepare: (suspend () -> Flow<PA>)? = null,
-    prepareEffect: (suspend (Effects<EF>) -> Unit)? = null,
+    prepare: (suspend (Effects<EF>) -> Flow<PA>)? = null,
     private val eventEffects: suspend (Effects<EF>, EV) -> Unit = { _, _ -> },
     private val mapper: suspend (Effects<EF>, EV) -> Flow<PA>,
 ) : StateEffectProcessor<EV, ST, EF> {
@@ -32,8 +31,9 @@ internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : Intent<S
     }
 
     init {
-        prepare?.let { flowWrapper -> scope.launch { flowWrapper().collect { _state.reduceAndSet(it) } } }
-        prepareEffect?.let { scope.launch { it(effects) } }
+        if (prepare != null) scope.launch {
+            prepare(effects).collect { _state.reduceAndSet(it) }
+        }
     }
 
     override fun sendEvent(event: EV) {

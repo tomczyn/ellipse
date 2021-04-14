@@ -15,14 +15,12 @@ fun <EV : Any, ST : Any, PA : Intent<ST>> ViewModel.stateProcessor(
 
 fun <EV : Any, ST : Any, PA : Intent<ST>, EF : Any> ViewModel.stateEffectProcessor(
     defViewState: ST,
-    prepare: (suspend () -> Flow<PA>)? = null,
-    prepareEffects: (suspend (Effects<EF>) -> Unit)? = null,
+    prepare: (suspend (Effects<EF>) -> Flow<PA>)? = null,
     effects: suspend (Effects<EF>, EV) -> Unit = { _, _ -> },
     statesEffects: suspend (Effects<EF>, EV) -> Flow<PA> = { _, _ -> emptyFlow() }
 ): StateEffectProcessor<EV, ST, EF> = viewModelScope.stateEffectProcessor(
     defViewState,
     prepare,
-    prepareEffects,
     effects,
     statesEffects
 )
