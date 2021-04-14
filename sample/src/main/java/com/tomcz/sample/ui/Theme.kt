@@ -6,13 +6,13 @@ import androidx.compose.runtime.*
 
 @Suppress("unused")
 private val DarkColorPalette = darkColors(
-    primary = DarkGrey,
+    primary = DarkGray,
     primaryVariant = Teal,
     secondary = Orange
 )
 
 private val LightColorPalette = lightColors(
-    primary = DarkGrey,
+    primary = DarkGray,
     primaryVariant = Teal,
     secondary = Orange
 )

@@ -14,10 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.DarkGray
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,7 +37,7 @@ class RegisterActivity : ComponentActivity() {
         setContent {
             MainAppTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    // RegisterBackground()
+                    RegisterBackground()
                     RegisterScreen()
                 }
             }
@@ -142,23 +142,6 @@ private fun RepeatPasswordField(
 }
 
 @Composable
-private fun RegisterBackground() {
-    Canvas(modifier = Modifier.fillMaxSize()) {
-        val canvasWidth = size.width
-        val canvasHeight = size.height
-
-        drawArc(
-            color = Orange,
-            startAngle = 90f,
-            sweepAngle = 100f,
-            useCenter = true,
-            topLeft = Offset.Zero,
-            size = Size(canvasWidth, canvasHeight),
-        )
-    }
-}
-
-@Composable
 private fun ProceedButton() {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -178,6 +161,46 @@ private fun ProceedButton() {
                     )
                 }
             }
+        )
+    }
+}
+
+@Composable
+private fun RegisterBackground() {
+    DrawOrangeBlob()
+}
+
+@Composable
+private fun DrawOrangeBlob() {
+    Canvas(modifier = Modifier.fillMaxSize()) {
+
+        val path = Path()
+
+        val startX = 0f
+        val startY = size.height * .17f
+        val end1X = size.width * .4f
+        val end1Y = size.height * .06f
+        val end2X = size.width * .75f
+        val end2Y = 0f
+
+        val anc0X = size.width * .15f
+        val anc0Y = size.height * .18f
+        val anc1X = size.width * .1f
+        val anc1Y = size.height * .04f
+
+        val anc3X = size.width * 0.6f
+        val anc3Y = 0f
+        val anc2X = size.width * .6f
+        val anc2Y = size.height * .07f
+        path.moveTo(startX, startY)
+        path.cubicTo(anc0X, anc0Y, anc1X, anc1Y, end1X, end1Y)
+        path.cubicTo(anc2X, anc2Y, anc3X, anc3Y, end2X, end2Y)
+        path.lineTo(0f, 0f)
+        path.close()
+        drawPath(
+            path = path,
+            color = Orange,
+            style = Fill
         )
     }
 }
