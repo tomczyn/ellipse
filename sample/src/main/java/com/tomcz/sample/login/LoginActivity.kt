@@ -1,0 +1,33 @@
+package com.tomcz.sample.login
+
+import android.os.Bundle
+import android.widget.EditText
+import androidx.activity.ComponentActivity
+import androidx.activity.viewModels
+import com.tomcz.mvi.common.onCreated
+import com.tomcz.mvi.common.textChanged
+import com.tomcz.sample.R
+import com.tomcz.sample.login.state.LoginEvent
+import com.tomcz.sample.login.state.LoginState
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+class LoginActivity : ComponentActivity() {
+
+    private val viewModel: LoginViewModel by viewModels()
+    private val email: EditText by lazy { findViewById(R.id.email) }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_login)
+        onCreated(viewModel::processor, intents = ::intents, onState = ::render)
+    }
+
+    private fun render(state: LoginState) {
+        email.setText(state.email)
+    }
+
+    private fun intents(): List<Flow<LoginEvent>> = listOf(
+        email.textChanged().map { LoginEvent.EmailChanged(it) }
+    )
+}
