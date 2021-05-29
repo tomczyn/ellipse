@@ -2,7 +2,10 @@ plugins {
     id("android-library-plugin")
 }
 
-android.enableCompose()
+android {
+    buildFeatures.compose = true
+    composeOptions.kotlinCompilerExtensionVersion = Versions.compose
+}
 
 dependencies {
     implementation(project(":mvi-core"))

@@ -1,5 +1,4 @@
 import com.android.build.gradle.BaseExtension
-import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -9,8 +8,7 @@ private const val DEBUG = "debug"
 
 fun Project.kotlinCompileOptions() = tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions {
-        jvmTarget = "11"
-        useIR = true
+        jvmTarget = AndroidConfig.javaVersion.majorVersion
     }
     kotlinOptions.freeCompilerArgs = kotlinOptions.freeCompilerArgs + listOf(
         "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
@@ -38,8 +36,8 @@ fun BaseExtension.enableCompose() {
 
 private fun BaseExtension.compileOptions() {
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = AndroidConfig.javaVersion
+        targetCompatibility = AndroidConfig.javaVersion
     }
 }
 

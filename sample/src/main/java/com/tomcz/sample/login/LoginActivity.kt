@@ -20,14 +20,14 @@ class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        onCreated(viewModel::processor, intents = ::intents, onState = ::render)
+        onCreated(viewModel::processor, intents = ::viewEvents, onState = ::render)
     }
 
     private fun render(state: LoginState) {
         email.setText(state.email)
     }
 
-    private fun intents(): List<Flow<LoginEvent>> = listOf(
+    private fun viewEvents(): List<Flow<LoginEvent>> = listOf(
         email.textChanged().map { LoginEvent.EmailChanged(it) }
     )
 }
