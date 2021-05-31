@@ -4,20 +4,13 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
-import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-fun <E> SendChannel<E>.safeOffer(value: E) = !isClosedForSend && try {
-    offer(value)
-} catch (t: Throwable) {
-    // Ignore all
-    false
-}
 
 fun View.clicks(): Flow<Unit> = callbackFlow {
-    val listener = View.OnClickListener { safeOffer(Unit) }
+    val listener = View.OnClickListener { trySend(Unit) }
     setOnClickListener(listener)
     awaitClose { setOnClickListener(null) }
 }
@@ -29,7 +22,7 @@ fun EditText.textChanged(): Flow<String> = callbackFlow {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            safeOffer(s?.toString() ?: "")
+            trySend(s?.toString() ?: "")
         }
 
         override fun afterTextChanged(s: Editable?) {
