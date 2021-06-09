@@ -13,6 +13,13 @@ fun DependencyHandler.baseAndroid() {
     implementation(Libs.Google.material)
 }
 
+fun DependencyHandler.dependencyInjection() {
+    implementation(Libs.Google.dagger)
+    implementation(Libs.Google.hilt)
+    kapt(Libs.Google.Annotation.dagger)
+    kapt(Libs.Google.Annotation.hilt)
+}
+
 fun DependencyHandler.compose() {
     implementation(Libs.AndroidX.Compose.ui)
     implementation(Libs.AndroidX.Compose.uiTooling)

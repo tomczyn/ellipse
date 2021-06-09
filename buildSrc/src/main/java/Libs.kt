@@ -6,6 +6,7 @@ object Libs {
         const val junit5 =
             "de.mannodermaus.gradle.plugins:android-junit5:${Versions.junit5Gradle}"
         const val ktlintGradle = "org.jlleitschuh.gradle:ktlint-gradle:${Versions.ktlint}"
+        const val hilt = "com.google.dagger:hilt-android-gradle-plugin:${Versions.dagger}"
     }
 
     object AndroidX {
@@ -45,6 +46,13 @@ object Libs {
 
     object Google {
         const val material = "com.google.android.material:material:${Versions.material}"
+        const val dagger = "com.google.dagger:dagger:${Versions.dagger}"
+        const val hilt = "com.google.dagger:hilt-android:${Versions.dagger}"
+
+        object Annotation {
+            const val dagger = "com.google.dagger:dagger-compiler:${Versions.dagger}"
+            const val hilt = "com.google.dagger:hilt-compiler:${Versions.dagger}"
+        }
     }
 
     object Jetbrains {

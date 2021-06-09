@@ -29,7 +29,9 @@ import com.tomcz.sample.R
 import com.tomcz.sample.register.state.RegisterEffect
 import com.tomcz.sample.register.state.RegisterEvent
 import com.tomcz.sample.ui.*
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RegisterActivity : ComponentActivity() {
 
     private val viewModel: RegisterViewModel by viewModels()

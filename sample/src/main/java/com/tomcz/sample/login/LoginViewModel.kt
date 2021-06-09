@@ -8,10 +8,13 @@ import com.tomcz.sample.login.state.LoginEvent
 import com.tomcz.sample.login.state.LoginPartialState.EmailChanged
 import com.tomcz.sample.login.state.LoginPartialState.PasswordChanged
 import com.tomcz.sample.login.state.LoginState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
+import javax.inject.Inject
 
-class LoginViewModel : ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor() : ViewModel() {
 
     val processor: StateEffectProcessor<LoginEvent, LoginState, LoginEffect> =
         stateEffectProcessor(

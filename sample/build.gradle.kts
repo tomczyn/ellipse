@@ -11,6 +11,7 @@ dependencies {
     implementation(project(":mvi-core"))
     implementation(project(":mvi-compose"))
     kotlin()
+    dependencyInjection()
     baseAndroid()
     coroutines()
     compose()

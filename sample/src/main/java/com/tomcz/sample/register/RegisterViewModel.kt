@@ -7,10 +7,13 @@ import com.tomcz.sample.register.state.RegisterEffect
 import com.tomcz.sample.register.state.RegisterEvent
 import com.tomcz.sample.register.state.RegisterPartialState
 import com.tomcz.sample.register.state.RegisterState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
+import javax.inject.Inject
 
-class RegisterViewModel : ViewModel() {
+@HiltViewModel
+class RegisterViewModel @Inject constructor() : ViewModel() {
 
     val processor: StateEffectProcessor<RegisterEvent, RegisterState, RegisterEffect> =
         stateEffectProcessor(

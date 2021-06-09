@@ -11,6 +11,7 @@ buildscript {
         classpath(Libs.Plugins.kotlinGradle)
         classpath(Libs.Plugins.junit5)
         classpath(Libs.Plugins.ktlintGradle)
+        classpath(Libs.Plugins.hilt)
     }
 }
 

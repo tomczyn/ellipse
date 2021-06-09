@@ -9,9 +9,11 @@ import com.tomcz.mvi.common.textChanged
 import com.tomcz.sample.R
 import com.tomcz.sample.login.state.LoginEvent
 import com.tomcz.sample.login.state.LoginState
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+@AndroidEntryPoint
 class LoginActivity : ComponentActivity() {
 
     private val viewModel: LoginViewModel by viewModels()
