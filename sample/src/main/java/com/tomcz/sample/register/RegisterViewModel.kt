@@ -19,7 +19,7 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
         stateEffectProcessor(
             defViewState = RegisterState(),
             prepare = { emptyFlow() },
-            statesEffects = { effects, event ->
+            statesEffects = { _, event ->
                 when (event) {
                     is RegisterEvent.EmailChanged -> flowOf(RegisterPartialState.EmailChanged(event.email))
                     is RegisterEvent.PasswordChanged -> flowOf(

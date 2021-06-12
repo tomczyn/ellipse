@@ -20,7 +20,7 @@ class LoginViewModel @Inject constructor() : ViewModel() {
         stateEffectProcessor(
             defViewState = LoginState(),
             prepare = { emptyFlow() },
-            statesEffects = { effects, event ->
+            statesEffects = { _, event ->
                 when (event) {
                     is LoginEvent.EmailChanged -> flowOf(EmailChanged(event.email))
                     is LoginEvent.PasswordChanged -> flowOf(PasswordChanged(event.password))
