@@ -19,8 +19,8 @@ fun Project.kotlinCompileOptions() = tasks.withType<KotlinCompile>().configureEa
 fun BaseExtension.defaultConfig() {
     compileSdkVersion(AndroidConfig.sdkVersion)
     defaultConfig {
-        minSdkVersion(AndroidConfig.minSdkVersion)
-        targetSdkVersion(AndroidConfig.sdkVersion)
+        minSdk = AndroidConfig.minSdkVersion
+        targetSdk = AndroidConfig.sdkVersion
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions()
