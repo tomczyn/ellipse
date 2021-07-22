@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : Intent<ST>, EF : Any> constructor(
     private val scope: CoroutineScope,
     defaultViewState: ST,
-    prepare: (suspend (Effects<EF>) -> Flow<PA>)? = null,
+    prepare: suspend (Effects<EF>) -> Flow<PA> = { emptyFlow() },
     private val eventEffects: suspend (Effects<EF>, EV) -> Unit = { _, _ -> },
     private val mapper: suspend (Effects<EF>, EV) -> Flow<PA>,
 ) : StateEffectProcessor<EV, ST, EF> {
@@ -31,9 +31,7 @@ internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : Intent<S
     }
 
     init {
-        if (prepare != null) scope.launch {
-            prepare(effects).collect { _state.reduceAndSet(it) }
-        }
+        scope.launch { prepare(effects).collect { _state.reduceAndSet(it) } }
     }
 
     override fun sendEvent(event: EV) {

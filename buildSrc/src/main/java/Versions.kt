@@ -7,6 +7,7 @@ object Versions {
     const val ktx = "1.6.0"
     const val ktxFragment = "1.3.6"
     const val ktxViewModel = "2.3.1"
+    const val ktxLifecycleRuntime = "2.4.0-alpha02"
     const val androidXJunit = "1.1.2"
     const val espresso = "3.3.0"
     const val appCompat = "1.3.1"

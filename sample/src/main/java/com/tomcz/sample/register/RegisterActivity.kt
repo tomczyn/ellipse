@@ -49,6 +49,7 @@ class RegisterActivity : ComponentActivity() {
         onCreated(viewModel::processor, onEffect = ::trigger)
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun trigger(effect: RegisterEffect) {
         /* TODO */
     }

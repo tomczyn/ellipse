@@ -9,13 +9,13 @@ import kotlinx.coroutines.flow.emptyFlow
 
 fun <EV : Any, ST : Any, PA : Intent<ST>> ViewModel.stateProcessor(
     defViewState: ST,
-    prepare: (suspend () -> Flow<PA>)? = null,
-    states: suspend (EV) -> Flow<PA> = { _ -> emptyFlow() }
+    prepare: suspend () -> Flow<PA> = { emptyFlow() },
+    states: suspend (EV) -> Flow<PA> = { emptyFlow() }
 ): StateProcessor<EV, ST> = viewModelScope.stateProcessor(defViewState, prepare, states)
 
 fun <EV : Any, ST : Any, PA : Intent<ST>, EF : Any> ViewModel.stateEffectProcessor(
     defViewState: ST,
-    prepare: (suspend (Effects<EF>) -> Flow<PA>)? = null,
+    prepare: suspend (Effects<EF>) -> Flow<PA> = { emptyFlow() },
     effects: suspend (Effects<EF>, EV) -> Unit = { _, _ -> },
     statesEffects: suspend (Effects<EF>, EV) -> Flow<PA> = { _, _ -> emptyFlow() }
 ): StateEffectProcessor<EV, ST, EF> = viewModelScope.stateEffectProcessor(
@@ -26,6 +26,6 @@ fun <EV : Any, ST : Any, PA : Intent<ST>, EF : Any> ViewModel.stateEffectProcess
 )
 
 fun <EV : Any, EF : Any> ViewModel.effectProcessor(
-    prepare: (suspend (Effects<EF>) -> Unit)? = null,
+    prepare: suspend (Effects<EF>) -> Unit = { },
     effects: suspend (Effects<EF>, EV) -> Unit = { _, _ -> },
 ): EffectProcessor<EV, EF> = FlowEffectProcessor(viewModelScope, prepare, effects)
