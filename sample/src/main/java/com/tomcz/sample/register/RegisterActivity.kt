@@ -109,7 +109,7 @@ private fun EmailField(
     keyboardActions: KeyboardActions,
 ) {
     val processor = viewModel<RegisterViewModel>().processor
-    val email by processor.collectAsState("") { it.email }
+    val email by processor.collectAsState { it.email }
     TextField(
         value = email,
         modifier = Modifier.fillMaxWidth(),
@@ -127,7 +127,7 @@ private fun PasswordField(
     keyboardActions: KeyboardActions
 ) {
     val processor = viewModel<RegisterViewModel>().processor
-    val password by processor.collectAsState("") { it.password }
+    val password by processor.collectAsState { it.password }
     TextField(
         value = password,
         modifier = modifier.fillMaxWidth(),
@@ -146,7 +146,7 @@ private fun RepeatPasswordField(
     keyboardActions: KeyboardActions
 ) {
     val processor = viewModel<RegisterViewModel>().processor
-    val repeatPassword by processor.collectAsState("") { it.repeatPassword }
+    val repeatPassword by processor.collectAsState { it.repeatPassword }
     TextField(
         value = repeatPassword,
         modifier = modifier.fillMaxWidth(),

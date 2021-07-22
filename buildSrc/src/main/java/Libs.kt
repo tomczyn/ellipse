@@ -11,7 +11,7 @@ object Libs {
 
     object AndroidX {
         const val coreKtx = "androidx.core:core-ktx:${Versions.ktx}"
-        const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.ktx}"
+        const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.ktxFragment}"
         const val vmKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.ktxViewModel}"
         const val lifecycleRuntimeKtx =
             "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.ktxViewModel}"
