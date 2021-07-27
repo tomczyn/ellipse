@@ -4,10 +4,23 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults.textFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,7 +41,11 @@ import com.tomcz.mvi.compose.collectAsState
 import com.tomcz.sample.R
 import com.tomcz.sample.register.state.RegisterEffect
 import com.tomcz.sample.register.state.RegisterEvent
-import com.tomcz.sample.ui.*
+import com.tomcz.sample.ui.BasePadding
+import com.tomcz.sample.ui.BezierBackground
+import com.tomcz.sample.ui.DarkGray
+import com.tomcz.sample.ui.MainAppTheme
+import com.tomcz.sample.ui.QuadruplePadding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -49,7 +66,6 @@ class RegisterActivity : ComponentActivity() {
         onCreated(viewModel::processor, onEffect = ::trigger)
     }
 
-    @Suppress("UNUSED_PARAMETER")
     private fun trigger(effect: RegisterEffect) {
         /* TODO */
     }

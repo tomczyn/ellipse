@@ -23,6 +23,6 @@ fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> CoroutineScope.stateEf
     FlowStateEffectProcessor(this, defViewState, prepare, effects, statesEffects)
 
 fun <EV : Any, EF : Any> CoroutineScope.effectProcessor(
-    prepare: suspend (Effects<EF>) -> Unit = { },
+    prepare: suspend (Effects<EF>) -> Unit = {},
     effects: suspend (Effects<EF>, EV) -> Unit = { _, _ -> },
 ): EffectProcessor<EV, EF> = FlowEffectProcessor(this, prepare, effects)

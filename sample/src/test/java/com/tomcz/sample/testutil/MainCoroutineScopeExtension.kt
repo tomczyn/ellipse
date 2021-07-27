@@ -1,4 +1,4 @@
-package com.tomcz.mvi.test
+package com.tomcz.sample.testutil
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.extension.BeforeEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext
 
 class MainCoroutineScopeExtension(
-    val dispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
+    private val dispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
 ) : BeforeEachCallback, AfterEachCallback, TestCoroutineScope by TestCoroutineScope(dispatcher) {
 
     init {

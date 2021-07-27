@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 
 internal class FlowEffectProcessor<in EV : Any, EF : Any>(
     private val scope: CoroutineScope,
-    prepare: suspend (Effects<EF>) -> Unit = { },
+    prepare: suspend (Effects<EF>) -> Unit = {},
     private val mapper: suspend (Effects<EF>, EV) -> Unit,
 ) : EffectProcessor<EV, EF> {
 

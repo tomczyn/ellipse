@@ -5,10 +5,10 @@ import android.widget.EditText
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import com.tomcz.mvi.common.onCreated
-import com.tomcz.mvi.common.textChanged
 import com.tomcz.sample.R
 import com.tomcz.sample.login.state.LoginEvent
 import com.tomcz.sample.login.state.LoginState
+import com.tomcz.sample.util.textChanged
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -22,7 +22,11 @@ class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        onCreated(viewModel::processor, intents = ::viewEvents, onState = ::render)
+        onCreated(
+            processor = viewModel::processor,
+            intents = ::viewEvents,
+            onState = ::render
+        )
     }
 
     private fun render(state: LoginState) {

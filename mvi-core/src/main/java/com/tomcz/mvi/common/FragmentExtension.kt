@@ -8,6 +8,48 @@ import com.tomcz.mvi.StateProcessor
 import com.tomcz.mvi.internal.util.consume
 import kotlinx.coroutines.flow.Flow
 
+@JvmName("OnCreatedStateProcessor")
+fun <EV : Any, ST : Any> Fragment.onCreated(
+    processor: () -> StateProcessor<EV, ST>,
+    intents: () -> List<Flow<EV>> = { emptyList() },
+    onState: (ST) -> Unit
+) = lifecycleScope.launchWhenCreated { consume(processor(), onState, intents()) }
+
+fun <EV : Any, ST : Any, EF : Any> Fragment.onCreated(
+    processor: () -> StateEffectProcessor<EV, ST, EF>,
+    intents: () -> List<Flow<EV>> = { emptyList() },
+    onState: (ST) -> Unit,
+    onEffect: (EF) -> Unit
+) = lifecycleScope.launchWhenCreated { consume(processor(), onState, onEffect, intents()) }
+
+@JvmName("OnCreatedEffectProcessor")
+fun <EV : Any, EF : Any> Fragment.onCreated(
+    processor: () -> EffectProcessor<EV, EF>,
+    intents: () -> List<Flow<EV>> = { emptyList() },
+    onEffect: (EF) -> Unit
+) = lifecycleScope.launchWhenCreated { consume(processor(), onEffect, intents()) }
+
+@JvmName("OnStartedStateProcessor")
+fun <EV : Any, ST : Any> Fragment.onStarted(
+    processor: () -> StateProcessor<EV, ST>,
+    intents: () -> List<Flow<EV>> = { emptyList() },
+    onState: (ST) -> Unit
+) = lifecycleScope.launchWhenStarted { consume(processor(), onState, intents()) }
+
+fun <EV : Any, ST : Any, EF : Any> Fragment.onStarted(
+    processor: () -> StateEffectProcessor<EV, ST, EF>,
+    intents: () -> List<Flow<EV>> = { emptyList() },
+    onState: (ST) -> Unit,
+    onEffect: (EF) -> Unit
+) = lifecycleScope.launchWhenStarted { consume(processor(), onState, onEffect, intents()) }
+
+@JvmName("OnStartedEffectProcessor")
+fun <EV : Any, EF : Any> Fragment.onStarted(
+    processor: () -> EffectProcessor<EV, EF>,
+    intents: () -> List<Flow<EV>> = { emptyList() },
+    onEffect: (EF) -> Unit
+) = lifecycleScope.launchWhenStarted { consume(processor(), onEffect, intents()) }
+
 @JvmName("OnResumedStateProcessor")
 fun <EV : Any, ST : Any> Fragment.onResumed(
     processor: () -> StateProcessor<EV, ST>,

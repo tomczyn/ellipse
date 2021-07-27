@@ -26,6 +26,6 @@ fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> ViewModel.stateEffectP
 )
 
 fun <EV : Any, EF : Any> ViewModel.effectProcessor(
-    prepare: suspend (Effects<EF>) -> Unit = { },
+    prepare: suspend (Effects<EF>) -> Unit = {},
     effects: suspend (Effects<EF>, EV) -> Unit = { _, _ -> },
 ): EffectProcessor<EV, EF> = FlowEffectProcessor(viewModelScope, prepare, effects)
