@@ -7,13 +7,13 @@ import com.tomcz.mvi.internal.FlowEffectProcessor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
-fun <EV : Any, ST : Any, PA : Intent<ST>> ViewModel.stateProcessor(
+fun <EV : Any, ST : Any, PA : PartialState<ST>> ViewModel.stateProcessor(
     defViewState: ST,
     prepare: suspend () -> Flow<PA> = { emptyFlow() },
     states: suspend (EV) -> Flow<PA> = { emptyFlow() }
 ): StateProcessor<EV, ST> = viewModelScope.stateProcessor(defViewState, prepare, states)
 
-fun <EV : Any, ST : Any, PA : Intent<ST>, EF : Any> ViewModel.stateEffectProcessor(
+fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> ViewModel.stateEffectProcessor(
     defViewState: ST,
     prepare: suspend (Effects<EF>) -> Flow<PA> = { emptyFlow() },
     effects: suspend (Effects<EF>, EV) -> Unit = { _, _ -> },

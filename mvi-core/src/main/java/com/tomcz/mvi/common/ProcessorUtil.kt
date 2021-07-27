@@ -8,13 +8,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
-fun <EV : Any, ST : Any, PA : Intent<ST>> CoroutineScope.stateProcessor(
+fun <EV : Any, ST : Any, PA : PartialState<ST>> CoroutineScope.stateProcessor(
     defViewState: ST,
     prepare: suspend () -> Flow<PA> = { emptyFlow() },
     states: suspend (EV) -> Flow<PA> = { _ -> emptyFlow() }
 ): StateProcessor<EV, ST> = FlowStateProcessor(this, defViewState, prepare, states)
 
-fun <EV : Any, ST : Any, PA : Intent<ST>, EF : Any> CoroutineScope.stateEffectProcessor(
+fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> CoroutineScope.stateEffectProcessor(
     defViewState: ST,
     prepare: suspend (Effects<EF>) -> Flow<PA> = { emptyFlow() },
     effects: suspend (Effects<EF>, EV) -> Unit = { _, _ -> },

@@ -1,13 +1,13 @@
 package com.tomcz.mvi.internal
 
-import com.tomcz.mvi.Intent
+import com.tomcz.mvi.PartialState
 import com.tomcz.mvi.StateProcessor
 import com.tomcz.mvi.internal.util.reduceAndSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-internal class FlowStateProcessor<in EV : Any, ST : Any, out PA : Intent<ST>>(
+internal class FlowStateProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>>(
     private val scope: CoroutineScope,
     defaultViewState: ST,
     prepare: suspend () -> Flow<PA> = { emptyFlow() },

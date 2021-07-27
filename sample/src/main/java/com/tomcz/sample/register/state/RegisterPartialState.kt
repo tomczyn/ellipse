@@ -1,8 +1,8 @@
 package com.tomcz.sample.register.state
 
-import com.tomcz.mvi.Intent
+import com.tomcz.mvi.PartialState
 
-sealed class RegisterPartialState : Intent<RegisterState> {
+sealed class RegisterPartialState : PartialState<RegisterState> {
 
     data class EmailChanged(val email: String) : RegisterPartialState() {
         override fun reduce(oldState: RegisterState): RegisterState {

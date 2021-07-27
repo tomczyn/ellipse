@@ -1,5 +1,5 @@
 package com.tomcz.mvi
 
-interface Intent<T> {
+interface PartialState<T> {
     fun reduce(oldState: T): T
 }

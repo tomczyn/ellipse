@@ -1,6 +1,6 @@
 package com.tomcz.mvi.internal
 
-import com.tomcz.mvi.Intent
+import com.tomcz.mvi.PartialState
 import com.tomcz.mvi.StateEffectProcessor
 import com.tomcz.mvi.common.stateEffectProcessor
 import com.tomcz.mvi.test.BaseCoroutineTest
@@ -17,7 +17,7 @@ internal class FlowStateEffectProcessorTest : BaseCoroutineTest() {
     object CounterEvent
     object CounterEffect
     data class CounterState(val counter: Int = 0)
-    object IncreasePartialState : Intent<CounterState> {
+    object IncreasePartialState : PartialState<CounterState> {
         override fun reduce(oldState: CounterState): CounterState =
             oldState.copy(counter = oldState.counter + 1)
     }

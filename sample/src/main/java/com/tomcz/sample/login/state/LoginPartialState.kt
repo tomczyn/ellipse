@@ -1,8 +1,8 @@
 package com.tomcz.sample.login.state
 
-import com.tomcz.mvi.Intent
+import com.tomcz.mvi.PartialState
 
-sealed class LoginPartialState : Intent<LoginState> {
+sealed class LoginPartialState : PartialState<LoginState> {
 
     data class EmailChanged(val email: String) : LoginPartialState() {
         override fun reduce(oldState: LoginState): LoginState {
