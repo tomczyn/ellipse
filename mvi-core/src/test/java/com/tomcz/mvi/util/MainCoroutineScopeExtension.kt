@@ -1,4 +1,4 @@
-package com.tomcz.sample.testutil
+package com.tomcz.mvi.util
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher

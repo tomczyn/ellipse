@@ -1,4 +1,4 @@
-package com.tomcz.sample.testutil
+package com.tomcz.sample.util
 
 import kotlinx.coroutines.test.TestCoroutineScope
 import org.junit.jupiter.api.extension.RegisterExtension

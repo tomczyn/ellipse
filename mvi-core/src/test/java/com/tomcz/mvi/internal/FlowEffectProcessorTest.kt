@@ -2,14 +2,14 @@ package com.tomcz.mvi.internal
 
 import com.tomcz.mvi.EffectProcessor
 import com.tomcz.mvi.common.effectProcessor
-import com.tomcz.sample.register.BaseCoroutineTest
+import com.tomcz.mvi.util.BaseCoroutineTest
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-internal class FlowEffectProcessorTest : com.tomcz.sample.register.BaseCoroutineTest() {
+internal class FlowEffectProcessorTest : BaseCoroutineTest() {
 
     object CounterEvent
     object CounterEffect

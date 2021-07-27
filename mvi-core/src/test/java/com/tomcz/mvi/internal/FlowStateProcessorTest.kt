@@ -3,7 +3,7 @@ package com.tomcz.mvi.internal
 import com.tomcz.mvi.PartialState
 import com.tomcz.mvi.StateProcessor
 import com.tomcz.mvi.common.stateProcessor
-import com.tomcz.sample.register.BaseCoroutineTest
+import com.tomcz.mvi.util.BaseCoroutineTest
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
@@ -11,7 +11,7 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-class FlowStateProcessorTest : com.tomcz.sample.register.BaseCoroutineTest() {
+class FlowStateProcessorTest : BaseCoroutineTest() {
 
     object CounterEvent
     data class CounterState(val counter: Int = 0)

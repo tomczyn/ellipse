@@ -3,7 +3,7 @@ package com.tomcz.sample.register
 import com.tomcz.mvi.test.processorTest
 import com.tomcz.sample.register.state.RegisterEvent
 import com.tomcz.sample.register.state.RegisterState
-import com.tomcz.sample.testutil.BaseCoroutineTest
+import com.tomcz.sample.util.BaseCoroutineTest
 import org.junit.jupiter.api.Test
 
 internal class RegisterViewModelTest : BaseCoroutineTest() {
