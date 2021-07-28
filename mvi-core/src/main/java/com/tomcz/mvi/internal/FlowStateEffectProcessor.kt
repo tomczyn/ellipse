@@ -14,7 +14,8 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.Deque
+import java.util.LinkedList
 
 internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> constructor(
     private val scope: CoroutineScope,
@@ -32,13 +33,15 @@ internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialS
         get() = stateFlow
     private val stateFlow: MutableStateFlow<ST> = MutableStateFlow(defaultViewState)
 
-    private val replay: ConcurrentLinkedDeque<EF> = ConcurrentLinkedDeque()
+    private val replay: Deque<EF> = LinkedList()
 
     private val effects: Effects<EF> = object : Effects<EF> {
         override fun send(effect: EF) {
-            if (effectSharedFlow.subscriptionCount.value != 0) {
-                scope.launch { effectSharedFlow.emit(effect) }
-            } else replay.add(effect)
+            scope.launch {
+                if (effectSharedFlow.subscriptionCount.value != 0) {
+                    effectSharedFlow.emit(effect)
+                } else replay.add(effect)
+            }
         }
     }
 
@@ -46,7 +49,7 @@ internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialS
         scope.launch { prepare(effects).collect { stateFlow.reduceAndSet(it) } }
         effectSharedFlow.subscriptionCount.onEach { subscriptions ->
             if (subscriptions != 0 && replay.peek() != null) while (replay.peek() != null) {
-                replay.poll()?.let { effects.send(it) }
+                replay.poll()?.let { effectSharedFlow.emit(it) }
             }
         }.launchIn(scope)
     }
