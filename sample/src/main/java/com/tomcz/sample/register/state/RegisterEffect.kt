@@ -1,3 +1,5 @@
 package com.tomcz.sample.register.state
 
-sealed class RegisterEffect
+sealed interface RegisterEffect {
+    object Init : RegisterEffect
+}

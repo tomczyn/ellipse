@@ -1,6 +1,7 @@
 package com.tomcz.sample.register
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -55,6 +56,7 @@ class RegisterActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        onCreated(viewModel::processor, onEffect = ::trigger)
         setContent {
             MainAppTheme {
                 Surface(color = MaterialTheme.colors.background) {
@@ -63,11 +65,10 @@ class RegisterActivity : ComponentActivity() {
                 }
             }
         }
-        onCreated(viewModel::processor, onEffect = ::trigger)
     }
 
     private fun trigger(effect: RegisterEffect) {
-        /* TODO */
+        Log.d(RegisterActivity::class.simpleName, "Triggered ${effect::class.simpleName}")
     }
 }
 

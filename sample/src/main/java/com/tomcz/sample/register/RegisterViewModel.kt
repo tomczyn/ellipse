@@ -18,7 +18,10 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
     val processor: StateEffectProcessor<RegisterEvent, RegisterState, RegisterEffect> =
         stateEffectProcessor(
             defViewState = RegisterState(),
-            prepare = { emptyFlow() },
+            prepare = { effects ->
+                effects.send(RegisterEffect.Init)
+                emptyFlow()
+            },
             statesEffects = { _, event ->
                 when (event) {
                     is RegisterEvent.EmailChanged -> flowOf(RegisterPartialState.EmailChanged(event.email))

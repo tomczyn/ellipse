@@ -5,7 +5,12 @@ import com.tomcz.mvi.PartialState
 import com.tomcz.mvi.StateEffectProcessor
 import com.tomcz.mvi.internal.util.reduceAndSet
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 
 internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> constructor(
@@ -17,25 +22,25 @@ internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialS
 ) : StateEffectProcessor<EV, ST, EF> {
 
     override val effect: Flow<EF>
-        get() = _effect
-    private val _effect: MutableSharedFlow<EF> = MutableSharedFlow(replay = 0)
+        get() = effectSharedFlow
+    private val effectSharedFlow: MutableSharedFlow<EF> = MutableSharedFlow(replay = 0)
 
     override val state: StateFlow<ST>
-        get() = _state
-    private val _state: MutableStateFlow<ST> = MutableStateFlow(defaultViewState)
+        get() = stateFlow
+    private val stateFlow: MutableStateFlow<ST> = MutableStateFlow(defaultViewState)
 
     private val effects: Effects<EF> = object : Effects<EF> {
         override fun send(effect: EF) {
-            scope.launch { _effect.emit(effect) }
+            scope.launch { effectSharedFlow.emit(effect) }
         }
     }
 
     init {
-        scope.launch { prepare(effects).collect { _state.reduceAndSet(it) } }
+        scope.launch { prepare(effects).collect { stateFlow.reduceAndSet(it) } }
     }
 
     override fun sendEvent(event: EV) {
         scope.launch { eventEffects(effects, event) }
-        scope.launch { mapper(effects, event).collect { _state.reduceAndSet(it) } }
+        scope.launch { mapper(effects, event).collect { stateFlow.reduceAndSet(it) } }
     }
 }

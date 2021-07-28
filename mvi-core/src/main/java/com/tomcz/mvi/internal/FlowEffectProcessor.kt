@@ -14,12 +14,12 @@ internal class FlowEffectProcessor<in EV : Any, EF : Any>(
 ) : EffectProcessor<EV, EF> {
 
     override val effect: Flow<EF>
-        get() = _effect
-    private val _effect: MutableSharedFlow<EF> = MutableSharedFlow(replay = 0)
+        get() = effectSharedFlow
+    private val effectSharedFlow: MutableSharedFlow<EF> = MutableSharedFlow(replay = 0)
 
     private val effects: Effects<EF> = object : Effects<EF> {
         override fun send(effect: EF) {
-            scope.launch { _effect.emit(effect) }
+            scope.launch { effectSharedFlow.emit(effect) }
         }
     }
 
