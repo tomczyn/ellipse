@@ -11,7 +11,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.util.concurrent.ConcurrentLinkedDeque
 
 internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> constructor(
     private val scope: CoroutineScope,
@@ -29,14 +32,23 @@ internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialS
         get() = stateFlow
     private val stateFlow: MutableStateFlow<ST> = MutableStateFlow(defaultViewState)
 
+    private val replay: ConcurrentLinkedDeque<EF> = ConcurrentLinkedDeque()
+
     private val effects: Effects<EF> = object : Effects<EF> {
         override fun send(effect: EF) {
-            scope.launch { effectSharedFlow.emit(effect) }
+            if (effectSharedFlow.subscriptionCount.value != 0) {
+                scope.launch { effectSharedFlow.emit(effect) }
+            } else replay.add(effect)
         }
     }
 
     init {
         scope.launch { prepare(effects).collect { stateFlow.reduceAndSet(it) } }
+        effectSharedFlow.subscriptionCount.onEach { subscriptions ->
+            if (subscriptions != 0 && replay.peek() != null) while (replay.peek() != null) {
+                replay.poll()?.let { effects.send(it) }
+            }
+        }.launchIn(scope)
     }
 
     override fun sendEvent(event: EV) {

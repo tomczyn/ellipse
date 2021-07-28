@@ -57,28 +57,28 @@ fun <EV : Any, ST : Any> AppCompatActivity.onStarted(
     processor: () -> StateProcessor<EV, ST>,
     intents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit = {}
-) = lifecycleScope.launchWhenCreated { consume(processor(), onState, intents()) }
+) = lifecycleScope.launchWhenStarted { consume(processor(), onState, intents()) }
 
 fun <EV : Any, ST : Any, EF : Any> AppCompatActivity.onStarted(
     processor: () -> StateEffectProcessor<EV, ST, EF>,
     intents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit = {},
     onEffect: (EF) -> Unit = {}
-) = lifecycleScope.launchWhenCreated { consume(processor(), onState, onEffect, intents()) }
+) = lifecycleScope.launchWhenStarted { consume(processor(), onState, onEffect, intents()) }
 
 @JvmName("OnStartedEffectProcessor")
 fun <EV : Any, EF : Any> AppCompatActivity.onStarted(
     processor: () -> EffectProcessor<EV, EF>,
     intents: () -> List<Flow<EV>> = { emptyList() },
     onEffect: (EF) -> Unit = {}
-) = lifecycleScope.launchWhenCreated { consume(processor(), onEffect, intents()) }
+) = lifecycleScope.launchWhenStarted { consume(processor(), onEffect, intents()) }
 
 @JvmName("OnStartedStateProcessor")
 fun <EV : Any, ST : Any> ComponentActivity.onStarted(
     processor: () -> StateProcessor<EV, ST>,
     intents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit = {}
-) = lifecycleScope.launchWhenCreated { consume(processor(), onState, intents()) }
+) = lifecycleScope.launchWhenStarted { consume(processor(), onState, intents()) }
 
 @JvmName("OnStartedStateEffectProcessor")
 fun <EV : Any, ST : Any, EF : Any> ComponentActivity.onStarted(
@@ -86,42 +86,42 @@ fun <EV : Any, ST : Any, EF : Any> ComponentActivity.onStarted(
     intents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit = {},
     onEffect: (EF) -> Unit = {}
-) = lifecycleScope.launchWhenCreated { consume(processor(), onState, onEffect, intents()) }
+) = lifecycleScope.launchWhenStarted { consume(processor(), onState, onEffect, intents()) }
 
 @JvmName("OnStartedEffectProcessor")
 fun <EV : Any, EF : Any> ComponentActivity.onStarted(
     processor: () -> EffectProcessor<EV, EF>,
     intents: () -> List<Flow<EV>> = { emptyList() },
     onEffect: (EF) -> Unit = {}
-) = lifecycleScope.launchWhenCreated { consume(processor(), onEffect, intents()) }
+) = lifecycleScope.launchWhenStarted { consume(processor(), onEffect, intents()) }
 
 @JvmName("OnResumedStateProcessor")
 fun <EV : Any, ST : Any> AppCompatActivity.onResumed(
     processor: () -> StateProcessor<EV, ST>,
     intents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit = {}
-) = lifecycleScope.launchWhenCreated { consume(processor(), onState, intents()) }
+) = lifecycleScope.launchWhenResumed { consume(processor(), onState, intents()) }
 
 fun <EV : Any, ST : Any, EF : Any> AppCompatActivity.onResumed(
     processor: () -> StateEffectProcessor<EV, ST, EF>,
     intents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit = {},
     onEffect: (EF) -> Unit = {}
-) = lifecycleScope.launchWhenCreated { consume(processor(), onState, onEffect, intents()) }
+) = lifecycleScope.launchWhenResumed { consume(processor(), onState, onEffect, intents()) }
 
 @JvmName("OnResumedEffectProcessor")
 fun <EV : Any, EF : Any> AppCompatActivity.onResumed(
     processor: () -> EffectProcessor<EV, EF>,
     intents: () -> List<Flow<EV>> = { emptyList() },
     onEffect: (EF) -> Unit = {}
-) = lifecycleScope.launchWhenCreated { consume(processor(), onEffect, intents()) }
+) = lifecycleScope.launchWhenResumed { consume(processor(), onEffect, intents()) }
 
 @JvmName("OnResumedStateProcessor")
 fun <EV : Any, ST : Any> ComponentActivity.onResumed(
     processor: () -> StateProcessor<EV, ST>,
     intents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit = {}
-) = lifecycleScope.launchWhenCreated { consume(processor(), onState, intents()) }
+) = lifecycleScope.launchWhenResumed { consume(processor(), onState, intents()) }
 
 @JvmName("OnResumedStateEffectProcessor")
 fun <EV : Any, ST : Any, EF : Any> ComponentActivity.onResumed(
@@ -129,11 +129,11 @@ fun <EV : Any, ST : Any, EF : Any> ComponentActivity.onResumed(
     intents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit = {},
     onEffect: (EF) -> Unit = {}
-) = lifecycleScope.launchWhenCreated { consume(processor(), onState, onEffect, intents()) }
+) = lifecycleScope.launchWhenResumed { consume(processor(), onState, onEffect, intents()) }
 
 @JvmName("OnResumedEffectProcessor")
 fun <EV : Any, EF : Any> ComponentActivity.onResumed(
     processor: () -> EffectProcessor<EV, EF>,
     intents: () -> List<Flow<EV>> = { emptyList() },
     onEffect: (EF) -> Unit = {}
-) = lifecycleScope.launchWhenCreated { consume(processor(), onEffect, intents()) }
+) = lifecycleScope.launchWhenResumed { consume(processor(), onEffect, intents()) }
