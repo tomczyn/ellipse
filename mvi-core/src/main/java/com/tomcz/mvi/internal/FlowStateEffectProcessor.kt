@@ -19,7 +19,7 @@ import java.util.LinkedList
 
 internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> constructor(
     private val scope: CoroutineScope,
-    defaultViewState: ST,
+    initialState: ST,
     prepare: suspend (Effects<EF>) -> Flow<PA> = { emptyFlow() },
     private val eventEffects: suspend (Effects<EF>, EV) -> Unit = { _, _ -> },
     private val mapper: suspend (Effects<EF>, EV) -> Flow<PA>,
@@ -31,7 +31,7 @@ internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialS
 
     override val state: StateFlow<ST>
         get() = stateFlow
-    private val stateFlow: MutableStateFlow<ST> = MutableStateFlow(defaultViewState)
+    private val stateFlow: MutableStateFlow<ST> = MutableStateFlow(initialState)
 
     private val replay: Deque<EF> = LinkedList()
 
@@ -46,12 +46,12 @@ internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialS
     }
 
     init {
-        scope.launch { prepare(effects).collect { stateFlow.reduceAndSet(it) } }
         effectSharedFlow.subscriptionCount.onEach { subscriptions ->
             if (subscriptions != 0 && replay.peek() != null) while (replay.peek() != null) {
                 replay.poll()?.let { effectSharedFlow.emit(it) }
             }
         }.launchIn(scope)
+        scope.launch { prepare(effects).collect { stateFlow.reduceAndSet(it) } }
     }
 
     override fun sendEvent(event: EV) {

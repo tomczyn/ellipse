@@ -18,7 +18,7 @@ class LoginViewModel @Inject constructor() : ViewModel() {
 
     val processor: StateEffectProcessor<LoginEvent, LoginState, LoginEffect> =
         stateEffectProcessor(
-            defViewState = LoginState(),
+            initialState = LoginState(),
             prepare = { emptyFlow() },
             statesEffects = { _, event ->
                 when (event) {

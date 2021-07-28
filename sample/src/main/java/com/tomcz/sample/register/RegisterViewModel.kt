@@ -17,7 +17,7 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
 
     val processor: StateEffectProcessor<RegisterEvent, RegisterState, RegisterEffect> =
         stateEffectProcessor(
-            defViewState = RegisterState(),
+            initialState = RegisterState(),
             prepare = { effects ->
                 effects.send(RegisterEffect.Init)
                 emptyFlow()
