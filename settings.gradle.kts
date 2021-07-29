@@ -12,4 +12,4 @@ rootProject.name = "MVI"
 include(":sample")
 include(":mvi-test")
 include(":mvi-core")
-include(":mvi-compose")
+

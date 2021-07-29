@@ -1,4 +1,4 @@
-package com.tomcz.mvi.compose
+package com.tomcz.mvi.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
