@@ -1,5 +1,17 @@
 plugins {
     id("android-library-plugin")
+    id(AndroidConfig.Plugin.mavenPublish)
+}
+
+publishing {
+    publications {
+        register("release", MavenPublication::class) {
+            from(components.findByName("release"))
+            groupId = "com.tomcz.mvi"
+            artifactId = "mvi-core"
+            version = "0.0.1"
+        }
+    }
 }
 
 android {

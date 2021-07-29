@@ -12,6 +12,7 @@ object AndroidConfig {
         const val junit5 = "de.mannodermaus.android-junit5"
         const val ktlint = "org.jlleitschuh.gradle.ktlint"
         const val hilt = "dagger.hilt.android.plugin"
+        const val mavenPublish = "maven-publish"
     }
 
     const val sdkVersion = 30
