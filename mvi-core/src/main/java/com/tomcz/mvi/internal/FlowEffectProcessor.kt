@@ -35,7 +35,7 @@ internal class FlowEffectProcessor<in EV : Any, EF : Any>(
 
     init {
         effectSharedFlow.subscriptionCount.onEach { subscriptions ->
-            if (subscriptions != 0 && replay.peek() != null) while (replay.peek() != null) {
+            if (subscriptions != 0) while (replay.peek() != null) {
                 replay.poll()?.let { effectSharedFlow.emit(it) }
             }
         }.launchIn(scope)
