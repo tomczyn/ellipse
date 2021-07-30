@@ -13,4 +13,3 @@ rootProject.name = "MVI"
 include(":sample")
 include(":mvi-test")
 include(":mvi-core")
-
