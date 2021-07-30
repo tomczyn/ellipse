@@ -8,9 +8,9 @@ afterEvaluate {
         publications {
             register("release", MavenPublication::class) {
                 from(components.findByName("release"))
-                groupId = "com.tomcz.mvi.mvi-core"
+                groupId = "com.tomcz.mvi"
                 artifactId = "mvi-core"
-                version = "0.0.6"
+                version = "0.01"
             }
         }
     }

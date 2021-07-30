@@ -16,6 +16,6 @@ object AndroidConfig {
     }
 
     const val sdkVersion = 30
-    const val minSdkVersion = 26
+    const val minSdkVersion = 21
     val javaVersion = JavaVersion.VERSION_11
 }

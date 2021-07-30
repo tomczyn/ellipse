@@ -44,7 +44,7 @@ private fun BaseExtension.compileOptions() {
 private fun BaseExtension.buildTypes() {
     buildTypes {
         getByName(RELEASE) {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
