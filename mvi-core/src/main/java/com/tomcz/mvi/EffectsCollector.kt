@@ -1,5 +1,5 @@
 package com.tomcz.mvi
 
-interface Effects<T : Any> {
+interface EffectsCollector<T : Any> {
     fun send(effect: T)
 }

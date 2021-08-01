@@ -3,7 +3,7 @@ package com.tomcz.mvi.common
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tomcz.mvi.EffectProcessor
-import com.tomcz.mvi.Effects
+import com.tomcz.mvi.EffectsCollector
 import com.tomcz.mvi.PartialState
 import com.tomcz.mvi.StateEffectProcessor
 import com.tomcz.mvi.StateProcessor
@@ -23,9 +23,9 @@ fun <EV : Any, ST : Any, PA : PartialState<ST>> ViewModel.stateProcessor(
 
 fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> ViewModel.stateEffectProcessor(
     initialState: ST,
-    prepare: suspend (Effects<EF>) -> Flow<PA> = { emptyFlow() },
-    effects: suspend (Effects<EF>, EV) -> Unit = { _, _ -> },
-    statesEffects: suspend (Effects<EF>, EV) -> Flow<PA> = { _, _ -> emptyFlow() }
+    prepare: suspend (EffectsCollector<EF>) -> Flow<PA> = { emptyFlow() },
+    effects: suspend (EffectsCollector<EF>, EV) -> Unit = { _, _ -> },
+    statesEffects: suspend (EffectsCollector<EF>, EV) -> Flow<PA> = { _, _ -> emptyFlow() }
 ): StateEffectProcessor<EV, ST, EF> = viewModelScope.stateEffectProcessor(
     initialState = initialState,
     prepare = prepare,
@@ -34,8 +34,8 @@ fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> ViewModel.stateEffectP
 )
 
 fun <EV : Any, EF : Any> ViewModel.effectProcessor(
-    prepare: suspend (Effects<EF>) -> Unit = {},
-    effects: suspend (Effects<EF>, EV) -> Unit = { _, _ -> },
+    prepare: suspend (EffectsCollector<EF>) -> Unit = {},
+    effects: suspend (EffectsCollector<EF>, EV) -> Unit = { _, _ -> },
 ): EffectProcessor<EV, EF> = FlowEffectProcessor(
     scope = viewModelScope,
     prepare = prepare,

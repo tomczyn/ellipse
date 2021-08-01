@@ -1,7 +1,7 @@
 package com.tomcz.mvi.internal
 
 import com.tomcz.mvi.EffectProcessor
-import com.tomcz.mvi.Effects
+import com.tomcz.mvi.EffectsCollector
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -13,8 +13,8 @@ import java.util.LinkedList
 
 internal class FlowEffectProcessor<in EV : Any, EF : Any>(
     private val scope: CoroutineScope,
-    prepare: suspend (Effects<EF>) -> Unit = {},
-    private val mapper: suspend (Effects<EF>, EV) -> Unit,
+    prepare: suspend (EffectsCollector<EF>) -> Unit = {},
+    private val mapper: suspend (EffectsCollector<EF>, EV) -> Unit,
 ) : EffectProcessor<EV, EF> {
 
     override val effect: Flow<EF>
@@ -23,7 +23,7 @@ internal class FlowEffectProcessor<in EV : Any, EF : Any>(
 
     private val replay: Deque<EF> = LinkedList()
 
-    private val effects: Effects<EF> = object : Effects<EF> {
+    private val effectsCollector: EffectsCollector<EF> = object : EffectsCollector<EF> {
         override fun send(effect: EF) {
             scope.launch {
                 if (effectSharedFlow.subscriptionCount.value != 0) {
@@ -39,10 +39,10 @@ internal class FlowEffectProcessor<in EV : Any, EF : Any>(
                 replay.poll()?.let { effectSharedFlow.emit(it) }
             }
         }.launchIn(scope)
-        scope.launch { prepare(effects) }
+        scope.launch { prepare(effectsCollector) }
     }
 
     override fun sendEvent(event: EV) {
-        scope.launch { mapper(effects, event) }
+        scope.launch { mapper(effectsCollector, event) }
     }
 }

@@ -1,6 +1,6 @@
 package com.tomcz.mvi.internal
 
-import com.tomcz.mvi.Effects
+import com.tomcz.mvi.EffectsCollector
 import com.tomcz.mvi.PartialState
 import com.tomcz.mvi.StateEffectProcessor
 import com.tomcz.mvi.internal.util.reduceAndSet
@@ -20,9 +20,9 @@ import java.util.LinkedList
 internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> constructor(
     private val scope: CoroutineScope,
     initialState: ST,
-    prepare: suspend (Effects<EF>) -> Flow<PA> = { emptyFlow() },
-    private val eventEffects: suspend (Effects<EF>, EV) -> Unit = { _, _ -> },
-    private val mapper: suspend (Effects<EF>, EV) -> Flow<PA>,
+    prepare: suspend (EffectsCollector<EF>) -> Flow<PA> = { emptyFlow() },
+    private val eventEffects: suspend (EffectsCollector<EF>, EV) -> Unit = { _, _ -> },
+    private val mapper: suspend (EffectsCollector<EF>, EV) -> Flow<PA>,
 ) : StateEffectProcessor<EV, ST, EF> {
 
     override val effect: Flow<EF>
@@ -35,7 +35,7 @@ internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialS
 
     private val replay: Deque<EF> = LinkedList()
 
-    private val effects: Effects<EF> = object : Effects<EF> {
+    private val effectsCollector: EffectsCollector<EF> = object : EffectsCollector<EF> {
         override fun send(effect: EF) {
             scope.launch {
                 if (effectSharedFlow.subscriptionCount.value != 0) {
@@ -51,11 +51,11 @@ internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialS
                 replay.poll()?.let { effectSharedFlow.emit(it) }
             }
         }.launchIn(scope)
-        scope.launch { prepare(effects).collect { stateFlow.reduceAndSet(it) } }
+        scope.launch { prepare(effectsCollector).collect { stateFlow.reduceAndSet(it) } }
     }
 
     override fun sendEvent(event: EV) {
-        scope.launch { eventEffects(effects, event) }
-        scope.launch { mapper(effects, event).collect { stateFlow.reduceAndSet(it) } }
+        scope.launch { eventEffects(effectsCollector, event) }
+        scope.launch { mapper(effectsCollector, event).collect { stateFlow.reduceAndSet(it) } }
     }
 }

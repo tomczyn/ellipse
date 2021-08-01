@@ -1,7 +1,7 @@
 package com.tomcz.mvi.common
 
 import com.tomcz.mvi.EffectProcessor
-import com.tomcz.mvi.Effects
+import com.tomcz.mvi.EffectsCollector
 import com.tomcz.mvi.PartialState
 import com.tomcz.mvi.StateEffectProcessor
 import com.tomcz.mvi.StateProcessor
@@ -25,9 +25,9 @@ fun <EV : Any, ST : Any, PA : PartialState<ST>> CoroutineScope.stateProcessor(
 
 fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> CoroutineScope.stateEffectProcessor(
     initialState: ST,
-    prepare: suspend (Effects<EF>) -> Flow<PA> = { emptyFlow() },
-    effects: suspend (Effects<EF>, EV) -> Unit = { _, _ -> },
-    statesEffects: suspend (Effects<EF>, EV) -> Flow<PA> = { _, _ -> emptyFlow() },
+    prepare: suspend (EffectsCollector<EF>) -> Flow<PA> = { emptyFlow() },
+    effects: suspend (EffectsCollector<EF>, EV) -> Unit = { _, _ -> },
+    statesEffects: suspend (EffectsCollector<EF>, EV) -> Flow<PA> = { _, _ -> emptyFlow() },
 ): StateEffectProcessor<EV, ST, EF> = FlowStateEffectProcessor(
     scope = this,
     initialState = initialState,
@@ -37,8 +37,8 @@ fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> CoroutineScope.stateEf
 )
 
 fun <EV : Any, EF : Any> CoroutineScope.effectProcessor(
-    prepare: suspend (Effects<EF>) -> Unit = {},
-    effects: suspend (Effects<EF>, EV) -> Unit = { _, _ -> },
+    prepare: suspend (EffectsCollector<EF>) -> Unit = {},
+    effects: suspend (EffectsCollector<EF>, EV) -> Unit = { _, _ -> },
 ): EffectProcessor<EV, EF> = FlowEffectProcessor(
     scope = this,
     prepare = prepare,
