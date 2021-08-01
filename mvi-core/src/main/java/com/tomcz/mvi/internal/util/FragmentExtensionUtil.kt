@@ -11,30 +11,30 @@ import kotlinx.coroutines.launch
 internal fun <EV : Any, ST : Any> CoroutineScope.consume(
     processor: StateProcessor<EV, ST>,
     render: (ST) -> Unit,
-    intents: List<Flow<EV>> = emptyList()
+    viewEvents: List<Flow<EV>> = emptyList()
 ) {
     launch { processor.onState(render) }
-    launch { processor.process(intents) }
+    launch { processor.process(viewEvents) }
 }
 
 internal fun <EV : Any, EF : Any, ST : Any> CoroutineScope.consume(
     processor: StateEffectProcessor<EV, ST, EF>,
     render: (ST) -> Unit,
     trigger: (EF) -> Unit,
-    intents: List<Flow<EV>> = emptyList()
+    viewEvents: List<Flow<EV>> = emptyList()
 ) {
     launch { processor.onState(render) }
     launch { processor.onEffect(trigger) }
-    launch { processor.process(intents) }
+    launch { processor.process(viewEvents) }
 }
 
 internal fun <EV : Any, EF : Any> CoroutineScope.consume(
     processor: EffectProcessor<EV, EF>,
     trigger: (EF) -> Unit,
-    intents: List<Flow<EV>> = emptyList()
+    viewEvents: List<Flow<EV>> = emptyList()
 ) {
     launch { processor.onEffect(trigger) }
-    launch { processor.process(intents) }
+    launch { processor.process(viewEvents) }
 }
 
 internal suspend fun <EV : Any, ST : Any> StateProcessor<EV, ST>.process(

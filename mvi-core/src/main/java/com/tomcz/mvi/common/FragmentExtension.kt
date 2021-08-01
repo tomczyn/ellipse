@@ -11,62 +11,62 @@ import kotlinx.coroutines.flow.Flow
 @JvmName("OnCreatedStateProcessor")
 fun <EV : Any, ST : Any> Fragment.onCreated(
     processor: () -> StateProcessor<EV, ST>,
-    intents: () -> List<Flow<EV>> = { emptyList() },
+    viewEvents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit
-) = lifecycleScope.launchWhenCreated { consume(processor(), onState, intents()) }
+) = lifecycleScope.launchWhenCreated { consume(processor(), onState, viewEvents()) }
 
 fun <EV : Any, ST : Any, EF : Any> Fragment.onCreated(
     processor: () -> StateEffectProcessor<EV, ST, EF>,
-    intents: () -> List<Flow<EV>> = { emptyList() },
+    viewEvents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit,
     onEffect: (EF) -> Unit
-) = lifecycleScope.launchWhenCreated { consume(processor(), onState, onEffect, intents()) }
+) = lifecycleScope.launchWhenCreated { consume(processor(), onState, onEffect, viewEvents()) }
 
 @JvmName("OnCreatedEffectProcessor")
 fun <EV : Any, EF : Any> Fragment.onCreated(
     processor: () -> EffectProcessor<EV, EF>,
-    intents: () -> List<Flow<EV>> = { emptyList() },
+    viewEvents: () -> List<Flow<EV>> = { emptyList() },
     onEffect: (EF) -> Unit
-) = lifecycleScope.launchWhenCreated { consume(processor(), onEffect, intents()) }
+) = lifecycleScope.launchWhenCreated { consume(processor(), onEffect, viewEvents()) }
 
 @JvmName("OnStartedStateProcessor")
 fun <EV : Any, ST : Any> Fragment.onStarted(
     processor: () -> StateProcessor<EV, ST>,
-    intents: () -> List<Flow<EV>> = { emptyList() },
+    viewEvents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit
-) = lifecycleScope.launchWhenStarted { consume(processor(), onState, intents()) }
+) = lifecycleScope.launchWhenStarted { consume(processor(), onState, viewEvents()) }
 
 fun <EV : Any, ST : Any, EF : Any> Fragment.onStarted(
     processor: () -> StateEffectProcessor<EV, ST, EF>,
-    intents: () -> List<Flow<EV>> = { emptyList() },
+    viewEvents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit,
     onEffect: (EF) -> Unit
-) = lifecycleScope.launchWhenStarted { consume(processor(), onState, onEffect, intents()) }
+) = lifecycleScope.launchWhenStarted { consume(processor(), onState, onEffect, viewEvents()) }
 
 @JvmName("OnStartedEffectProcessor")
 fun <EV : Any, EF : Any> Fragment.onStarted(
     processor: () -> EffectProcessor<EV, EF>,
-    intents: () -> List<Flow<EV>> = { emptyList() },
+    viewEvents: () -> List<Flow<EV>> = { emptyList() },
     onEffect: (EF) -> Unit
-) = lifecycleScope.launchWhenStarted { consume(processor(), onEffect, intents()) }
+) = lifecycleScope.launchWhenStarted { consume(processor(), onEffect, viewEvents()) }
 
 @JvmName("OnResumedStateProcessor")
 fun <EV : Any, ST : Any> Fragment.onResumed(
     processor: () -> StateProcessor<EV, ST>,
-    intents: () -> List<Flow<EV>> = { emptyList() },
+    viewEvents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit
-) = lifecycleScope.launchWhenResumed { consume(processor(), onState, intents()) }
+) = lifecycleScope.launchWhenResumed { consume(processor(), onState, viewEvents()) }
 
 fun <EV : Any, ST : Any, EF : Any> Fragment.onResumed(
     processor: () -> StateEffectProcessor<EV, ST, EF>,
-    intents: () -> List<Flow<EV>> = { emptyList() },
+    viewEvents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit,
     onEffect: (EF) -> Unit
-) = lifecycleScope.launchWhenResumed { consume(processor(), onState, onEffect, intents()) }
+) = lifecycleScope.launchWhenResumed { consume(processor(), onState, onEffect, viewEvents()) }
 
 @JvmName("OnResumedEffectProcessor")
 fun <EV : Any, EF : Any> Fragment.onResumed(
     processor: () -> EffectProcessor<EV, EF>,
-    intents: () -> List<Flow<EV>> = { emptyList() },
+    viewEvents: () -> List<Flow<EV>> = { emptyList() },
     onEffect: (EF) -> Unit
-) = lifecycleScope.launchWhenResumed { consume(processor(), onEffect, intents()) }
+) = lifecycleScope.launchWhenResumed { consume(processor(), onEffect, viewEvents()) }

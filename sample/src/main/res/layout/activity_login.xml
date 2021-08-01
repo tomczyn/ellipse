@@ -1,24 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:gravity="center"
+    android:orientation="vertical">
 
-    <EditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autofillHints="Email"
         android:inputType="textEmailAddress"
-        android:maxLines="1"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent "
-        app:layout_constraintTop_toTopOf="parent" />
+        android:maxLines="1" />
 
-    <com.tomcz.sample.login.view.SignBoxView
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/pass"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:autofillHints="password"
+        android:layout_marginTop="16dp"
+        android:inputType="textPassword"
+        android:maxLines="1" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints="password"
+        android:text="@string/login"
+        android:layout_marginTop="16dp"
+        android:maxLines="1" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

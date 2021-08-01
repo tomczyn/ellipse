@@ -1,3 +1,7 @@
 package com.tomcz.sample.login.state
 
-sealed class LoginEffect
+
+sealed interface LoginEffect {
+    object GoToHome : LoginEffect
+    object ShowError : LoginEffect
+}

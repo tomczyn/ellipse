@@ -2,17 +2,12 @@ package com.tomcz.sample.login.state
 
 import com.tomcz.mvi.PartialState
 
-sealed class LoginPartialState : PartialState<LoginState> {
-
-    data class EmailChanged(val email: String) : LoginPartialState() {
-        override fun reduce(oldState: LoginState): LoginState {
-            return oldState.copy(email = email)
-        }
+sealed interface LoginPartialState : PartialState<LoginState> {
+    object ShowLoading : LoginPartialState {
+        override fun reduce(oldState: LoginState): LoginState = oldState.copy(isLoading = true)
     }
 
-    data class PasswordChanged(val password: String) : LoginPartialState() {
-        override fun reduce(oldState: LoginState): LoginState {
-            return oldState.copy(password = password)
-        }
+    object HideLoading : LoginPartialState {
+        override fun reduce(oldState: LoginState): LoginState = oldState.copy(isLoading = true)
     }
 }
