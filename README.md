@@ -33,7 +33,7 @@ View creates view events, which are sent to the processor. Processor maps view e
 
 ### How to use it
 
-1. Create processor object with one of the extension functions on `ViewModel` on `CoroutineScope`: 
+1. Create processor object with one of the extension functions on `ViewModel` or `CoroutineScope`: 
   - `stateProcessor(...)`
   - `stateEffectProcessor(...)`
   - `effectProcessor(...)`
