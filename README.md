@@ -1,15 +1,14 @@
 [![](https://jitpack.io/v/MTomczynski/MVI.svg)](https://jitpack.io/#MTomczynski/MVI)
 
 ## 🚧 MVI - Unidirectional Data Flow for Android 🚧
-Work in progress 🏗️
-
 
 MVI is a library that helps to implement unidirectional data flow in [Kotlin](https://github.com/jetbrains/kotlin) using [Coroutines](https://github.com/Kotlin/kotlinx.coroutines). It follows principle of preferring composition over inheritance, all API's are based on extension functions. Thanks to this design choice library plays well with [Jetpack Compose](https://developer.android.com/jetpack/compose) or [Dagger/Dagger Hilt](https://dagger.dev/).
 
 ### Adding dependency
-Add it to your repositories list:
-```kotlin
+Add `jitpack` to your repositories:
+```
 repositories {
+    ...
     maven("https://jitpack.io")
 }
 ```
@@ -29,7 +28,15 @@ dependencies {
 - **Effect** - Events sent from the processor to the view, effects aren't cached for new subscribers, e.g. effects won't be resend during configuration change. They're useful for navigation, or showing popups and messages on the UI. E.g. `GoToHomeScreenEffect`  
 - **PartialState** - Object to help modify the view state through `reduce` method.  
 
-View creates view events, which are sent to the processor. Processor maps view events to partial states. Partial states modify the view state's, which are sent back to view to be rendered.
+View creates view events, which are sent to the processor. Processor maps view events to partial states. Partial states modify the view state's, which are sent back to view to be rendered.  
+
+Processor's have minimal public API that is needed to create unidirectional data flow, e.g. `StateProcessor`:
+```kotlin
+interface StateProcessor<in EV : Any, out ST : Any> {
+    val state: StateFlow<ST>
+    fun sendEvent(event: EV)
+}
+```
 
 ### How to use it
 
@@ -84,7 +91,7 @@ class LoginViewModel : ViewModel() {
             }
         }
 
-    private fun loginUser(email: String, pass: String): Boolean = TODO()
+    private suspend fun loginUser(email: String, pass: String): Boolean = TODO()
 }
 ```
 
@@ -114,7 +121,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         onCreated(
             processor = viewModel::processor,
-            intents = ::viewEvents,
+            viewEvents = ::viewEvents,
             onState = ::render,
             onEffect = ::trigger
         )
