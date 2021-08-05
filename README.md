@@ -73,7 +73,7 @@ sealed interface LoginPartialState : PartialState<LoginState> {
     }
 
     object HideLoading : LoginPartialState {
-        override fun reduce(oldState: LoginState): LoginState = oldState.copy(isLoading = true)
+        override fun reduce(oldState: LoginState): LoginState = oldState.copy(isLoading = false)
     }
 }
 
