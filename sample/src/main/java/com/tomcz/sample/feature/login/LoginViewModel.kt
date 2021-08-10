@@ -1,12 +1,13 @@
-package com.tomcz.sample.login
+package com.tomcz.sample.feature.login
 
 import androidx.lifecycle.ViewModel
 import com.tomcz.mvi.StateEffectProcessor
 import com.tomcz.mvi.common.stateEffectProcessor
-import com.tomcz.sample.login.state.LoginEffect
-import com.tomcz.sample.login.state.LoginEvent
-import com.tomcz.sample.login.state.LoginPartialState
-import com.tomcz.sample.login.state.LoginState
+import com.tomcz.sample.feature.login.state.LoginEffect
+import com.tomcz.sample.feature.login.state.LoginEvent
+import com.tomcz.sample.feature.login.state.LoginPartialState
+import com.tomcz.sample.feature.login.state.LoginState
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 
 class LoginViewModel : ViewModel() {
@@ -21,8 +22,12 @@ class LoginViewModel : ViewModel() {
                     if (isSuccess) effects.send(LoginEffect.GoToHome)
                     else effects.send(LoginEffect.ShowError)
                 }
+                LoginEvent.GoToRegister -> {
+                    effects.send(LoginEffect.GoToRegister)
+                    emptyFlow()
+                }
             }
         }
 
-    private fun loginUser(email: String, pass: String): Boolean = TODO()
+    private fun loginUser(email: String, pass: String): Boolean = true
 }

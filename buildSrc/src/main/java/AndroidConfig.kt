@@ -13,6 +13,7 @@ object AndroidConfig {
         const val ktlint = "org.jlleitschuh.gradle.ktlint"
         const val hilt = "dagger.hilt.android.plugin"
         const val mavenPublish = "maven-publish"
+        const val safeArgs = "androidx.navigation.safeargs.kotlin"
     }
 
     const val sdkVersion = 30

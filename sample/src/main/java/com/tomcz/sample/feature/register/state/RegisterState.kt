@@ -1,4 +1,4 @@
-package com.tomcz.sample.register.state
+package com.tomcz.sample.feature.register.state
 
 data class RegisterState(
     val email: String = "",

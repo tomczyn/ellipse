@@ -13,6 +13,7 @@ dependencies {
     kotlin()
     dependencyInjection()
     baseAndroid()
+    navigation()
     coroutines()
     compose()
     test()

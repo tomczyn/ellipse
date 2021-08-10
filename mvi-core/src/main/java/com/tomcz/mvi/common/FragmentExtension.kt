@@ -12,35 +12,35 @@ import kotlinx.coroutines.flow.Flow
 fun <EV : Any, ST : Any> Fragment.onCreated(
     processor: () -> StateProcessor<EV, ST>,
     viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onState: (ST) -> Unit
+    onState: (ST) -> Unit = {}
 ) = lifecycleScope.launchWhenCreated { consume(processor(), onState, viewEvents()) }
 
 fun <EV : Any, ST : Any, EF : Any> Fragment.onCreated(
     processor: () -> StateEffectProcessor<EV, ST, EF>,
     viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onState: (ST) -> Unit,
-    onEffect: (EF) -> Unit
+    onState: (ST) -> Unit = {},
+    onEffect: (EF) -> Unit = {}
 ) = lifecycleScope.launchWhenCreated { consume(processor(), onState, onEffect, viewEvents()) }
 
 @JvmName("OnCreatedEffectProcessor")
 fun <EV : Any, EF : Any> Fragment.onCreated(
     processor: () -> EffectProcessor<EV, EF>,
     viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onEffect: (EF) -> Unit
+    onEffect: (EF) -> Unit = {}
 ) = lifecycleScope.launchWhenCreated { consume(processor(), onEffect, viewEvents()) }
 
 @JvmName("OnStartedStateProcessor")
 fun <EV : Any, ST : Any> Fragment.onStarted(
     processor: () -> StateProcessor<EV, ST>,
     viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onState: (ST) -> Unit
+    onState: (ST) -> Unit = {}
 ) = lifecycleScope.launchWhenStarted { consume(processor(), onState, viewEvents()) }
 
 fun <EV : Any, ST : Any, EF : Any> Fragment.onStarted(
     processor: () -> StateEffectProcessor<EV, ST, EF>,
     viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onState: (ST) -> Unit,
-    onEffect: (EF) -> Unit
+    onState: (ST) -> Unit = {},
+    onEffect: (EF) -> Unit = {}
 ) = lifecycleScope.launchWhenStarted { consume(processor(), onState, onEffect, viewEvents()) }
 
 @JvmName("OnStartedEffectProcessor")
@@ -54,19 +54,19 @@ fun <EV : Any, EF : Any> Fragment.onStarted(
 fun <EV : Any, ST : Any> Fragment.onResumed(
     processor: () -> StateProcessor<EV, ST>,
     viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onState: (ST) -> Unit
+    onState: (ST) -> Unit = {}
 ) = lifecycleScope.launchWhenResumed { consume(processor(), onState, viewEvents()) }
 
 fun <EV : Any, ST : Any, EF : Any> Fragment.onResumed(
     processor: () -> StateEffectProcessor<EV, ST, EF>,
     viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onState: (ST) -> Unit,
-    onEffect: (EF) -> Unit
+    onState: (ST) -> Unit = {},
+    onEffect: (EF) -> Unit = {}
 ) = lifecycleScope.launchWhenResumed { consume(processor(), onState, onEffect, viewEvents()) }
 
 @JvmName("OnResumedEffectProcessor")
 fun <EV : Any, EF : Any> Fragment.onResumed(
     processor: () -> EffectProcessor<EV, EF>,
     viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onEffect: (EF) -> Unit
+    onEffect: (EF) -> Unit = {}
 ) = lifecycleScope.launchWhenResumed { consume(processor(), onEffect, viewEvents()) }

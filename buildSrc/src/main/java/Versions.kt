@@ -15,6 +15,7 @@ object Versions {
     const val ktlint = "10.0.0"
     const val dagger = "2.38.1"
     const val compose = "1.0.1"
+    const val nav = "2.3.5"
     const val composeConstraint = "1.0.0-beta01"
     const val composeActivity = "1.3.0"
     const val composeViewModel = "1.0.0-alpha07"

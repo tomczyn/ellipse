@@ -1,8 +1,8 @@
-package com.tomcz.sample.register
+package com.tomcz.sample.feature.register
 
 import com.tomcz.mvi.test.processorTest
-import com.tomcz.sample.register.state.RegisterEvent
-import com.tomcz.sample.register.state.RegisterState
+import com.tomcz.sample.feature.register.state.RegisterEvent
+import com.tomcz.sample.feature.register.state.RegisterState
 import com.tomcz.sample.util.BaseCoroutineTest
 import org.junit.jupiter.api.Test
 

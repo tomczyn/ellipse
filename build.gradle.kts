@@ -12,6 +12,7 @@ buildscript {
         classpath(Libs.Plugins.junit5)
         classpath(Libs.Plugins.ktlintGradle)
         classpath(Libs.Plugins.hilt)
+        classpath(Libs.Plugins.safeArgs)
     }
 }
 

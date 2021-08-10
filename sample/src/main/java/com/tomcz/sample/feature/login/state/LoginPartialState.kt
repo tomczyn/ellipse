@@ -1,4 +1,4 @@
-package com.tomcz.sample.login.state
+package com.tomcz.sample.feature.login.state
 
 import com.tomcz.mvi.PartialState
 

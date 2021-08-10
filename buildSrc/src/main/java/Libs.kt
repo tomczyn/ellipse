@@ -7,6 +7,7 @@ object Libs {
             "de.mannodermaus.gradle.plugins:android-junit5:${Versions.junit5Gradle}"
         const val ktlintGradle = "org.jlleitschuh.gradle:ktlint-gradle:${Versions.ktlint}"
         const val hilt = "com.google.dagger:hilt-android-gradle-plugin:${Versions.dagger}"
+        const val safeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.nav}"
     }
 
     object AndroidX {
@@ -16,6 +17,8 @@ object Libs {
         const val lifecycleRuntimeKtx =
             "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.ktxLifecycleRuntime}"
         const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
+        const val navFragment = "androidx.navigation:navigation-fragment-ktx:${Versions.nav}"
+        const val navUi = "androidx.navigation:navigation-ui-ktx:${Versions.nav}"
 
         object Compose {
             const val ui = "androidx.compose.ui:ui:${Versions.compose}"

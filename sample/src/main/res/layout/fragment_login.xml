@@ -24,10 +24,17 @@
         android:maxLines="1" />
 
     <Button
+        android:id="@+id/register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/register"
+        android:layout_marginTop="16dp"
+        android:maxLines="1" />
+
+    <Button
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autofillHints="password"
         android:text="@string/login"
         android:layout_marginTop="16dp"
         android:maxLines="1" />

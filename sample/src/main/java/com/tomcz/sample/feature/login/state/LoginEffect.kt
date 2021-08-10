@@ -1,7 +1,7 @@
-package com.tomcz.sample.login.state
-
+package com.tomcz.sample.feature.login.state
 
 sealed interface LoginEffect {
     object GoToHome : LoginEffect
+    object GoToRegister : LoginEffect
     object ShowError : LoginEffect
 }

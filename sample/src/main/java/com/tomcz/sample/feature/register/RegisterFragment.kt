@@ -1,10 +1,9 @@
-package com.tomcz.sample.register
+package com.tomcz.sample.feature.register
 
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.viewModels
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +20,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults.textFieldColors
 import androidx.compose.runtime.Composable
@@ -30,45 +30,60 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.fragment.findNavController
 import com.tomcz.mvi.common.collectAsState
 import com.tomcz.mvi.common.onCreated
 import com.tomcz.sample.R
-import com.tomcz.sample.register.state.RegisterEffect
-import com.tomcz.sample.register.state.RegisterEvent
+import com.tomcz.sample.feature.register.state.RegisterEffect
+import com.tomcz.sample.feature.register.state.RegisterEvent
 import com.tomcz.sample.ui.BasePadding
 import com.tomcz.sample.ui.BezierBackground
 import com.tomcz.sample.ui.DarkGray
 import com.tomcz.sample.ui.MainAppTheme
 import com.tomcz.sample.ui.QuadruplePadding
+import com.tomcz.sample.ui.SampleTypography
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RegisterActivity : ComponentActivity() {
+class RegisterFragment : Fragment() {
 
     private val viewModel: RegisterViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         onCreated(viewModel::processor, onEffect = ::trigger)
-        setContent {
-            MainAppTheme {
-                Surface(color = MaterialTheme.colors.background) {
-                    BezierBackground()
-                    RegisterScreen()
+        return ComposeView(requireContext()).apply {
+            setContent {
+                MainAppTheme {
+                    Surface(color = MaterialTheme.colors.background) {
+                        BezierBackground()
+                        RegisterScreen()
+                    }
                 }
             }
         }
     }
 
     private fun trigger(effect: RegisterEffect) {
-        Log.d(RegisterActivity::class.simpleName, "Triggered ${effect::class.simpleName}")
+        when (effect) {
+            RegisterEffect.GoToLogin ->
+                findNavController().navigate(
+                    RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+                )
+        }.let {}
     }
 }
 
@@ -109,6 +124,19 @@ fun RegisterScreen() {
         )
         Spacer(modifier = Modifier.height(QuadruplePadding))
         ProceedButton()
+        GoToLoginButton()
+    }
+}
+
+@Composable
+private fun GoToLoginButton() {
+    val processor = viewModel<RegisterViewModel>().processor
+    TextButton(onClick = { processor.sendEvent(RegisterEvent.GoToLogin) }) {
+        Text(
+            text = "Already have an account?",
+            fontStyle = SampleTypography.body2.fontStyle,
+            color = Color.Gray
+        )
     }
 }
 
