@@ -39,10 +39,11 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
 import com.tomcz.mvi.common.collectAsState
-import com.tomcz.mvi.common.onCreated
+import com.tomcz.mvi.common.onProcessor
 import com.tomcz.sample.R
 import com.tomcz.sample.feature.register.state.RegisterEffect
 import com.tomcz.sample.feature.register.state.RegisterEvent
@@ -64,7 +65,11 @@ class RegisterFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        onCreated(viewModel::processor, onEffect = ::trigger)
+        onProcessor(
+            lifecycleState = Lifecycle.State.RESUMED,
+            processor = viewModel::processor,
+            onEffect = ::trigger
+        )
         return ComposeView(requireContext()).apply {
             setContent {
                 MainAppTheme {

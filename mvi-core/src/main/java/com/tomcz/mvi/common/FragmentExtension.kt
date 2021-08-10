@@ -1,72 +1,47 @@
 package com.tomcz.mvi.common
 
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.tomcz.mvi.EffectProcessor
 import com.tomcz.mvi.StateEffectProcessor
 import com.tomcz.mvi.StateProcessor
 import com.tomcz.mvi.internal.util.consume
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
-@JvmName("OnCreatedStateProcessor")
-fun <EV : Any, ST : Any> Fragment.onCreated(
+@JvmName("onProcessorStateProcessor")
+fun <EV : Any, ST : Any> Fragment.onProcessor(
+    lifecycleState: Lifecycle.State,
     processor: () -> StateProcessor<EV, ST>,
     viewEvents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit = {}
-) = lifecycleScope.launchWhenCreated { consume(processor(), onState, viewEvents()) }
+) = launch(lifecycleState) { consume(processor(), onState, viewEvents()) }
 
-fun <EV : Any, ST : Any, EF : Any> Fragment.onCreated(
+fun <EV : Any, ST : Any, EF : Any> Fragment.onProcessor(
+    lifecycleState: Lifecycle.State,
     processor: () -> StateEffectProcessor<EV, ST, EF>,
     viewEvents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit = {},
     onEffect: (EF) -> Unit = {}
-) = lifecycleScope.launchWhenCreated { consume(processor(), onState, onEffect, viewEvents()) }
+) = launch(lifecycleState) {
+    consume(processor(), onState, onEffect, viewEvents())
+}
 
-@JvmName("OnCreatedEffectProcessor")
-fun <EV : Any, EF : Any> Fragment.onCreated(
+@JvmName("onProcessorEffectProcessor")
+fun <EV : Any, EF : Any> Fragment.onProcessor(
+    lifecycleState: Lifecycle.State,
     processor: () -> EffectProcessor<EV, EF>,
     viewEvents: () -> List<Flow<EV>> = { emptyList() },
     onEffect: (EF) -> Unit = {}
-) = lifecycleScope.launchWhenCreated { consume(processor(), onEffect, viewEvents()) }
+) = launch(lifecycleState) { consume(processor(), onEffect, viewEvents()) }
 
-@JvmName("OnStartedStateProcessor")
-fun <EV : Any, ST : Any> Fragment.onStarted(
-    processor: () -> StateProcessor<EV, ST>,
-    viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onState: (ST) -> Unit = {}
-) = lifecycleScope.launchWhenStarted { consume(processor(), onState, viewEvents()) }
-
-fun <EV : Any, ST : Any, EF : Any> Fragment.onStarted(
-    processor: () -> StateEffectProcessor<EV, ST, EF>,
-    viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onState: (ST) -> Unit = {},
-    onEffect: (EF) -> Unit = {}
-) = lifecycleScope.launchWhenStarted { consume(processor(), onState, onEffect, viewEvents()) }
-
-@JvmName("OnStartedEffectProcessor")
-fun <EV : Any, EF : Any> Fragment.onStarted(
-    processor: () -> EffectProcessor<EV, EF>,
-    viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onEffect: (EF) -> Unit
-) = lifecycleScope.launchWhenStarted { consume(processor(), onEffect, viewEvents()) }
-
-@JvmName("OnResumedStateProcessor")
-fun <EV : Any, ST : Any> Fragment.onResumed(
-    processor: () -> StateProcessor<EV, ST>,
-    viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onState: (ST) -> Unit = {}
-) = lifecycleScope.launchWhenResumed { consume(processor(), onState, viewEvents()) }
-
-fun <EV : Any, ST : Any, EF : Any> Fragment.onResumed(
-    processor: () -> StateEffectProcessor<EV, ST, EF>,
-    viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onState: (ST) -> Unit = {},
-    onEffect: (EF) -> Unit = {}
-) = lifecycleScope.launchWhenResumed { consume(processor(), onState, onEffect, viewEvents()) }
-
-@JvmName("OnResumedEffectProcessor")
-fun <EV : Any, EF : Any> Fragment.onResumed(
-    processor: () -> EffectProcessor<EV, EF>,
-    viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onEffect: (EF) -> Unit = {}
-) = lifecycleScope.launchWhenResumed { consume(processor(), onEffect, viewEvents()) }
+private fun Fragment.launch(
+    lifecycleState: Lifecycle.State,
+    action: suspend CoroutineScope.() -> Unit
+): Job = viewLifecycleOwner.lifecycleScope.launch {
+    viewLifecycleOwner.repeatOnLifecycle(lifecycleState) { action() }
+}
