@@ -17,8 +17,8 @@ repositories {
 Add the dependency:
 ```kotlin
 dependencies {
-    implementation("com.github.MTomczynski.MVI:mvi-core:0.02")
-    testImplementation("com.github.MTomczynski.MVI:mvi-test:0.02")
+    implementation("com.github.MTomczynski.MVI:mvi-core:0.03")
+    testImplementation("com.github.MTomczynski.MVI:mvi-test:0.03")
 }
 ```
 ### Glossary
@@ -46,9 +46,7 @@ interface StateProcessor<in EV : Any, out ST : Any> {
   - `stateEffectProcessor(...)`
   - `effectProcessor(...)`
 2. Subscribe to processor in view layer (Activity, Fragment):
-  - `onCreated(...)`
-  - `onStarted(...)`
-  - `onResumed(...)`
+  - `onProcessor(lifecycleState = Lifecycle.State.###, ...)`
 3. Or in Composable:
   - `viewModel.processor.collectAsState { ... }`
 
@@ -120,7 +118,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        onCreated(
+        onProcessor(
+            lifecycleState = Lifecycle.State.CREATED,
             processor = viewModel::processor,
             viewEvents = ::viewEvents,
             onState = ::render,
