@@ -7,14 +7,12 @@ import com.tomcz.mvi.EffectsCollector
 import com.tomcz.mvi.PartialState
 import com.tomcz.mvi.StateEffectProcessor
 import com.tomcz.mvi.StateProcessor
-import com.tomcz.mvi.internal.FlowEffectProcessor
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 
 fun <EV : Any, ST : Any, PA : PartialState<ST>> ViewModel.stateProcessor(
     initialState: ST,
-    prepare: suspend () -> Flow<PA> = { emptyFlow() },
-    states: suspend (EV) -> Flow<PA> = { emptyFlow() }
+    prepare: (suspend () -> Flow<PA>)? = null,
+    states: (suspend (EV) -> Flow<PA>)? = null
 ): StateProcessor<EV, ST> = viewModelScope.stateProcessor(
     initialState = initialState,
     prepare = prepare,
@@ -23,21 +21,18 @@ fun <EV : Any, ST : Any, PA : PartialState<ST>> ViewModel.stateProcessor(
 
 fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> ViewModel.stateEffectProcessor(
     initialState: ST,
-    prepare: suspend (EffectsCollector<EF>) -> Flow<PA> = { emptyFlow() },
-    effects: suspend (EffectsCollector<EF>, EV) -> Unit = { _, _ -> },
-    statesEffects: suspend (EffectsCollector<EF>, EV) -> Flow<PA> = { _, _ -> emptyFlow() }
+    prepare: (suspend (EffectsCollector<EF>) -> Flow<PA>)? = null,
+    statesEffects: (suspend (EffectsCollector<EF>, EV) -> Flow<PA>)? = null,
 ): StateEffectProcessor<EV, ST, EF> = viewModelScope.stateEffectProcessor(
     initialState = initialState,
     prepare = prepare,
-    effects = effects,
     statesEffects = statesEffects
 )
 
 fun <EV : Any, EF : Any> ViewModel.effectProcessor(
-    prepare: suspend (EffectsCollector<EF>) -> Unit = {},
-    effects: suspend (EffectsCollector<EF>, EV) -> Unit = { _, _ -> },
-): EffectProcessor<EV, EF> = FlowEffectProcessor(
-    scope = viewModelScope,
+    prepare: (suspend (EffectsCollector<EF>) -> Unit)? = null,
+    effects: (suspend (EffectsCollector<EF>, EV) -> Unit)? = null,
+): EffectProcessor<EV, EF> = viewModelScope.effectProcessor(
     prepare = prepare,
-    mapper = effects
+    effects = effects
 )
