@@ -3,11 +3,11 @@ package com.tomcz.sample.feature.login
 import androidx.lifecycle.ViewModel
 import com.tomcz.mvi.StateEffectProcessor
 import com.tomcz.mvi.common.stateEffectProcessor
+import com.tomcz.mvi.common.thenNoAction
 import com.tomcz.sample.feature.login.state.LoginEffect
 import com.tomcz.sample.feature.login.state.LoginEvent
 import com.tomcz.sample.feature.login.state.LoginPartialState
 import com.tomcz.sample.feature.login.state.LoginState
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 
 class LoginViewModel : ViewModel() {
@@ -19,15 +19,16 @@ class LoginViewModel : ViewModel() {
                     emit(LoginPartialState.ShowLoading)
                     val isSuccess = loginUser(event.email, event.pass)
                     emit(LoginPartialState.HideLoading)
-                    if (isSuccess) effects.send(LoginEffect.GoToHome)
-                    else effects.send(LoginEffect.ShowError)
+                    if (isSuccess) {
+                        effects.send(LoginEffect.GoToHome)
+                    } else {
+                        effects.send(LoginEffect.ShowError)
+                    }
                 }
-                LoginEvent.GoToRegister -> {
-                    effects.send(LoginEffect.GoToRegister)
-                    emptyFlow()
-                }
+                LoginEvent.GoToRegister -> effects
+                    .send(LoginEffect.GoToRegister).thenNoAction()
             }
         }
 
-    private fun loginUser(email: String, pass: String): Boolean = true
+    private suspend fun loginUser(email: String, pass: String): Boolean = true
 }
