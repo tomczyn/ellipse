@@ -1,9 +1,9 @@
 package com.tomcz.mvi
 
-interface PartialState<T> {
+interface PartialState<T : Any> {
     fun reduce(oldState: T): T
 
-    class NoAction<T> : PartialState<T> {
+    class NoAction<T : Any> : PartialState<T> {
         override fun reduce(oldState: T): T = oldState
     }
 }

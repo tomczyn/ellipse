@@ -1,9 +1,9 @@
 package com.tomcz.sample.feature.register
 
 import androidx.lifecycle.ViewModel
-import com.tomcz.mvi.PartialState
 import com.tomcz.mvi.StateEffectProcessor
 import com.tomcz.mvi.common.stateEffectProcessor
+import com.tomcz.mvi.common.thenNoAction
 import com.tomcz.sample.feature.register.state.RegisterEffect
 import com.tomcz.sample.feature.register.state.RegisterEvent
 import com.tomcz.sample.feature.register.state.RegisterPartialState
@@ -20,7 +20,7 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
         stateEffectProcessor(
             initialState = RegisterState(),
             prepare = { emptyFlow() },
-            statesEffects = { effects, event ->
+            mapper = { effects, event ->
                 when (event) {
                     is RegisterEvent.EmailChanged -> flowOf(RegisterPartialState.EmailChanged(event.email))
                     is RegisterEvent.PasswordChanged -> flowOf(
@@ -29,10 +29,9 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
                     is RegisterEvent.RepeatPasswordChanged -> flowOf(
                         RegisterPartialState.RepeatPasswordChanged(event.repeatPassword)
                     )
-                    RegisterEvent.GoToLogin -> {
-                        effects.send(RegisterEffect.GoToLogin)
-                        flowOf(PartialState.NoAction())
-                    }
+                    RegisterEvent.GoToLogin -> effects
+                        .send(RegisterEffect.GoToLogin)
+                        .thenNoAction()
                 }
             })
 }
