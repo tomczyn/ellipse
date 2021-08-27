@@ -1,6 +1,6 @@
 object Versions {
-    const val kotlin = "1.5.21"
-    const val gradle = "7.0.0"
+    const val kotlin = "1.5.30"
+    const val gradle = "7.0.1"
     const val junit5Gradle = "1.7.1.1"
     const val junit5 = "5.7.1"
     const val coroutines = "1.5.1"
@@ -16,7 +16,7 @@ object Versions {
     const val dagger = "2.38.1"
     const val compose = "1.0.1"
     const val nav = "2.3.5"
-    const val composeConstraint = "1.0.0-beta01"
-    const val composeActivity = "1.3.0"
+    const val composeConstraint = "1.0.0-beta02"
+    const val composeActivity = "1.3.1"
     const val composeViewModel = "1.0.0-alpha07"
 }
