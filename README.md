@@ -119,7 +119,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         onProcessor(
-            lifecycleState = Lifecycle.State.CREATED,
+            lifecycleState = Lifecycle.State.STARTED,
             processor = viewModel::processor,
             viewEvents = ::viewEvents,
             onState = ::render,
