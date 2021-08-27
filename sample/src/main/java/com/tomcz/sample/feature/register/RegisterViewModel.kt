@@ -1,6 +1,7 @@
 package com.tomcz.sample.feature.register
 
 import androidx.lifecycle.ViewModel
+import com.tomcz.mvi.PartialState
 import com.tomcz.mvi.StateEffectProcessor
 import com.tomcz.mvi.common.stateEffectProcessor
 import com.tomcz.sample.feature.register.state.RegisterEffect
@@ -30,7 +31,7 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
                     )
                     RegisterEvent.GoToLogin -> {
                         effects.send(RegisterEffect.GoToLogin)
-                        emptyFlow()
+                        flowOf(PartialState.NoAction())
                     }
                 }
             })
