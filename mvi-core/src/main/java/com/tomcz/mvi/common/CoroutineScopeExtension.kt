@@ -14,30 +14,30 @@ import kotlinx.coroutines.flow.Flow
 fun <EV : Any, ST : Any, PA : PartialState<ST>> CoroutineScope.stateProcessor(
     initialState: ST,
     prepare: (suspend () -> Flow<PA>)? = null,
-    mapper: (suspend (EV) -> Flow<PA>)? = null
+    onEvent: (suspend (EV) -> Flow<PA>)? = null
 ): StateProcessor<EV, ST> = FlowStateProcessor(
     scope = this,
     initialState = initialState,
     prepare = prepare,
-    mapper = mapper
+    onEvent = onEvent
 )
 
 fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> CoroutineScope.stateEffectProcessor(
     initialState: ST,
     prepare: (suspend (EffectsCollector<EF>) -> Flow<PA>)? = null,
-    mapper: (suspend (EffectsCollector<EF>, EV) -> Flow<PA>)? = null,
+    onEvent: (suspend (EffectsCollector<EF>, EV) -> Flow<PA>)? = null,
 ): StateEffectProcessor<EV, ST, EF> = FlowStateEffectProcessor(
     scope = this,
     initialState = initialState,
     prepare = prepare,
-    mapper = mapper
+    onEvent = onEvent
 )
 
 fun <EV : Any, EF : Any> CoroutineScope.effectProcessor(
     prepare: (suspend (EffectsCollector<EF>) -> Unit)? = null,
-    mapper: (suspend (EffectsCollector<EF>, EV) -> Unit)? = null,
+    onEvent: (suspend (EffectsCollector<EF>, EV) -> Unit)? = null,
 ): EffectProcessor<EV, EF> = FlowEffectProcessor(
     scope = this,
     prepare = prepare,
-    mapper = mapper
+    onEvent = onEvent
 )

@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 internal class FlowEffectProcessor<in EV : Any, EF : Any>(
     private val scope: CoroutineScope,
     prepare: (suspend (EffectsCollector<EF>) -> Unit)? = null,
-    private val mapper: (suspend (EffectsCollector<EF>, EV) -> Unit)? = null,
+    private val onEvent: (suspend (EffectsCollector<EF>, EV) -> Unit)? = null,
 ) : EffectProcessor<EV, EF> {
 
     override val effect: Flow<EF>
@@ -30,7 +30,7 @@ internal class FlowEffectProcessor<in EV : Any, EF : Any>(
     }
 
     override fun sendEvent(event: EV) {
-        mapper?.let {
+        onEvent?.let {
             scope.launch { it(effectsCollector, event) }
         }
     }

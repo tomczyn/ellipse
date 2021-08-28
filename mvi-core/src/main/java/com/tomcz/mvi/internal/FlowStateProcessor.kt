@@ -14,7 +14,7 @@ internal class FlowStateProcessor<in EV : Any, ST : Any, out PA : PartialState<S
     private val scope: CoroutineScope,
     initialState: ST,
     prepare: (suspend () -> Flow<PA>)? = null,
-    private val mapper: (suspend (EV) -> Flow<PA>)? = null,
+    private val onEvent: (suspend (EV) -> Flow<PA>)? = null,
 ) : StateProcessor<EV, ST> {
 
     override val state: StateFlow<ST>
@@ -28,7 +28,7 @@ internal class FlowStateProcessor<in EV : Any, ST : Any, out PA : PartialState<S
     }
 
     override fun sendEvent(event: EV) {
-        mapper?.let {
+        onEvent?.let {
             scope.launch { it(event).collect { stateFlow.reduceAndSet(it) } }
         }
     }
