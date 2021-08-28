@@ -3,11 +3,11 @@ package com.tomcz.sample.feature.login
 import androidx.lifecycle.ViewModel
 import com.tomcz.mvi.StateEffectProcessor
 import com.tomcz.mvi.common.stateEffectProcessor
-import com.tomcz.mvi.common.thenNoAction
 import com.tomcz.sample.feature.login.state.LoginEffect
 import com.tomcz.sample.feature.login.state.LoginEvent
 import com.tomcz.sample.feature.login.state.LoginPartialState
 import com.tomcz.sample.feature.login.state.LoginState
+import com.tomcz.sample.util.thenNoAction
 import kotlinx.coroutines.flow.flow
 
 class LoginViewModel : ViewModel() {
