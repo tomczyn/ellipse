@@ -7,8 +7,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.tomcz.mvi.StateEffectProcessor
 import com.tomcz.mvi.StateProcessor
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
 
 @Composable
@@ -21,4 +26,21 @@ fun <EV : Any, ST : Any, T> StateProcessor<EV, ST>.collectAsState(
     return remember(flow, lifecycleOwner) {
         flow.flowWithLifecycle(lifecycleOwner.lifecycle, lifecycleState)
     }.collectAsState(initial = mapper(state.value))
+}
+
+@Composable
+fun <EV : Any, ST : Any> previewStateProcessor(
+    state: ST
+): StateProcessor<EV, ST> = object : StateProcessor<EV, ST> {
+    override val state: StateFlow<ST> = MutableStateFlow(state)
+    override fun sendEvent(event: EV) {}
+}
+
+@Composable
+fun <EV : Any, ST : Any, EF : Any> previewStateEffectProcessor(
+    state: ST
+): StateEffectProcessor<EV, ST, EF> = object : StateEffectProcessor<EV, ST, EF> {
+    override val state: StateFlow<ST> = MutableStateFlow(state)
+    override fun sendEvent(event: EV) {}
+    override val effect: Flow<EF> = emptyFlow()
 }

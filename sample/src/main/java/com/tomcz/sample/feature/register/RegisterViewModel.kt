@@ -7,6 +7,7 @@ import com.tomcz.sample.feature.register.state.RegisterEffect
 import com.tomcz.sample.feature.register.state.RegisterEvent
 import com.tomcz.sample.feature.register.state.RegisterPartialState
 import com.tomcz.sample.feature.register.state.RegisterState
+import com.tomcz.sample.util.thenNoAction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
@@ -19,7 +20,7 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
         stateEffectProcessor(
             initialState = RegisterState(),
             prepare = { emptyFlow() },
-            statesEffects = { effects, event ->
+            onEvent = { effects, event ->
                 when (event) {
                     is RegisterEvent.EmailChanged -> flowOf(RegisterPartialState.EmailChanged(event.email))
                     is RegisterEvent.PasswordChanged -> flowOf(
@@ -28,10 +29,9 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
                     is RegisterEvent.RepeatPasswordChanged -> flowOf(
                         RegisterPartialState.RepeatPasswordChanged(event.repeatPassword)
                     )
-                    RegisterEvent.GoToLogin -> {
-                        effects.send(RegisterEffect.GoToLogin)
-                        emptyFlow()
-                    }
+                    RegisterEvent.GoToLogin -> effects
+                        .send(RegisterEffect.GoToLogin)
+                        .thenNoAction()
                 }
             })
 }

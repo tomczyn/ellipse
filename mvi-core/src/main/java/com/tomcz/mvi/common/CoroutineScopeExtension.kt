@@ -10,37 +10,34 @@ import com.tomcz.mvi.internal.FlowStateEffectProcessor
 import com.tomcz.mvi.internal.FlowStateProcessor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 
 fun <EV : Any, ST : Any, PA : PartialState<ST>> CoroutineScope.stateProcessor(
     initialState: ST,
-    prepare: suspend () -> Flow<PA> = { emptyFlow() },
-    states: suspend (EV) -> Flow<PA> = { _ -> emptyFlow() }
+    prepare: (suspend () -> Flow<PA>)? = null,
+    onEvent: (suspend (EV) -> Flow<PA>)? = null
 ): StateProcessor<EV, ST> = FlowStateProcessor(
     scope = this,
     initialState = initialState,
     prepare = prepare,
-    mapper = states
+    onEvent = onEvent
 )
 
 fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> CoroutineScope.stateEffectProcessor(
     initialState: ST,
-    prepare: suspend (EffectsCollector<EF>) -> Flow<PA> = { emptyFlow() },
-    effects: suspend (EffectsCollector<EF>, EV) -> Unit = { _, _ -> },
-    statesEffects: suspend (EffectsCollector<EF>, EV) -> Flow<PA> = { _, _ -> emptyFlow() },
+    prepare: (suspend (EffectsCollector<EF>) -> Flow<PA>)? = null,
+    onEvent: (suspend (EffectsCollector<EF>, EV) -> Flow<PA>)? = null,
 ): StateEffectProcessor<EV, ST, EF> = FlowStateEffectProcessor(
     scope = this,
     initialState = initialState,
     prepare = prepare,
-    eventEffects = effects,
-    mapper = statesEffects
+    onEvent = onEvent
 )
 
 fun <EV : Any, EF : Any> CoroutineScope.effectProcessor(
-    prepare: suspend (EffectsCollector<EF>) -> Unit = {},
-    effects: suspend (EffectsCollector<EF>, EV) -> Unit = { _, _ -> },
+    prepare: (suspend (EffectsCollector<EF>) -> Unit)? = null,
+    onEvent: (suspend (EffectsCollector<EF>, EV) -> Unit)? = null,
 ): EffectProcessor<EV, EF> = FlowEffectProcessor(
     scope = this,
     prepare = prepare,
-    mapper = effects
+    onEvent = onEvent
 )

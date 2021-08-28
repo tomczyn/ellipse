@@ -1,5 +1,5 @@
 package com.tomcz.mvi
 
-interface PartialState<T> {
+interface PartialState<T : Any> {
     fun reduce(oldState: T): T
 }

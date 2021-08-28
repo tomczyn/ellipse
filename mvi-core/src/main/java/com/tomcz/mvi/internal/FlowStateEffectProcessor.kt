@@ -10,19 +10,13 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.util.Deque
-import java.util.LinkedList
 
 internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> constructor(
     private val scope: CoroutineScope,
     initialState: ST,
-    prepare: suspend (EffectsCollector<EF>) -> Flow<PA> = { emptyFlow() },
-    private val eventEffects: suspend (EffectsCollector<EF>, EV) -> Unit = { _, _ -> },
-    private val mapper: suspend (EffectsCollector<EF>, EV) -> Flow<PA>,
+    prepare: (suspend (EffectsCollector<EF>) -> Flow<PA>)? = null,
+    private val onEvent: (suspend (EffectsCollector<EF>, EV) -> Flow<PA>)? = null,
 ) : StateEffectProcessor<EV, ST, EF> {
 
     override val effect: Flow<EF>
@@ -33,29 +27,23 @@ internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialS
         get() = stateFlow
     private val stateFlow: MutableStateFlow<ST> = MutableStateFlow(initialState)
 
-    private val replay: Deque<EF> = LinkedList()
-
     private val effectsCollector: EffectsCollector<EF> = object : EffectsCollector<EF> {
         override fun send(effect: EF) {
-            scope.launch {
-                if (effectSharedFlow.subscriptionCount.value != 0) {
-                    effectSharedFlow.emit(effect)
-                } else replay.add(effect)
-            }
+            scope.launch { effectSharedFlow.emit(effect) }
         }
     }
 
     init {
-        effectSharedFlow.subscriptionCount.onEach { subscriptions ->
-            if (subscriptions != 0) while (replay.peek() != null) {
-                replay.poll()?.let { effectSharedFlow.emit(it) }
+        prepare?.let {
+            scope.launch {
+                it(effectsCollector).collect { stateFlow.reduceAndSet(it) }
             }
-        }.launchIn(scope)
-        scope.launch { prepare(effectsCollector).collect { stateFlow.reduceAndSet(it) } }
+        }
     }
 
     override fun sendEvent(event: EV) {
-        scope.launch { eventEffects(effectsCollector, event) }
-        scope.launch { mapper(effectsCollector, event).collect { stateFlow.reduceAndSet(it) } }
+        onEvent?.let {
+            scope.launch { it(effectsCollector, event).collect { stateFlow.reduceAndSet(it) } }
+        }
     }
 }
