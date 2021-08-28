@@ -7,5 +7,3 @@ import kotlinx.coroutines.flow.flowOf
 fun <T : Any> NoAction(): PartialState<T> = object : PartialState<T> {
     override fun reduce(oldState: T): T = oldState
 }
-
-fun <T : Any> Any.thenNoAction(): Flow<PartialState<T>> = flowOf(NoAction())

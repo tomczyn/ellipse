@@ -3,11 +3,11 @@ package com.tomcz.sample.feature.register
 import androidx.lifecycle.ViewModel
 import com.tomcz.mvi.StateEffectProcessor
 import com.tomcz.mvi.common.stateEffectProcessor
-import com.tomcz.mvi.common.thenNoAction
 import com.tomcz.sample.feature.register.state.RegisterEffect
 import com.tomcz.sample.feature.register.state.RegisterEvent
 import com.tomcz.sample.feature.register.state.RegisterPartialState
 import com.tomcz.sample.feature.register.state.RegisterState
+import com.tomcz.sample.util.thenNoAction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
