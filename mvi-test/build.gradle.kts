@@ -10,7 +10,7 @@ afterEvaluate {
                 from(components.findByName("release"))
                 groupId = "com.tomcz.mvi.test"
                 artifactId = "mvi-test"
-                version = "0.03"
+                version = "0.04"
             }
         }
     }
