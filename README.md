@@ -17,8 +17,8 @@ repositories {
 Add the dependency:
 ```kotlin
 dependencies {
-    implementation("com.github.MTomczynski.MVI:mvi-core:0.03")
-    testImplementation("com.github.MTomczynski.MVI:mvi-test:0.03")
+    implementation("com.github.MTomczynski.MVI:mvi-core:0.04")
+    testImplementation("com.github.MTomczynski.MVI:mvi-test:0.04")
 }
 ```
 ### Glossary
