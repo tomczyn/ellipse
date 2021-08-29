@@ -1,9 +1,9 @@
-[![](https://jitpack.io/v/MTomczynski/MVI.svg)](https://jitpack.io/#MTomczynski/MVI)
+[![](https://jitpack.io/v/MTomczynski/Ellipse.svg)](https://jitpack.io/#MTomczynski/Ellipse)
 
-## 🚧 MVI - Model View Intent 🚧
+## 🚧 Ellipse 🚧
 ### Pragmatic Unidirectional Data Flow for Android
 
-MVI is a library that helps to implement unidirectional data flow in [Kotlin](https://github.com/jetbrains/kotlin) using [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) in the most simplistic manner possible. All API's are based on extension functions. Thanks to this design choice library plays well with [Jetpack Compose](https://developer.android.com/jetpack/compose) or [Dagger/Dagger Hilt](https://dagger.dev/).
+Ellipse is a library that helps to implement unidirectional data flow in [Kotlin](https://github.com/jetbrains/kotlin) using [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) in the most simplistic manner possible. All API's are based on extension functions. Thanks to this design choice library plays well with [Jetpack Compose](https://developer.android.com/jetpack/compose) or [Dagger/Dagger Hilt](https://dagger.dev/).
 
 ### Adding dependency
 Add `jitpack` to your repositories:
@@ -17,8 +17,8 @@ repositories {
 Add the dependency:
 ```kotlin
 dependencies {
-    implementation("com.github.MTomczynski.MVI:mvi-core:0.04")
-    testImplementation("com.github.MTomczynski.MVI:mvi-test:0.04")
+    implementation("com.github.MTomczynski.Ellipse:ellipse:0.05")
+    testImplementation("com.github.MTomczynski.Ellipse:ellipse-test:0.05")
 }
 ```
 ### Glossary
