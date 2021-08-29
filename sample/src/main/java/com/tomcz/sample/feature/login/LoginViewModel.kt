@@ -1,8 +1,8 @@
 package com.tomcz.sample.feature.login
 
 import androidx.lifecycle.ViewModel
-import com.tomcz.mvi.StateEffectProcessor
-import com.tomcz.mvi.common.stateEffectProcessor
+import com.tomcz.ellipse.StateEffectProcessor
+import com.tomcz.ellipse.common.stateEffectProcessor
 import com.tomcz.sample.feature.login.state.LoginEffect
 import com.tomcz.sample.feature.login.state.LoginEvent
 import com.tomcz.sample.feature.login.state.LoginPartialState

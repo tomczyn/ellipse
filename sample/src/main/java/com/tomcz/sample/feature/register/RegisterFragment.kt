@@ -42,8 +42,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
-import com.tomcz.mvi.common.collectAsState
-import com.tomcz.mvi.common.onProcessor
+import com.tomcz.ellipse.common.collectAsState
+import com.tomcz.ellipse.common.onProcessor
 import com.tomcz.sample.R
 import com.tomcz.sample.feature.register.state.RegisterEffect
 import com.tomcz.sample.feature.register.state.RegisterEvent

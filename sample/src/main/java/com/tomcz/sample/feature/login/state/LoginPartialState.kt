@@ -1,6 +1,6 @@
 package com.tomcz.sample.feature.login.state
 
-import com.tomcz.mvi.PartialState
+import com.tomcz.ellipse.PartialState
 
 sealed interface LoginPartialState : PartialState<LoginState> {
     object ShowLoading : LoginPartialState {

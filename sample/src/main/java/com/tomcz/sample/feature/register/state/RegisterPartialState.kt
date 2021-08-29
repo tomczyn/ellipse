@@ -1,6 +1,6 @@
 package com.tomcz.sample.feature.register.state
 
-import com.tomcz.mvi.PartialState
+import com.tomcz.ellipse.PartialState
 
 sealed class RegisterPartialState : PartialState<RegisterState> {
 

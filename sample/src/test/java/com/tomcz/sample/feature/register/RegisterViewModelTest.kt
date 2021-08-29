@@ -1,6 +1,6 @@
 package com.tomcz.sample.feature.register
 
-import com.tomcz.mvi.test.processorTest
+import com.tomcz.ellipse.test.processorTest
 import com.tomcz.sample.feature.register.state.RegisterEvent
 import com.tomcz.sample.feature.register.state.RegisterState
 import com.tomcz.sample.util.BaseCoroutineTest

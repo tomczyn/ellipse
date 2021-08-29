@@ -9,7 +9,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":mvi-core"))
+    implementation(project(":ellipse"))
     kotlin()
     dependencyInjection()
     baseAndroid()
@@ -17,5 +17,5 @@ dependencies {
     coroutines()
     compose()
     test()
-    testImplementation(project(":mvi-test"))
+    testImplementation(project(":ellipse-test"))
 }

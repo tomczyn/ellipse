@@ -1,8 +1,8 @@
 package com.tomcz.sample.feature.register
 
 import androidx.lifecycle.ViewModel
-import com.tomcz.mvi.StateEffectProcessor
-import com.tomcz.mvi.common.stateEffectProcessor
+import com.tomcz.ellipse.StateEffectProcessor
+import com.tomcz.ellipse.common.stateEffectProcessor
 import com.tomcz.sample.feature.register.state.RegisterEffect
 import com.tomcz.sample.feature.register.state.RegisterEvent
 import com.tomcz.sample.feature.register.state.RegisterPartialState

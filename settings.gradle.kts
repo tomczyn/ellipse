@@ -8,8 +8,8 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MVI"
+rootProject.name = "Ellipse"
 
 include(":sample")
-include(":mvi-test")
-include(":mvi-core")
+include(":ellipse-test")
+include(":ellipse")

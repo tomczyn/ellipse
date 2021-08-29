@@ -1,7 +1,7 @@
 package com.tomcz.sample.util
 
-import com.tomcz.mvi.PartialState
-import com.tomcz.mvi.common.NoAction
+import com.tomcz.ellipse.PartialState
+import com.tomcz.ellipse.common.NoAction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 

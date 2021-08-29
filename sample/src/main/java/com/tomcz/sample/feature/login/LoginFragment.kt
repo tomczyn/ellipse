@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
-import com.tomcz.mvi.common.clicks
-import com.tomcz.mvi.common.onProcessor
+import com.tomcz.ellipse.common.clicks
+import com.tomcz.ellipse.common.onProcessor
 import com.tomcz.sample.databinding.FragmentLoginBinding
 import com.tomcz.sample.feature.login.state.LoginEffect
 import com.tomcz.sample.feature.login.state.LoginEvent
