@@ -17,8 +17,8 @@ repositories {
 Add the dependency:
 ```kotlin
 dependencies {
-    implementation("com.github.MTomczynski.Ellipse:ellipse:0.05")
-    testImplementation("com.github.MTomczynski.Ellipse:ellipse-test:0.05")
+    implementation("com.github.MTomczynski.Ellipse:ellipse:0.06")
+    testImplementation("com.github.MTomczynski.Ellipse:ellipse-test:0.06")
 }
 ```
 ### Glossary
