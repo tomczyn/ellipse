@@ -22,10 +22,15 @@ android {
 }
 
 dependencies {
-    kotlin()
-    baseAndroid()
-    compose()
-    coroutines()
-    test()
+    implementation(Libs.Jetbrains.kotlinStdlib)
+    implementation(Libs.AndroidX.appCompat)
+    implementation(Libs.AndroidX.vmKtx)
+    implementation(Libs.AndroidX.lifecycleRuntimeKtx)
+    implementation(Libs.AndroidX.Compose.ui)
+    implementation(Libs.Jetbrains.Coroutines.android)
+    testRuntimeOnly(Libs.JUnit.Runtime.jupiterEngine)
+    testImplementation(Libs.JUnit.jupiter)
+    testImplementation(Libs.JUnit.jupiterParams)
+    testImplementation(Libs.Jetbrains.Coroutines.Test.coroutines)
     testImplementation(project(":ellipse-test"))
 }

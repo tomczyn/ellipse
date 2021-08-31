@@ -18,8 +18,8 @@ afterEvaluate {
 
 dependencies {
     implementation(project(":ellipse"))
-    kotlin()
-    coroutines()
+    implementation(Libs.Jetbrains.kotlinStdlib)
+    implementation(Libs.Jetbrains.Coroutines.android)
     implementation(Libs.JUnit.jupiter)
     implementation(Libs.Jetbrains.Coroutines.Test.coroutines)
 }
