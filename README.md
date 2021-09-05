@@ -1,4 +1,4 @@
-[![](https://jitpack.io/v/MTomczynski/Ellipse.svg)](https://jitpack.io/#MTomczynski/Ellipse)
+[![](https://jitpack.io/v/mtomczynski/ellipse.svg)](https://jitpack.io/#mtomczynski/ellipse)
 
 ## 🚧 Ellipse 🚧
 ### Pragmatic Unidirectional Data Flow for Android
