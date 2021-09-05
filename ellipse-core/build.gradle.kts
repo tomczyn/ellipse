@@ -9,8 +9,8 @@ afterEvaluate {
             register("release", MavenPublication::class) {
                 from(components.findByName("release"))
                 groupId = "com.tomcz.ellipse"
-                artifactId = "ellipse"
-                version = "0.06"
+                artifactId = "ellipse-core"
+                version = "0.07"
             }
         }
     }

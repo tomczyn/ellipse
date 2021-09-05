@@ -12,4 +12,4 @@ rootProject.name = "Ellipse"
 
 include(":sample")
 include(":ellipse-test")
-include(":ellipse")
+include(":ellipse-core")

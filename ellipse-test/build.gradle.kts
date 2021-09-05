@@ -10,14 +10,14 @@ afterEvaluate {
                 from(components.findByName("release"))
                 groupId = "com.tomcz.ellipse.test"
                 artifactId = "ellipse-test"
-                version = "0.06"
+                version = "0.07"
             }
         }
     }
 }
 
 dependencies {
-    implementation(project(":ellipse"))
+    implementation(project(":ellipse-core"))
     implementation(Libs.Jetbrains.kotlinStdlib)
     implementation(Libs.Jetbrains.Coroutines.android)
     implementation(Libs.JUnit.jupiter)

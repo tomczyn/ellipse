@@ -9,7 +9,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":ellipse"))
+    implementation(project(":ellipse-core"))
     kotlin()
     dependencyInjection()
     baseAndroid()
