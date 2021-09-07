@@ -3,23 +3,7 @@ plugins {
     id(AndroidConfig.Plugin.mavenPublish)
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            register("release", MavenPublication::class) {
-                from(components.findByName("release"))
-                groupId = "com.tomcz.ellipse"
-                artifactId = "ellipse-core"
-                version = "0.07"
-            }
-        }
-    }
-}
-
-android {
-    buildFeatures.compose = true
-    composeOptions.kotlinCompilerExtensionVersion = Versions.compose
-}
+publishEllipse("ellipse-core")
 
 dependencies {
     implementation(Libs.Jetbrains.kotlinStdlib)

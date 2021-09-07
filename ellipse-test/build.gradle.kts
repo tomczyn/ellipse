@@ -3,18 +3,7 @@ plugins {
     id(AndroidConfig.Plugin.mavenPublish)
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            register("release", MavenPublication::class) {
-                from(components.findByName("release"))
-                groupId = "com.tomcz.ellipse.test"
-                artifactId = "ellipse-test"
-                version = "0.07"
-            }
-        }
-    }
-}
+publishEllipse("ellipse-test")
 
 dependencies {
     implementation(project(":ellipse-core"))

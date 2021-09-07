@@ -10,10 +10,6 @@ fun Project.kotlinCompileOptions() = tasks.withType<KotlinCompile>().configureEa
     kotlinOptions {
         jvmTarget = AndroidConfig.javaVersion.majorVersion
     }
-    kotlinOptions.freeCompilerArgs = kotlinOptions.freeCompilerArgs + listOf(
-        "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
-        "-Xuse-experimental=kotlinx.coroutines.FlowPreview"
-    )
 }
 
 fun BaseExtension.defaultConfig() {
@@ -23,15 +19,14 @@ fun BaseExtension.defaultConfig() {
         targetSdk = AndroidConfig.sdkVersion
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    enableCompose()
     compileOptions()
     buildTypes()
 }
 
-fun BaseExtension.enableCompose() {
+private fun BaseExtension.enableCompose() {
     buildFeatures.compose = true
-    composeOptions {
-        kotlinCompilerExtensionVersion = Versions.compose
-    }
+    composeOptions.kotlinCompilerExtensionVersion = Versions.compose
 }
 
 private fun BaseExtension.compileOptions() {
