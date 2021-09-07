@@ -7,7 +7,7 @@ import com.tomcz.sample.feature.login.state.LoginEffect
 import com.tomcz.sample.feature.login.state.LoginEvent
 import com.tomcz.sample.feature.login.state.LoginPartialState
 import com.tomcz.sample.feature.login.state.LoginState
-import com.tomcz.sample.util.thenNoAction
+import com.tomcz.sample.util.toNoAction
 import kotlinx.coroutines.flow.flow
 
 class LoginViewModel : ViewModel() {
@@ -26,7 +26,7 @@ class LoginViewModel : ViewModel() {
                     }
                 }
                 LoginEvent.GoToRegister -> effects
-                    .send(LoginEffect.GoToRegister).thenNoAction()
+                    .send(LoginEffect.GoToRegister).toNoAction()
             }
         }
 

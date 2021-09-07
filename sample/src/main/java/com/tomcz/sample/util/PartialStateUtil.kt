@@ -10,4 +10,4 @@ import kotlinx.coroutines.flow.flowOf
  * NoAction PartialState for any processor. It's not in the library itself,
  * because not everyone would like to have an extension function on Any type.
  */
-fun <T : Any> Any.thenNoAction(): Flow<PartialState<T>> = flowOf(NoAction())
+fun <T : Any> Any.toNoAction(): Flow<PartialState<T>> = flowOf(NoAction())

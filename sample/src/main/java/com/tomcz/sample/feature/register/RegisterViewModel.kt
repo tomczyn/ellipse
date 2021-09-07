@@ -7,10 +7,12 @@ import com.tomcz.sample.feature.register.state.RegisterEffect
 import com.tomcz.sample.feature.register.state.RegisterEvent
 import com.tomcz.sample.feature.register.state.RegisterPartialState
 import com.tomcz.sample.feature.register.state.RegisterState
-import com.tomcz.sample.util.thenNoAction
+import com.tomcz.sample.util.toNoAction
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.onCompletion
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,7 +33,12 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
                     )
                     RegisterEvent.GoToLogin -> effects
                         .send(RegisterEffect.GoToLogin)
-                        .thenNoAction()
+                        .toNoAction()
+                    RegisterEvent.RegisterClicked -> registerUser()
+                        .onCompletion { effects.send(RegisterEffect.GoToHome) }
+                        .toNoAction()
                 }
             })
+
+    private fun registerUser(): Flow<Unit> = emptyFlow()
 }

@@ -1,0 +1,11 @@
+package com.tomcz.ellipse.common
+
+import com.tomcz.ellipse.PartialState
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+@JvmName("toNoActionAny")
+fun <T : Any> Flow<*>.toNoAction(): Flow<PartialState<T>> = map { NoAction() }
+
+@JvmName("toNoActionPartial")
+fun <T : Any> Flow<PartialState<T>>.toNoAction(): Flow<PartialState<T>> = this

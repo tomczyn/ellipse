@@ -1,6 +1,7 @@
 package com.tomcz.sample.feature.register
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -88,7 +89,8 @@ class RegisterFragment : Fragment() {
                 findNavController().navigate(
                     RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
                 )
-        }.let {}
+            RegisterEffect.GoToHome -> TODO()
+        }
     }
 }
 
@@ -218,8 +220,12 @@ private fun ProceedButton() {
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        val processor = viewModel<RegisterViewModel>().processor
         FloatingActionButton(
-            onClick = { /*TODO*/ },
+            onClick = {
+                Log.d("Maciek", "Sending event")
+                processor.sendEvent(RegisterEvent.RegisterClicked)
+            },
             backgroundColor = DarkGray,
             modifier = Modifier.size(64.dp),
             content = {
