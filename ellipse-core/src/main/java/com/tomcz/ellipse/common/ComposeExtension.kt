@@ -28,7 +28,6 @@ fun <EV : Any, ST : Any, T> StateProcessor<EV, ST>.collectAsState(
     }.collectAsState(initial = mapper(state.value))
 }
 
-@Composable
 fun <EV : Any, ST : Any> previewStateProcessor(
     state: ST
 ): StateProcessor<EV, ST> = object : StateProcessor<EV, ST> {
@@ -36,7 +35,6 @@ fun <EV : Any, ST : Any> previewStateProcessor(
     override fun sendEvent(event: EV) {}
 }
 
-@Composable
 fun <EV : Any, ST : Any, EF : Any> previewStateEffectProcessor(
     state: ST
 ): StateEffectProcessor<EV, ST, EF> = object : StateEffectProcessor<EV, ST, EF> {
