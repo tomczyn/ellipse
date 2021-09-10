@@ -4,6 +4,8 @@ plugins {
 
 android {
     viewBinding.isEnabled = true
+    buildFeatures.compose = true
+    composeOptions.kotlinCompilerExtensionVersion = Versions.compose
 }
 
 dependencies {

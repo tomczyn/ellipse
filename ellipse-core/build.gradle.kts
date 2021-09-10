@@ -5,6 +5,11 @@ plugins {
 
 publishEllipse("ellipse-core")
 
+android {
+    buildFeatures.compose = true
+    composeOptions.kotlinCompilerExtensionVersion = Versions.compose
+}
+
 dependencies {
     implementation(Libs.Jetbrains.kotlinStdlib)
     implementation(Libs.AndroidX.appCompat)

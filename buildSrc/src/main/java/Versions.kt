@@ -1,9 +1,9 @@
 object Versions {
-    const val kotlin = "1.5.21"
+    const val kotlin = "1.5.30"
     const val gradle = "7.0.2"
     const val junit5Gradle = "1.7.1.1"
     const val junit5 = "5.7.1"
-    const val coroutines = "1.5.1"
+    const val coroutines = "1.5.2"
     const val ktx = "1.6.0"
     const val ktxFragment = "1.3.6"
     const val ktxViewModel = "2.3.1"

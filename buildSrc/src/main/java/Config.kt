@@ -19,14 +19,8 @@ fun BaseExtension.defaultConfig() {
         targetSdk = AndroidConfig.sdkVersion
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-    enableCompose()
     compileOptions()
     buildTypes()
-}
-
-private fun BaseExtension.enableCompose() {
-    buildFeatures.compose = true
-    composeOptions.kotlinCompilerExtensionVersion = Versions.compose
 }
 
 private fun BaseExtension.compileOptions() {
