@@ -3,9 +3,11 @@ package com.tomcz.ellipse.test
 import com.tomcz.ellipse.EffectProcessor
 import com.tomcz.ellipse.StateEffectProcessor
 import com.tomcz.ellipse.StateProcessor
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
 
+@ExperimentalCoroutinesApi
 @JvmName("stateEventProcessorTest")
 fun <E : Any, S : Any, T : StateProcessor<E, S>> TestCoroutineScope.processorTest(
     given: () -> T,
@@ -13,6 +15,7 @@ fun <E : Any, S : Any, T : StateProcessor<E, S>> TestCoroutineScope.processorTes
     thenStates: ListTester<S>.() -> Unit = { assertSize(0) }
 ): Unit = processorTest(given, listOf(whenEvent), thenStates)
 
+@ExperimentalCoroutinesApi
 @JvmName("stateEventsProcessorTest")
 fun <E : Any, S : Any, T : StateProcessor<E, S>> TestCoroutineScope.processorTest(
     given: () -> T,
@@ -22,6 +25,7 @@ fun <E : Any, S : Any, T : StateProcessor<E, S>> TestCoroutineScope.processorTes
     StateProcessorTest(given(), whenEvents, this).apply { states.thenStates() }
 }
 
+@ExperimentalCoroutinesApi
 @JvmName("stateEffectEventProcessorTest")
 fun <E : Any, S : Any, EF : Any, T : StateEffectProcessor<E, S, EF>> TestCoroutineScope.processorTest(
     given: () -> T,
@@ -30,6 +34,7 @@ fun <E : Any, S : Any, EF : Any, T : StateEffectProcessor<E, S, EF>> TestCorouti
     thenEffects: ListTester<EF>.() -> Unit = { assertSize(0) }
 ): Unit = processorTest(given, listOf(whenEvent), thenStates, thenEffects)
 
+@ExperimentalCoroutinesApi
 @JvmName("stateEffectEventsProcessorTest")
 fun <E : Any, S : Any, EF : Any, T : StateEffectProcessor<E, S, EF>> TestCoroutineScope.processorTest(
     given: () -> T,
@@ -43,6 +48,7 @@ fun <E : Any, S : Any, EF : Any, T : StateEffectProcessor<E, S, EF>> TestCorouti
     }
 }
 
+@ExperimentalCoroutinesApi
 @JvmName("effectEventProcessorTest")
 fun <T : EffectProcessor<EV, EF>, EV : Any, EF : Any> TestCoroutineScope.processorTest(
     given: () -> T,
@@ -50,6 +56,7 @@ fun <T : EffectProcessor<EV, EF>, EV : Any, EF : Any> TestCoroutineScope.process
     thenEffects: ListTester<EF>.() -> Unit = { assertSize(0) }
 ): Unit = processorTest(given, listOf(whenEvent), thenEffects)
 
+@ExperimentalCoroutinesApi
 @JvmName("effectEventsProcessorTest")
 fun <T : EffectProcessor<EV, EF>, EV : Any, EF : Any> TestCoroutineScope.processorTest(
     given: () -> T,
