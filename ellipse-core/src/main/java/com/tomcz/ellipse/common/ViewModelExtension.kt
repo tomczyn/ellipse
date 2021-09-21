@@ -2,37 +2,36 @@ package com.tomcz.ellipse.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tomcz.ellipse.EffectProcessor
 import com.tomcz.ellipse.EffectsCollector
 import com.tomcz.ellipse.PartialState
 import com.tomcz.ellipse.StateEffectProcessor
-import com.tomcz.ellipse.StateProcessor
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
-fun <EV : Any, ST : Any, PA : PartialState<ST>> ViewModel.stateProcessor(
-    initialState: ST,
-    prepare: (suspend () -> Flow<PA>)? = null,
-    onEvent: (suspend (EV) -> Flow<PA>)? = null
-): StateProcessor<EV, ST> = viewModelScope.stateProcessor(
-    initialState = initialState,
-    prepare = prepare,
-    onEvent = onEvent
+fun <EV : Any, ST : Any, PA : PartialState<ST>> ViewModel.processor(
+        initialState: ST,
+        prepare: suspend () -> Flow<PA> = { emptyFlow() },
+        onEvent: suspend (EV) -> Flow<PA> = { emptyFlow() },
+): StateEffectProcessor<EV, ST, Nothing> = viewModelScope.processor(
+        initialState = initialState,
+        prepare = { prepare() },
+        onEvent = { _, event -> onEvent(event) }
 )
 
-fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> ViewModel.stateEffectProcessor(
-    initialState: ST,
-    prepare: (suspend (EffectsCollector<EF>) -> Flow<PA>)? = null,
-    onEvent: (suspend (EffectsCollector<EF>, EV) -> Flow<PA>)? = null,
-): StateEffectProcessor<EV, ST, EF> = viewModelScope.stateEffectProcessor(
-    initialState = initialState,
-    prepare = prepare,
-    onEvent = onEvent
+fun <EV : Any, EF : Any> ViewModel.processor(
+        prepare: suspend () -> Unit = {},
+        onEvent: suspend (EV) -> Unit = {},
+): StateEffectProcessor<EV, Nothing, EF> = viewModelScope.processor(
+        prepare = { prepare() },
+        onEvent = { _, event -> onEvent(event) }
 )
 
-fun <EV : Any, EF : Any> ViewModel.effectProcessor(
-    prepare: (suspend (EffectsCollector<EF>) -> Unit)? = null,
-    onEvent: (suspend (EffectsCollector<EF>, EV) -> Unit)? = null,
-): EffectProcessor<EV, EF> = viewModelScope.effectProcessor(
-    prepare = prepare,
-    onEvent = onEvent
+fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> ViewModel.processor(
+        initialState: ST,
+        prepare: suspend (EffectsCollector<EF>) -> Flow<PA> = { emptyFlow() },
+        onEvent: suspend (EffectsCollector<EF>, EV) -> Flow<PA> = { _, _ -> emptyFlow() },
+): StateEffectProcessor<EV, ST, EF> = viewModelScope.processor(
+        initialState = initialState,
+        prepare = prepare,
+        onEvent = onEvent
 )

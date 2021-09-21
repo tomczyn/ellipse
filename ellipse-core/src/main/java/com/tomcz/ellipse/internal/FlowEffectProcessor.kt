@@ -1,21 +1,34 @@
 package com.tomcz.ellipse.internal
 
-import com.tomcz.ellipse.EffectProcessor
 import com.tomcz.ellipse.EffectsCollector
+import com.tomcz.ellipse.StateEffectProcessor
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-internal class FlowEffectProcessor<in EV : Any, EF : Any>(
-    private val scope: CoroutineScope,
-    prepare: (suspend (EffectsCollector<EF>) -> Unit)? = null,
-    private val onEvent: (suspend (EffectsCollector<EF>, EV) -> Unit)? = null,
-) : EffectProcessor<EV, EF> {
+internal class FlowEffectProcessor<in EV : Any, EF : Any> constructor(
+        private val scope: CoroutineScope,
+        prepare: (suspend (EffectsCollector<EF>) -> Unit)? = null,
+        private val onEvent: (suspend (EffectsCollector<EF>, EV) -> Unit)? = null,
+) : StateEffectProcessor<EV, Nothing, EF> {
 
     override val effect: Flow<EF>
         get() = effectSharedFlow
     private val effectSharedFlow: MutableSharedFlow<EF> = MutableSharedFlow(replay = 0)
+
+    override val state: StateFlow<Nothing> = object : StateFlow<Nothing> {
+        override val replayCache: List<Nothing>
+            get() = emptyList()
+        override val value: Nothing = TODO()
+
+        @InternalCoroutinesApi
+        override suspend fun collect(collector: FlowCollector<Nothing>) {
+        }
+    }
 
     private val effectsCollector: EffectsCollector<EF> = object : EffectsCollector<EF> {
         override fun send(effect: EF) {
@@ -25,7 +38,9 @@ internal class FlowEffectProcessor<in EV : Any, EF : Any>(
 
     init {
         prepare?.let {
-            scope.launch { it(effectsCollector) }
+            scope.launch {
+                it(effectsCollector)
+            }
         }
     }
 
@@ -34,4 +49,5 @@ internal class FlowEffectProcessor<in EV : Any, EF : Any>(
             scope.launch { it(effectsCollector, event) }
         }
     }
+
 }
