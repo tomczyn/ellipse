@@ -1,8 +1,8 @@
 package com.tomcz.sample.feature.login
 
 import androidx.lifecycle.ViewModel
-import com.tomcz.ellipse.StateEffectProcessor
-import com.tomcz.ellipse.common.stateEffectProcessor
+import com.tomcz.ellipse.Processor
+import com.tomcz.ellipse.common.processor
 import com.tomcz.sample.feature.login.state.LoginEffect
 import com.tomcz.sample.feature.login.state.LoginEvent
 import com.tomcz.sample.feature.login.state.LoginPartialState
@@ -12,21 +12,20 @@ import kotlinx.coroutines.flow.flow
 
 class LoginViewModel : ViewModel() {
 
-    val processor: StateEffectProcessor<LoginEvent, LoginState, LoginEffect> =
-        stateEffectProcessor(initialState = LoginState()) { effects, event ->
+    val processor: Processor<LoginEvent, LoginState, LoginEffect> =
+        processor(initialState = LoginState()) { event ->
             when (event) {
                 is LoginEvent.LoginClick -> flow {
                     emit(LoginPartialState.ShowLoading)
                     val isSuccess = loginUser(event.email, event.pass)
                     emit(LoginPartialState.HideLoading)
                     if (isSuccess) {
-                        effects.send(LoginEffect.GoToHome)
+                        sendEffect(LoginEffect.GoToHome)
                     } else {
-                        effects.send(LoginEffect.ShowError)
+                        sendEffect(LoginEffect.ShowError)
                     }
                 }
-                LoginEvent.GoToRegister -> effects
-                    .send(LoginEffect.GoToRegister).toNoAction()
+                LoginEvent.GoToRegister -> sendEffect(LoginEffect.GoToRegister).toNoAction()
             }
         }
 

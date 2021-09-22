@@ -1,8 +1,8 @@
 package com.tomcz.sample.feature.register
 
 import androidx.lifecycle.ViewModel
-import com.tomcz.ellipse.StateEffectProcessor
-import com.tomcz.ellipse.common.stateEffectProcessor
+import com.tomcz.ellipse.Processor
+import com.tomcz.ellipse.common.processor
 import com.tomcz.sample.feature.register.state.RegisterEffect
 import com.tomcz.sample.feature.register.state.RegisterEvent
 import com.tomcz.sample.feature.register.state.RegisterPartialState
@@ -18,27 +18,25 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor() : ViewModel() {
 
-    val processor: StateEffectProcessor<RegisterEvent, RegisterState, RegisterEffect> =
-        stateEffectProcessor(
-            initialState = RegisterState(),
-            prepare = { emptyFlow() },
-            onEvent = { effects, event ->
-                when (event) {
-                    is RegisterEvent.EmailChanged -> flowOf(RegisterPartialState.EmailChanged(event.email))
-                    is RegisterEvent.PasswordChanged -> flowOf(
-                        RegisterPartialState.PasswordChanged(event.password)
-                    )
-                    is RegisterEvent.RepeatPasswordChanged -> flowOf(
-                        RegisterPartialState.RepeatPasswordChanged(event.repeatPassword)
-                    )
-                    RegisterEvent.GoToLogin -> effects
-                        .send(RegisterEffect.GoToLogin)
-                        .toNoAction()
-                    RegisterEvent.RegisterClicked -> registerUser()
-                        .onCompletion { effects.send(RegisterEffect.GoToHome) }
-                        .toNoAction()
-                }
-            })
+    val processor: Processor<RegisterEvent, RegisterState, RegisterEffect> = processor(
+        initialState = RegisterState(),
+        prepare = { emptyFlow() },
+        onEvent = { event ->
+            when (event) {
+                is RegisterEvent.EmailChanged -> flowOf(RegisterPartialState.EmailChanged(event.email))
+                is RegisterEvent.PasswordChanged -> flowOf(
+                    RegisterPartialState.PasswordChanged(event.password)
+                )
+                is RegisterEvent.RepeatPasswordChanged -> flowOf(
+                    RegisterPartialState.RepeatPasswordChanged(event.repeatPassword)
+                )
+                RegisterEvent.GoToLogin -> sendEffect(RegisterEffect.GoToLogin)
+                    .toNoAction()
+                RegisterEvent.RegisterClicked -> registerUser()
+                    .onCompletion { sendEffect(RegisterEffect.GoToHome) }
+                    .toNoAction()
+            }
+        })
 
     private fun registerUser(): Flow<Unit> = emptyFlow()
 }

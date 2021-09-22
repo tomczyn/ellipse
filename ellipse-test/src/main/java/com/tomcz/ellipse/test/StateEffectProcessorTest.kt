@@ -1,9 +1,9 @@
 package com.tomcz.ellipse.test
 
-import com.tomcz.ellipse.StateEffectProcessor
+import com.tomcz.ellipse.Processor
 import kotlinx.coroutines.CoroutineScope
 
-class StateEffectProcessorTest<E : Any, S : Any, EF : Any, T : StateEffectProcessor<E, S, EF>>(
+class StateEffectProcessorTest<E : Any, S : Any, EF : Any, T : Processor<E, S, EF>>(
     private val processor: T,
     events: List<E>,
     scope: CoroutineScope

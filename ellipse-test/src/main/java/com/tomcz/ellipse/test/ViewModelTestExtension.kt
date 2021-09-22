@@ -1,7 +1,7 @@
 package com.tomcz.ellipse.test
 
 import com.tomcz.ellipse.EffectProcessor
-import com.tomcz.ellipse.StateEffectProcessor
+import com.tomcz.ellipse.Processor
 import com.tomcz.ellipse.StateProcessor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineScope
@@ -27,7 +27,7 @@ fun <E : Any, S : Any, T : StateProcessor<E, S>> TestCoroutineScope.processorTes
 
 @ExperimentalCoroutinesApi
 @JvmName("stateEffectEventProcessorTest")
-fun <E : Any, S : Any, EF : Any, T : StateEffectProcessor<E, S, EF>> TestCoroutineScope.processorTest(
+fun <E : Any, S : Any, EF : Any, T : Processor<E, S, EF>> TestCoroutineScope.processorTest(
     given: () -> T,
     whenEvent: E,
     thenStates: ListTester<S>.() -> Unit = { assertSize(0) },
@@ -36,7 +36,7 @@ fun <E : Any, S : Any, EF : Any, T : StateEffectProcessor<E, S, EF>> TestCorouti
 
 @ExperimentalCoroutinesApi
 @JvmName("stateEffectEventsProcessorTest")
-fun <E : Any, S : Any, EF : Any, T : StateEffectProcessor<E, S, EF>> TestCoroutineScope.processorTest(
+fun <E : Any, S : Any, EF : Any, T : Processor<E, S, EF>> TestCoroutineScope.processorTest(
     given: () -> T,
     whenEvents: List<E> = emptyList(),
     thenStates: ListTester<S>.() -> Unit = { assertSize(0) },
