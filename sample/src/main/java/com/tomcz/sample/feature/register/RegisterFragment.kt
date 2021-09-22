@@ -41,13 +41,10 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
-import com.tomcz.ellipse.Processor
 import com.tomcz.ellipse.common.collectAsState
 import com.tomcz.ellipse.common.onProcessor
-import com.tomcz.ellipse.common.processor
 import com.tomcz.sample.R
 import com.tomcz.sample.feature.register.state.RegisterEffect
 import com.tomcz.sample.feature.register.state.RegisterEvent
@@ -63,7 +60,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     private val viewModel: RegisterViewModel by viewModels()
-    private val proc: Processor<Nothing, Nothing, Nothing> = lifecycleScope.processor()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,16 +68,9 @@ class RegisterFragment : Fragment() {
     ): View {
         onProcessor(
             lifecycleState = Lifecycle.State.RESUMED,
-            processor = { proc },
-            onState = {},
-            onEffect = {},
-            viewEvents = { emptyList() }
+            processor = viewModel::processor,
+            onEffect = ::trigger
         )
-//        onProcessor(
-//            lifecycleState = Lifecycle.State.RESUMED,
-//            processor = viewModel::processor,
-//            onEffect = ::trigger
-//        )
         return ComposeView(requireContext()).apply {
             setContent {
                 MainAppTheme {

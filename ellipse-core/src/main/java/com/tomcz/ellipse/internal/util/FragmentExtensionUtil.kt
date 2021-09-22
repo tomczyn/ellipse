@@ -8,20 +8,11 @@ import kotlinx.coroutines.launch
 
 internal fun <EV : Any, ST : Any, EF : Any> CoroutineScope.consume(
     processor: Processor<EV, ST, EF>,
+    viewEvents: List<Flow<EV>> = emptyList(),
     render: (ST) -> Unit,
-    trigger: (EF) -> Unit,
-    viewEvents: List<Flow<EV>> = emptyList()
+    trigger: (EF) -> Unit
 ) {
     launch { processor.onState(render) }
-    launch { processor.onEffect(trigger) }
-    launch { processor.process(viewEvents) }
-}
-
-internal fun <EV : Any, EF : Any> CoroutineScope.consume(
-    processor: Processor<EV, Nothing, EF>,
-    trigger: (EF) -> Unit,
-    viewEvents: List<Flow<EV>> = emptyList()
-) {
     launch { processor.onEffect(trigger) }
     launch { processor.process(viewEvents) }
 }

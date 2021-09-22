@@ -25,47 +25,6 @@ fun <EV : Any, ST : Any, EF : Any> Fragment.onProcessor(
         viewEvents = viewEvents()
     )
 }
-//
-//fun <EV : Any> Fragment.onProcessor(
-//    lifecycleState: Lifecycle.State,
-//    processor: () -> Processor<EV, Nothing, Nothing>,
-//    viewEvents: () -> List<Flow<EV>> = { emptyList() },
-//) = launch(lifecycleState) {
-//    consume(
-//        processor = processor(),
-//        trigger = {},
-//        viewEvents = viewEvents()
-//    )
-//}
-//
-//@JvmName("onProcessorState")
-//fun <EV : Any, ST : Any> Fragment.onProcessor(
-//    lifecycleState: Lifecycle.State,
-//    processor: () -> Processor<EV, ST, Nothing>,
-//    viewEvents: () -> List<Flow<EV>> = { emptyList() },
-//    onState: (ST) -> Unit = {},
-//) = launch(lifecycleState) {
-//    consume(
-//        processor = processor(),
-//        render = onState,
-//        trigger = {},
-//        viewEvents = viewEvents()
-//    )
-//}
-//
-//@JvmName("onProcessorEffect")
-//fun <EV : Any, EF : Any> Fragment.onProcessor(
-//    lifecycleState: Lifecycle.State,
-//    processor: () -> Processor<EV, Nothing, EF>,
-//    viewEvents: () -> List<Flow<EV>> = { emptyList() },
-//    onEffect: (EF) -> Unit = {}
-//) = launch(lifecycleState) {
-//    consume(
-//        processor = processor(),
-//        trigger = onEffect,
-//        viewEvents = viewEvents()
-//    )
-//}
 
 private fun Fragment.launch(
     lifecycleState: Lifecycle.State,

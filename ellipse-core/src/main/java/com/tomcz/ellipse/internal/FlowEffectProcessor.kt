@@ -20,23 +20,25 @@ internal class FlowEffectProcessor<in EV : Any, EF : Any> constructor(
         get() = effectSharedFlow
     private val effectSharedFlow: MutableSharedFlow<EF> = MutableSharedFlow(replay = 0)
 
-    override val state: StateFlow<Nothing> = object : StateFlow<Nothing> {
-        override val replayCache: List<Nothing>
-            get() = emptyList()
-        override val value: Nothing
-            get() = throw IllegalStateException("Can't access Nothing value")
+    override val state: StateFlow<Nothing> =
+        object : StateFlow<Nothing> {
+            override val replayCache: List<Nothing>
+                get() = emptyList()
+            override val value: Nothing
+                get() = throw IllegalStateException("Can't access Nothing value")
 
-        @InternalCoroutinesApi
-        override suspend fun collect(collector: FlowCollector<Nothing>) {
+            @OptIn(InternalCoroutinesApi::class)
+            @InternalCoroutinesApi
+            override suspend fun collect(collector: FlowCollector<Nothing>) {
+            }
         }
 
-    }
-
-    private val effectsCollector: EffectsCollector<EF> = object : EffectsCollector<EF> {
-        override fun sendEffect(effect: EF) {
-            scope.launch { effectSharedFlow.emit(effect) }
+    private val effectsCollector: EffectsCollector<EF> =
+        object : EffectsCollector<EF> {
+            override fun sendEffect(effect: EF) {
+                scope.launch { effectSharedFlow.emit(effect) }
+            }
         }
-    }
 
     init {
         scope.launch { prepare(effectsCollector) }
@@ -45,5 +47,4 @@ internal class FlowEffectProcessor<in EV : Any, EF : Any> constructor(
     override fun sendEvent(event: EV) {
         scope.launch { onEvent(effectsCollector, event) }
     }
-
 }

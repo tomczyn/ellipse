@@ -9,6 +9,9 @@ private const val DEBUG = "debug"
 fun Project.kotlinCompileOptions() = tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions {
         jvmTarget = AndroidConfig.javaVersion.majorVersion
+        kotlinOptions.freeCompilerArgs = kotlinOptions.freeCompilerArgs + listOf(
+            "-Xopt-in=kotlin.RequiresOptIn"
+        )
     }
 }
 

@@ -10,24 +10,25 @@ import com.tomcz.sample.feature.login.state.LoginState
 import com.tomcz.sample.util.toNoAction
 import kotlinx.coroutines.flow.flow
 
+typealias LoginProcessor = Processor<LoginEvent, LoginState, LoginEffect>
+
 class LoginViewModel : ViewModel() {
 
-    val processor: Processor<LoginEvent, LoginState, LoginEffect> =
-        processor(initialState = LoginState()) { event ->
-            when (event) {
-                is LoginEvent.LoginClick -> flow {
-                    emit(LoginPartialState.ShowLoading)
-                    val isSuccess = loginUser(event.email, event.pass)
-                    emit(LoginPartialState.HideLoading)
-                    if (isSuccess) {
-                        sendEffect(LoginEffect.GoToHome)
-                    } else {
-                        sendEffect(LoginEffect.ShowError)
-                    }
+    val processor: LoginProcessor = processor(initialState = LoginState()) { event ->
+        when (event) {
+            is LoginEvent.LoginClick -> flow {
+                emit(LoginPartialState.ShowLoading)
+                val isSuccess = loginUser(event.email, event.pass)
+                emit(LoginPartialState.HideLoading)
+                if (isSuccess) {
+                    sendEffect(LoginEffect.GoToHome)
+                } else {
+                    sendEffect(LoginEffect.ShowError)
                 }
-                LoginEvent.GoToRegister -> sendEffect(LoginEffect.GoToRegister).toNoAction()
             }
+            LoginEvent.GoToRegister -> sendEffect(LoginEffect.GoToRegister).toNoAction()
         }
+    }
 
     private suspend fun loginUser(email: String, pass: String): Boolean = true
 }

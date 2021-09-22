@@ -15,10 +15,12 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onCompletion
 import javax.inject.Inject
 
+typealias RegisterProcessor = Processor<RegisterEvent, RegisterState, RegisterEffect>
+
 @HiltViewModel
 class RegisterViewModel @Inject constructor() : ViewModel() {
 
-    val processor: Processor<RegisterEvent, RegisterState, RegisterEffect> = processor(
+    val processor: RegisterProcessor = processor(
         initialState = RegisterState(),
         prepare = { emptyFlow() },
         onEvent = { event ->

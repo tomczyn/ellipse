@@ -18,47 +18,7 @@ fun <EV : Any, ST : Any, EF : Any> AppCompatActivity.onProcessor(
     viewEvents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit = {},
     onEffect: (EF) -> Unit = {}
-) = launch(lifecycleState) { consume(processor(), onState, onEffect, viewEvents()) }
-
-fun <EV : Any> AppCompatActivity.onProcessor(
-    lifecycleState: Lifecycle.State,
-    processor: () -> Processor<EV, Nothing, Nothing>,
-    viewEvents: () -> List<Flow<EV>> = { emptyList() },
-) = launch(lifecycleState) {
-    consume(
-        processor = processor(),
-        trigger = {},
-        viewEvents = viewEvents()
-    )
-}
-
-fun <EV : Any, ST : Any> AppCompatActivity.onProcessor(
-    lifecycleState: Lifecycle.State,
-    processor: () -> Processor<EV, ST, Nothing>,
-    viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onState: (ST) -> Unit = {},
-) = launch(lifecycleState) {
-    consume(
-        processor = processor(),
-        render = onState,
-        trigger = {},
-        viewEvents = viewEvents()
-    )
-}
-
-@JvmName("appCompatOnProcessorEffect")
-fun <EV : Any, EF : Any> AppCompatActivity.onProcessor(
-    lifecycleState: Lifecycle.State,
-    processor: () -> Processor<EV, Nothing, EF>,
-    viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onEffect: (EF) -> Unit = {}
-) = launch(lifecycleState) {
-    consume(
-        processor = processor(),
-        trigger = onEffect,
-        viewEvents = viewEvents()
-    )
-}
+) = launch(lifecycleState) { consume(processor(), viewEvents(), onState, onEffect) }
 
 fun <EV : Any, ST : Any, EF : Any> ComponentActivity.onProcessor(
     lifecycleState: Lifecycle.State,
@@ -66,47 +26,7 @@ fun <EV : Any, ST : Any, EF : Any> ComponentActivity.onProcessor(
     viewEvents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit = {},
     onEffect: (EF) -> Unit = {}
-) = launch(lifecycleState) { consume(processor(), onState, onEffect, viewEvents()) }
-
-fun <EV : Any> ComponentActivity.onProcessor(
-    lifecycleState: Lifecycle.State,
-    processor: () -> Processor<EV, Nothing, Nothing>,
-    viewEvents: () -> List<Flow<EV>> = { emptyList() },
-) = launch(lifecycleState) {
-    consume(
-        processor = processor(),
-        trigger = {},
-        viewEvents = viewEvents()
-    )
-}
-
-fun <EV : Any, ST : Any> ComponentActivity.onProcessor(
-    lifecycleState: Lifecycle.State,
-    processor: () -> Processor<EV, ST, Nothing>,
-    viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onState: (ST) -> Unit = {},
-) = launch(lifecycleState) {
-    consume(
-        processor = processor(),
-        render = onState,
-        trigger = {},
-        viewEvents = viewEvents()
-    )
-}
-
-@JvmName("componentOnProcessorEffect")
-fun <EV : Any, EF : Any> ComponentActivity.onProcessor(
-    lifecycleState: Lifecycle.State,
-    processor: () -> Processor<EV, Nothing, EF>,
-    viewEvents: () -> List<Flow<EV>> = { emptyList() },
-    onEffect: (EF) -> Unit = {}
-) = launch(lifecycleState) {
-    consume(
-        processor = processor(),
-        trigger = onEffect,
-        viewEvents = viewEvents()
-    )
-}
+) = launch(lifecycleState) { consume(processor(), viewEvents(), onState, onEffect) }
 
 private fun AppCompatActivity.launch(
     lifecycleState: Lifecycle.State,
