@@ -30,15 +30,15 @@ internal class FlowEffectProcessor<in EV : Any, EF : Any> constructor(
             @OptIn(InternalCoroutinesApi::class)
             @InternalCoroutinesApi
             override suspend fun collect(collector: FlowCollector<Nothing>) {
+                /* Nothing */
             }
         }
 
-    private val effectsCollector: EffectsCollector<EF> =
-        object : EffectsCollector<EF> {
-            override fun sendEffect(effect: EF) {
-                scope.launch { effectSharedFlow.emit(effect) }
-            }
+    private val effectsCollector: EffectsCollector<EF> = object : EffectsCollector<EF> {
+        override fun sendEffect(effect: EF) {
+            scope.launch { effectSharedFlow.emit(effect) }
         }
+    }
 
     init {
         scope.launch { prepare(effectsCollector) }
