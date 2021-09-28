@@ -1,58 +1,97 @@
 [![](https://jitpack.io/v/mtomczynski/ellipse.svg)](https://jitpack.io/#mtomczynski/ellipse)
 
-## 🚧 Ellipse 🚧
+## Ellipse
+
 ### Pragmatic Unidirectional Data Flow for Android
 
-Ellipse is a library that helps to implement unidirectional data flow in [Kotlin](https://github.com/jetbrains/kotlin) using [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) in the most simplistic manner possible. All API's are based on extension functions. Thanks to this design choice library plays well with [Jetpack Compose](https://developer.android.com/jetpack/compose) or [Dagger/Dagger Hilt](https://dagger.dev/).
+Ellipse is a library that helps to implement unidirectional data flow
+in [Kotlin](https://github.com/jetbrains/kotlin)
+using [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) in the most simplistic manner
+possible. All API's are based on extension functions. Thanks to this design choice library plays
+well with [Jetpack Compose](https://developer.android.com/jetpack/compose)
+or [Dagger/Dagger Hilt](https://dagger.dev/).
 
 ### Adding dependency
+
 Add `jitpack` to your repositories:
+
 ```
 repositories {
-    ...
     maven("https://jitpack.io")
 }
 ```
 
 Add the dependency:
+
 ```kotlin
 dependencies {
-    implementation("com.github.mtomczynski.ellipse:ellipse-core:0.1.0")
-    testImplementation("com.github.mtomczynski.ellipse:ellipse-test:0.1.0")
+    implementation("com.github.mtomczynski.ellipse:ellipse-core:0.9.5")
+    testImplementation("com.github.mtomczynski.ellipse:ellipse-test:0.9.5")
 }
 ```
+
 ### Glossary
 
-- **Processor** - object that creates the unidirectional data flow loop. There are 3 variants of the object: `StateProcessor`, `StateEffectProcessor`, `EffectProcessor`.  
-- **Event** - Event produced by the view and consumed by the processor. E.g. button click 
-- **State** - View's state.  
-- **Effect** - Events sent from the processor to the view, effects aren't cached for new subscribers, e.g. effects won't be resend during configuration change. They're useful for navigation, or showing popups and messages on the UI. E.g. `GoToHomeScreenEffect`  
-- **PartialState** - Object to help modify the view state through `reduce` method.  
+- **Processor** - object that creates the unidirectional data flow loop.
+- **Event** - Event produced by the view and consumed by the processor. E.g. button click.
+- **State** - View's state.
+- **Effect** - Events sent from the processor to the view, effects aren't cached for new
+  subscribers, e.g. effects won't be resend during configuration change. They're useful for
+  navigation, or showing popups and messages on the UI. E.g. `GoToHomeScreenEffect`.
+- **PartialState** - Object to help modify the view state through `reduce` method.
 
-View creates view events, which are sent to the processor. Processor maps view events to partial states. Partial state modifies the view's state, which is sent back to view to be rendered.  
+View creates view events, which are sent to the processor. Processor maps view events to partial
+states. Partial state modifies the view's state, which is sent back to view to be rendered.
 
-Processor's have minimal public API that is needed to create unidirectional data flow, e.g. `StateProcessor`:
+Processor have minimal public API that is needed to create unidirectional data flow,
+e.g. `StateProcessor`:
+
 ```kotlin
 interface StateProcessor<in EV : Any, out ST : Any> {
     val state: StateFlow<ST>
+    val effect: Flow<EF>
     fun sendEvent(event: EV)
 }
 ```
 
 ### How to use it
 
-1. Create processor object with one of the extension functions on `ViewModel` or `CoroutineScope`: 
-  - `stateProcessor(...)`
-  - `stateEffectProcessor(...)`
-  - `effectProcessor(...)`
+1. Create processor object with one of the extension functions on `ViewModel` or `CoroutineScope`:
+
+- `processor(...)`
+    - You can for example define `typealias` with the generics definition:
+
+```kotlin
+typelias RegisterProcessor = Processor<RegisterEvent, RegisterState, RegisterEffect>
+
+val processor: RegisterProcessor = processor(
+  initialState = RegisterState(),
+  prepare = { flowOf(...) },
+  onEvent = { flowOf(...) }
+```
+
+- If you don't need for example effects, or states you can put `Nothing` as generic definition:
+
+```kotlin
+val processor: Processor<MyEvent, Nothing, Nothing> = processor(
+    prepare = { ... },
+    onEvent = { ... }
+)
+```
+
 2. Subscribe to processor in view layer (Activity, Fragment):
-  - `onProcessor(lifecycleState = Lifecycle.State.###, ...)`
+
+- `onProcessor(lifecycleState = Lifecycle.State.###, ...)`
+
 3. Or in Composable:
-  - `viewModel.processor.collectAsState { ... }`
+
+- `viewModel.processor.collectAsState { ... }`
 
 #### Real world example - Login screen
 
-First create state, effects, events and partial state classes. Then create processor in the `ViewModel`.
+First create state, effects, events and partial state classes. Then create processor in
+the `ViewModel`.
+
 ```kotlin
 data class LoginState(val isLoading: Boolean = false)
 
@@ -75,10 +114,11 @@ sealed interface LoginPartialState : PartialState<LoginState> {
     }
 }
 
+typelias LoginProcessor = Processor<LoginEvent, LoginState, LoginEffect>
+
 class LoginViewModel : ViewModel() {
 
-    val processor: StateEffectProcessor<LoginEvent, LoginState, LoginEffect> = 
-      stateEffectProcessor(initialState = LoginState()) { effects, event ->
+    val processor: LoginProcessor = processor(LoginState()) { effects, event ->
             when (event) {
                 is LoginEvent.LoginClick -> flow {
                     emit(LoginPartialState.ShowLoading)
@@ -95,6 +135,7 @@ class LoginViewModel : ViewModel() {
 ```
 
 Then you can use it from view's layer
+
 ```kotlin
 // Compose
 @Composable
@@ -132,14 +173,15 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun viewEvents(): List<Flow<LoginEvent>> = listOf(
-        binding.loginButton.clicks().map { LoginEvent.LoginClick(binding.email.text, binding.pass.text) }
+        binding.loginButton.clicks()
+            .map { LoginEvent.LoginClick(binding.email.text, binding.pass.text) }
     )
-    
+
     private fun trigger(effect: LoginEffect): Unit = when (effect) {
         LoginEffect.GoToHome -> openHome()
         LoginEffect.ShowError -> showErrorToast()
     }
-    
+
     private fun openHome() = TODO()
     private fun showErrorToast() = TODO()
 }
