@@ -66,16 +66,17 @@ typelias RegisterProcessor = Processor<RegisterEvent, RegisterState, RegisterEff
 
 val processor: RegisterProcessor = processor(
   initialState = RegisterState(),
-  prepare = { flowOf(...) },
-  onEvent = { flowOf(...) }
+  prepare = { flowOf(/* ... */) },
+  onEvent = { flowOf(/* ... */) }
+)
 ```
 
 - If you don't need for example effects, or states you can put `Nothing` as generic definition:
 
 ```kotlin
 val processor: Processor<MyEvent, Nothing, Nothing> = processor(
-    prepare = { ... },
-    onEvent = { ... }
+    prepare = { /* ... */ },
+    onEvent = { /* ... */ }
 )
 ```
 
