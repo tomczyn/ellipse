@@ -15,8 +15,8 @@ import kotlinx.coroutines.launch
 internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> constructor(
     private val scope: CoroutineScope,
     initialState: ST,
-    prepare: (suspend (EffectsCollector<EF>) -> Flow<PA>)? = null,
-    private val onEvent: (suspend (EffectsCollector<EF>, EV) -> Flow<PA>)? = null,
+    prepare: suspend (EffectsCollector<EF>) -> Flow<PA>,
+    private val onEvent: suspend (EffectsCollector<EF>, EV) -> Flow<PA>,
 ) : Processor<EV, ST, EF> {
 
     override val effect: Flow<EF>
@@ -34,16 +34,12 @@ internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialS
     }
 
     init {
-        prepare?.let {
-            scope.launch {
-                it(effectsCollector).collect { stateFlow.reduceAndSet(it) }
-            }
+        scope.launch {
+            prepare(effectsCollector).collect { stateFlow.reduceAndSet(it) }
         }
     }
 
     override fun sendEvent(event: EV) {
-        onEvent?.let {
-            scope.launch { it(effectsCollector, event).collect { stateFlow.reduceAndSet(it) } }
-        }
+        scope.launch { onEvent(effectsCollector, event).collect { stateFlow.reduceAndSet(it) } }
     }
 }

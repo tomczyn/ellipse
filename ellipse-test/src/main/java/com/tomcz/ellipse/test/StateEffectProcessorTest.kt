@@ -1,25 +1,40 @@
 package com.tomcz.ellipse.test
 
 import com.tomcz.ellipse.Processor
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.TestCoroutineScope
 
 class StateEffectProcessorTest<E : Any, S : Any, EF : Any, T : Processor<E, S, EF>>(
-    private val processor: T,
+    processorFactory: () -> T,
     events: List<E>,
-    scope: CoroutineScope
+    processorScope: TestCoroutineScope
 ) {
 
     val states: ListTester<S>
-        get() = ListTester(_states.values)
-    private val _states: FlowTester<S> = FlowTester(scope, processor.state)
-
     val effects: ListTester<EF>
-        get() = ListTester(_effects.values)
-    private val _effects: FlowTester<EF> = FlowTester(scope, processor.effect)
+
+    private val internalScope = TestCoroutineScope()
 
     init {
+        processorScope.pauseDispatcher()
+
+        val processor = processorFactory()
+
+        val statesList = mutableListOf<S>()
+        val stateJob = internalScope.launch { processor.state.toList(statesList) }
+
+        val effectsList = mutableListOf<EF>()
+        val effectJob = internalScope.launch { processor.effect.toList(effectsList) }
+
+        processorScope.resumeDispatcher()
+
         events.forEach { event -> processor.sendEvent(event) }
-        _states.finish()
-        _effects.finish()
+
+        stateJob.cancel()
+        effectJob.cancel()
+
+        states = ListTester(statesList)
+        effects = ListTester(effectsList)
     }
 }

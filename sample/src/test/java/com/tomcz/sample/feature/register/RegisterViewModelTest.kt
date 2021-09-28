@@ -8,17 +8,27 @@ import org.junit.jupiter.api.Test
 
 internal class RegisterViewModelTest : BaseCoroutineTest() {
 
-    private val viewModel: RegisterViewModel = RegisterViewModel()
+    private val viewModel: RegisterViewModel by lazy { RegisterViewModel() }
 
     @Test
-    fun `test changing email`() = processorTest(
-        given = viewModel::processor,
-        whenEvent = RegisterEvent.EmailChanged("test@test.test"),
+    fun `test prepare`() = processorTest(
+        processor = { viewModel.processor },
+        given = { /* Setup */ },
         thenStates = {
             assertValues(
                 RegisterState(),
-                RegisterState("test@test.test")
+                RegisterState(email = "load_saved_value"),
             )
-        }
+        },
+    )
+
+    @Test
+    fun `test changing email`() = processorTest(
+        processor = { viewModel.processor },
+        given = { /* Setup */ },
+        whenEvent = RegisterEvent.EmailChanged("test@test.test"),
+        thenStates = {
+            assertLast(RegisterState("test@test.test"))
+        },
     )
 }
