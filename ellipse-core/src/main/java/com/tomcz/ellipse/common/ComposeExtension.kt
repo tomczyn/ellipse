@@ -7,17 +7,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
-import com.tomcz.ellipse.StateEffectProcessor
-import com.tomcz.ellipse.StateProcessor
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.emptyFlow
-import kotlinx.coroutines.flow.map
+import com.tomcz.ellipse.Processor
+import kotlinx.coroutines.flow.*
 
 @Composable
-fun <EV : Any, ST : Any, T> StateProcessor<EV, ST>.collectAsState(
+fun <EV : Any, ST : Any, T> Processor<EV, ST, *>.collectAsState(
     lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,
     mapper: (ST) -> T
 ): State<T> {
@@ -28,16 +22,9 @@ fun <EV : Any, ST : Any, T> StateProcessor<EV, ST>.collectAsState(
     }.collectAsState(initial = mapper(state.value))
 }
 
-fun <EV : Any, ST : Any> previewStateProcessor(
+fun <EV : Any, ST : Any, EF : Any> previewProcessor(
     state: ST
-): StateProcessor<EV, ST> = object : StateProcessor<EV, ST> {
-    override val state: StateFlow<ST> = MutableStateFlow(state)
-    override fun sendEvent(event: EV) {}
-}
-
-fun <EV : Any, ST : Any, EF : Any> previewStateEffectProcessor(
-    state: ST
-): StateEffectProcessor<EV, ST, EF> = object : StateEffectProcessor<EV, ST, EF> {
+): Processor<EV, ST, EF> = object : Processor<EV, ST, EF> {
     override val state: StateFlow<ST> = MutableStateFlow(state)
     override fun sendEvent(event: EV) {}
     override val effect: Flow<EF> = emptyFlow()

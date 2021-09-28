@@ -2,7 +2,7 @@ package com.tomcz.ellipse.internal
 
 import com.tomcz.ellipse.EffectsCollector
 import com.tomcz.ellipse.PartialState
-import com.tomcz.ellipse.StateEffectProcessor
+import com.tomcz.ellipse.Processor
 import com.tomcz.ellipse.internal.util.reduceAndSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -15,9 +15,9 @@ import kotlinx.coroutines.launch
 internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> constructor(
     private val scope: CoroutineScope,
     initialState: ST,
-    prepare: (suspend (EffectsCollector<EF>) -> Flow<PA>)? = null,
-    private val onEvent: (suspend (EffectsCollector<EF>, EV) -> Flow<PA>)? = null,
-) : StateEffectProcessor<EV, ST, EF> {
+    prepare: suspend (EffectsCollector<EF>) -> Flow<PA>,
+    private val onEvent: suspend (EffectsCollector<EF>, EV) -> Flow<PA>,
+) : Processor<EV, ST, EF> {
 
     override val effect: Flow<EF>
         get() = effectSharedFlow
@@ -28,22 +28,18 @@ internal class FlowStateEffectProcessor<in EV : Any, ST : Any, out PA : PartialS
     private val stateFlow: MutableStateFlow<ST> = MutableStateFlow(initialState)
 
     private val effectsCollector: EffectsCollector<EF> = object : EffectsCollector<EF> {
-        override fun send(effect: EF) {
+        override fun sendEffect(effect: EF) {
             scope.launch { effectSharedFlow.emit(effect) }
         }
     }
 
     init {
-        prepare?.let {
-            scope.launch {
-                it(effectsCollector).collect { stateFlow.reduceAndSet(it) }
-            }
+        scope.launch {
+            prepare(effectsCollector).collect { stateFlow.reduceAndSet(it) }
         }
     }
 
     override fun sendEvent(event: EV) {
-        onEvent?.let {
-            scope.launch { it(effectsCollector, event).collect { stateFlow.reduceAndSet(it) } }
-        }
+        scope.launch { onEvent(effectsCollector, event).collect { stateFlow.reduceAndSet(it) } }
     }
 }

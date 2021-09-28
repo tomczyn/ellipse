@@ -1,7 +1,7 @@
 package com.tomcz.ellipse.internal
 
 import com.tomcz.ellipse.PartialState
-import com.tomcz.ellipse.StateEffectProcessor
+import com.tomcz.ellipse.Processor
 import com.tomcz.ellipse.common.stateEffectProcessor
 import com.tomcz.ellipse.util.BaseCoroutineTest
 import kotlinx.coroutines.flow.collect
@@ -24,21 +24,21 @@ internal class FlowStateEffectProcessorTest : BaseCoroutineTest() {
 
     @Test
     fun `test getting default state`() {
-        val processor: StateEffectProcessor<CounterEvent, CounterState, CounterEffect> =
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             stateEffectProcessor(CounterState())
         assertEquals(CounterState(), processor.state.value)
     }
 
     @Test
     fun `test default state and prepare`() {
-        val processor: StateEffectProcessor<CounterEvent, CounterState, CounterEffect> =
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             stateEffectProcessor(CounterState(), prepare = { flow { emit(IncreasePartialState) } })
         assertEquals(CounterState(1), processor.state.value)
     }
 
     @Test
     fun `test state change after event`() {
-        val processor: StateEffectProcessor<CounterEvent, CounterState, CounterEffect> =
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             stateEffectProcessor(CounterState()) { _, _ -> flow { emit(IncreasePartialState) } }
         assertEquals(CounterState(0), processor.state.value)
         processor.sendEvent(CounterEvent)
@@ -47,7 +47,7 @@ internal class FlowStateEffectProcessorTest : BaseCoroutineTest() {
 
     @Test
     fun `test prepare and state change after event`() {
-        val processor: StateEffectProcessor<CounterEvent, CounterState, CounterEffect> =
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             stateEffectProcessor(
                 CounterState(), prepare = { flow { emit(IncreasePartialState) } }
             ) { _, _ -> flow { emit(IncreasePartialState) } }
@@ -58,7 +58,7 @@ internal class FlowStateEffectProcessorTest : BaseCoroutineTest() {
 
     @Test
     fun `test effect`() = runBlockingTest {
-        val processor: StateEffectProcessor<CounterEvent, CounterState, CounterEffect> =
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             stateEffectProcessor(
                 CounterState(),
                 prepare = { flow { emit(IncreasePartialState) } }
@@ -75,7 +75,7 @@ internal class FlowStateEffectProcessorTest : BaseCoroutineTest() {
 
     @Test
     fun `test resubscribing state`() = runBlockingTest {
-        val processor: StateEffectProcessor<CounterEvent, CounterState, CounterEffect> =
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             stateEffectProcessor(
                 CounterState(),
                 prepare = { flow { emit(IncreasePartialState) } }
@@ -97,7 +97,7 @@ internal class FlowStateEffectProcessorTest : BaseCoroutineTest() {
 
     @Test
     fun `test resubscribing effects`() = runBlockingTest {
-        val processor: StateEffectProcessor<CounterEvent, CounterState, CounterEffect> =
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             stateEffectProcessor(
                 CounterState(),
                 prepare = { flow { emit(IncreasePartialState) } }
@@ -123,7 +123,7 @@ internal class FlowStateEffectProcessorTest : BaseCoroutineTest() {
 
     @Test
     fun `test having multiple subscribers`() = runBlockingTest {
-        val processor: StateEffectProcessor<CounterEvent, CounterState, CounterEffect> =
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             stateEffectProcessor(CounterState()) { effects, _ -> effects.send(CounterEffect); emptyFlow() }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }

@@ -1,43 +1,31 @@
 package com.tomcz.ellipse.common
 
-import com.tomcz.ellipse.EffectProcessor
+
 import com.tomcz.ellipse.EffectsCollector
 import com.tomcz.ellipse.PartialState
-import com.tomcz.ellipse.StateEffectProcessor
-import com.tomcz.ellipse.StateProcessor
+import com.tomcz.ellipse.Processor
 import com.tomcz.ellipse.internal.FlowEffectProcessor
 import com.tomcz.ellipse.internal.FlowStateEffectProcessor
-import com.tomcz.ellipse.internal.FlowStateProcessor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
-fun <EV : Any, ST : Any, PA : PartialState<ST>> CoroutineScope.stateProcessor(
-    initialState: ST,
-    prepare: (suspend () -> Flow<PA>)? = null,
-    onEvent: (suspend (EV) -> Flow<PA>)? = null
-): StateProcessor<EV, ST> = FlowStateProcessor(
+fun <EV : Any, EF : Any> CoroutineScope.processor(
+    prepare: suspend EffectsCollector<EF>.() -> Unit = {},
+    onEvent: suspend EffectsCollector<EF>.(EV) -> Unit = {},
+): Processor<EV, Nothing, EF> = FlowEffectProcessor(
     scope = this,
-    initialState = initialState,
     prepare = prepare,
     onEvent = onEvent
 )
 
-fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> CoroutineScope.stateEffectProcessor(
+fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> CoroutineScope.processor(
     initialState: ST,
-    prepare: (suspend (EffectsCollector<EF>) -> Flow<PA>)? = null,
-    onEvent: (suspend (EffectsCollector<EF>, EV) -> Flow<PA>)? = null,
-): StateEffectProcessor<EV, ST, EF> = FlowStateEffectProcessor(
+    prepare: suspend EffectsCollector<EF>.() -> Flow<PA> = { emptyFlow() },
+    onEvent: suspend EffectsCollector<EF>.(EV) -> Flow<PA> = { emptyFlow() },
+): Processor<EV, ST, EF> = FlowStateEffectProcessor(
     scope = this,
     initialState = initialState,
-    prepare = prepare,
-    onEvent = onEvent
-)
-
-fun <EV : Any, EF : Any> CoroutineScope.effectProcessor(
-    prepare: (suspend (EffectsCollector<EF>) -> Unit)? = null,
-    onEvent: (suspend (EffectsCollector<EF>, EV) -> Unit)? = null,
-): EffectProcessor<EV, EF> = FlowEffectProcessor(
-    scope = this,
     prepare = prepare,
     onEvent = onEvent
 )
