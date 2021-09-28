@@ -21,7 +21,7 @@ internal class RegisterViewModelTest : BaseCoroutineTest() {
         thenStates = {
             assertValues(
                 RegisterState(),
-                RegisterState(email = "load_saved_value"),
+                RegisterState(email = "test@test.test"),
             )
         },
     )
