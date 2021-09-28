@@ -59,7 +59,7 @@ interface StateProcessor<in EV : Any, out ST : Any> {
 1. Create processor object with one of the extension functions on `ViewModel` or `CoroutineScope`:
 
 - `processor(...)`
-    - You can for example define `typealias` with the generics definition:
+    - It's good to define `typealias` for processor with defined generics. If you'd need to send it as an argument in Composable function it'll make it more readable.
 
 ```kotlin
 typelias RegisterProcessor = Processor<RegisterEvent, RegisterState, RegisterEffect>
