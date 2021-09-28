@@ -43,11 +43,10 @@ dependencies {
 View creates view events, which are sent to the processor. Processor maps view events to partial
 states. Partial state modifies the view's state, which is sent back to view to be rendered.
 
-Processor have minimal public API that is needed to create unidirectional data flow,
-e.g. `StateProcessor`:
+Processor have minimal public API that is needed to create unidirectional data flow:
 
 ```kotlin
-interface StateProcessor<in EV : Any, out ST : Any> {
+interface Processor<in EV : Any, out ST : Any, out EF : Any> {
     val state: StateFlow<ST>
     val effect: Flow<EF>
     fun sendEvent(event: EV)
