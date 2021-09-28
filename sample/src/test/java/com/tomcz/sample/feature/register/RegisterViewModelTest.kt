@@ -8,6 +8,10 @@ import org.junit.jupiter.api.Test
 
 internal class RegisterViewModelTest : BaseCoroutineTest() {
 
+    /*
+     We can test processor's prepare method only when viewModel is created lazily.
+     For example with lazy delegate or in the function. We can't create RegisterViewModel right away
+     */
     private val viewModel: RegisterViewModel by lazy { RegisterViewModel() }
 
     @Test
