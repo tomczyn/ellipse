@@ -61,10 +61,10 @@ interface Processor<in EV : Any, out ST : Any, out EF : Any> {
     - It's good to define `typealias` for processor. So you won't have to write the generic types if you want to send it as an argument (for example to a Composable function).
 
 ```kotlin
-typelias RegisterProcessor = Processor<RegisterEvent, RegisterState, RegisterEffect>
+typelias LoginProcessor = Processor<LoginEvent, LoginState, LoginEffect>
 
-val processor: RegisterProcessor = processor(
-  initialState = RegisterState(),
+val processor: LoginProcessor = processor(
+  initialState = LoginState(),
   prepare = { flowOf(/* ... */) },
   onEvent = { flowOf(/* ... */) }
 )
