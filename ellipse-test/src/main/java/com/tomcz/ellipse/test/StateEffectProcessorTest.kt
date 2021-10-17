@@ -1,10 +1,12 @@
 package com.tomcz.ellipse.test
 
 import com.tomcz.ellipse.Processor
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineScope
 
+@ExperimentalCoroutinesApi
 class StateEffectProcessorTest<E : Any, S : Any, EF : Any, T : Processor<E, S, EF>>(
     processorFactory: () -> T,
     events: List<E>,

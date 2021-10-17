@@ -16,7 +16,7 @@ object AndroidConfig {
         const val safeArgs = "androidx.navigation.safeargs.kotlin"
     }
 
-    const val sdkVersion = 30
+    const val sdkVersion = 31
     const val minSdkVersion = 21
     val javaVersion = JavaVersion.VERSION_11
 }

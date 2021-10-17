@@ -1,8 +1,10 @@
 package com.tomcz.ellipse.util
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineScope
 import org.junit.jupiter.api.extension.RegisterExtension
 
+@ExperimentalCoroutinesApi
 abstract class BaseCoroutineTest(
     @RegisterExtension
     @JvmField

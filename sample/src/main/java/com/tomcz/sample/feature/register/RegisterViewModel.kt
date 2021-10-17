@@ -22,9 +22,7 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
 
     val processor: RegisterProcessor = processor(
         initialState = RegisterState(),
-        prepare = {
-            flowOf(RegisterPartialState.EmailChanged("test@test.test"))
-        },
+        prepare = { emptyFlow() },
         onEvent = { event ->
             when (event) {
                 is RegisterEvent.EmailChanged -> flowOf(RegisterPartialState.EmailChanged(event.email))

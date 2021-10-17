@@ -3,6 +3,7 @@ package com.tomcz.ellipse.internal
 import com.tomcz.ellipse.Processor
 import com.tomcz.ellipse.common.processor
 import com.tomcz.ellipse.util.BaseCoroutineTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test
 
 internal typealias CounterStateProcessor = Processor<CounterEvent, CounterState, CounterEffect>
 
+@ExperimentalCoroutinesApi
 internal class FlowStateEffectProcessorTest : BaseCoroutineTest() {
 
     @Test

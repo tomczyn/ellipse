@@ -4,8 +4,10 @@ import com.tomcz.ellipse.test.processorTest
 import com.tomcz.sample.feature.register.state.RegisterEvent
 import com.tomcz.sample.feature.register.state.RegisterState
 import com.tomcz.sample.util.BaseCoroutineTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.jupiter.api.Test
 
+@ExperimentalCoroutinesApi
 internal class RegisterViewModelTest : BaseCoroutineTest() {
 
     /*
@@ -19,10 +21,7 @@ internal class RegisterViewModelTest : BaseCoroutineTest() {
         processor = { viewModel.processor },
         given = { /* Setup */ },
         thenStates = {
-            assertValues(
-                RegisterState(),
-                RegisterState(email = "test@test.test"),
-            )
+            assertValues(RegisterState())
         },
     )
 
