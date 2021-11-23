@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 internal class FlowEffectProcessor<in EV : Any, EF : Any> constructor(
@@ -34,13 +35,32 @@ internal class FlowEffectProcessor<in EV : Any, EF : Any> constructor(
             }
         }
 
+    private val effectCache: MutableList<EF> = mutableListOf()
+
     private val effectsCollector: EffectsCollector<EF> = object : EffectsCollector<EF> {
-        override fun sendEffect(effect: EF) {
-            scope.launch { effectSharedFlow.emit(effect) }
+        override fun sendEffect(vararg effect: EF) {
+            scope.launch {
+                effect.forEach {
+                    if (effectSharedFlow.subscriptionCount.value != 0) {
+                        effectSharedFlow.emit(it)
+                    } else {
+                        effectCache.add(it)
+                    }
+                }
+            }
         }
     }
 
     init {
+        scope.launch {
+            effectSharedFlow.subscriptionCount.collect { subscribers ->
+                if (subscribers != 0 && effectCache.isNotEmpty()) {
+                    while (effectCache.isNotEmpty()) {
+                        effectSharedFlow.emit(effectCache.removeFirst())
+                    }
+                }
+            }
+        }
         scope.launch { prepare(effectsCollector) }
     }
 

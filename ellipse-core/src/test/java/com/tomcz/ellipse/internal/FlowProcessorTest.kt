@@ -3,7 +3,11 @@ package com.tomcz.ellipse.internal
 import com.tomcz.ellipse.Processor
 import com.tomcz.ellipse.common.processor
 import com.tomcz.ellipse.util.BaseCoroutineTest
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
@@ -12,30 +16,27 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-internal typealias CounterStateProcessor = Processor<CounterEvent, CounterState, CounterEffect>
-
 @ExperimentalCoroutinesApi
-internal class FlowStateEffectProcessorTest : BaseCoroutineTest() {
+internal class FlowProcessorTest : BaseCoroutineTest() {
 
     @Test
     fun `test getting default state`() {
-        val processor: CounterStateProcessor = processor(CounterState())
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
+            processor(CounterState())
         assertEquals(CounterState(), processor.state.value)
     }
 
     @Test
     fun `test default state and prepare`() {
-        val processor: CounterStateProcessor =
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             processor(CounterState(), prepare = { flow { emit(IncreasePartialState) } })
         assertEquals(CounterState(1), processor.state.value)
     }
 
     @Test
     fun `test state change after event`() {
-        val processor: CounterStateProcessor = processor(
-            initialState = CounterState(),
-            onEvent = { flow { emit(IncreasePartialState) } }
-        )
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
+            processor(CounterState()) { flow { emit(IncreasePartialState) } }
         assertEquals(CounterState(0), processor.state.value)
         processor.sendEvent(CounterEvent)
         assertEquals(CounterState(1), processor.state.value)
@@ -43,11 +44,10 @@ internal class FlowStateEffectProcessorTest : BaseCoroutineTest() {
 
     @Test
     fun `test prepare and state change after event`() {
-        val processor: CounterStateProcessor = processor(
-            initialState = CounterState(),
-            prepare = { flow { emit(IncreasePartialState) } },
-            onEvent = { flow { emit(IncreasePartialState) } }
-        )
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
+            processor(
+                CounterState(), prepare = { flow { emit(IncreasePartialState) } }
+            ) { flow { emit(IncreasePartialState) } }
         assertEquals(CounterState(1), processor.state.value)
         processor.sendEvent(CounterEvent)
         assertEquals(CounterState(2), processor.state.value)
@@ -55,85 +55,124 @@ internal class FlowStateEffectProcessorTest : BaseCoroutineTest() {
 
     @Test
     fun `test effect`() = runBlockingTest {
-        val processor: CounterStateProcessor = processor(
-            initialState = CounterState(),
-            prepare = { flow { emit(IncreasePartialState) } },
-            onEvent = {
+        val processorScope = CoroutineScope(coroutineContext + Job())
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
+            processorScope.processor(
+                CounterState(),
+                prepare = { flow { emit(IncreasePartialState) } }
+            ) {
                 sendEffect(CounterEffect)
                 emptyFlow()
             }
-        )
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
         processor.sendEvent(CounterEvent)
         assertEquals(listOf(CounterEffect), effects)
-        effectJob.cancel()
+        effectJob.cancelAndJoin()
+        processorScope.cancel()
     }
 
     @Test
     fun `test resubscribing state`() = runBlockingTest {
-        val processor: CounterStateProcessor = processor(
-            initialState = CounterState(),
-            prepare = { flow { emit(IncreasePartialState) } },
-            onEvent = { flow { emit(IncreasePartialState) } }
-        )
+        val processorScope = CoroutineScope(coroutineContext + Job())
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
+            processorScope.processor(
+                CounterState(),
+                prepare = { flow { emit(IncreasePartialState) } }
+            ) {
+                flow { emit(IncreasePartialState) }
+            }
         val stateEvents = mutableListOf<CounterState>()
         val job = launch { processor.state.collect { stateEvents.add(it) } }
         assertEquals(listOf(CounterState(1)), stateEvents)
         processor.sendEvent(CounterEvent)
         assertEquals(listOf(CounterState(1), CounterState(2)), stateEvents)
-        job.cancel()
+        job.cancelAndJoin()
 
         val resubscribedEvents = mutableListOf<CounterState>()
         val resubscribedJob = launch { processor.state.collect { resubscribedEvents.add(it) } }
         assertEquals(listOf(CounterState(2)), resubscribedEvents)
-        resubscribedJob.cancel()
+        resubscribedJob.cancelAndJoin()
+        processorScope.cancel()
     }
 
     @Test
     fun `test resubscribing effects`() = runBlockingTest {
-        val processor: CounterStateProcessor = processor(
-            initialState = CounterState(),
-            prepare = { flow { emit(IncreasePartialState) } },
-            onEvent = {
+        val processorScope = CoroutineScope(coroutineContext + Job())
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
+            processorScope.processor(
+                CounterState(),
+                prepare = { flow { emit(IncreasePartialState) } }
+            ) {
                 sendEffect(CounterEffect)
                 flow { emit(IncreasePartialState) }
             }
-        )
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
         assertEquals(CounterState(1), processor.state.value)
         processor.sendEvent(CounterEvent)
         assertEquals(CounterState(2), processor.state.value)
         assertEquals(listOf(CounterEffect), effects)
-        effectJob.cancel()
+        effectJob.cancelAndJoin()
 
         // Test resubscribing
         val emptyEffects = mutableListOf<CounterEffect>()
         val emptyEffectJob = launch { processor.effect.collect { emptyEffects.add(it) } }
         assertEquals(emptyList<CounterEffect>(), emptyEffects)
         assertEquals(CounterState(2), processor.state.value)
-        emptyEffectJob.cancel()
+        emptyEffectJob.cancelAndJoin()
+        processorScope.cancel()
     }
 
     @Test
     fun `test having multiple subscribers`() = runBlockingTest {
-        val processor: CounterStateProcessor = processor(
-            initialState = CounterState(),
-            onEvent = { sendEffect(CounterEffect); emptyFlow() }
-        )
+        val processorScope = CoroutineScope(coroutineContext + Job())
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
+            processorScope.processor(CounterState()) { sendEffect(CounterEffect); emptyFlow() }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
         val effect2Job = launch { processor.effect.collect { effects.add(it) } }
         processor.sendEvent(CounterEvent)
         assertEquals(listOf(CounterEffect, CounterEffect), effects)
-        effectJob.cancel()
-        effect2Job.cancel()
+        effectJob.cancelAndJoin()
+        effect2Job.cancelAndJoin()
 
         // Test resubscribing
         val emptyEffects = mutableListOf<CounterEffect>()
         val emptyEffectJob = launch { processor.effect.collect { emptyEffects.add(it) } }
         assertEquals(emptyList<CounterEffect>(), emptyEffects)
-        emptyEffectJob.cancel()
+        emptyEffectJob.cancelAndJoin()
+        processorScope.cancel()
+    }
+
+    @Test
+    fun `test caching effects when there are no subscribers`() = runBlockingTest {
+        val processorScope = CoroutineScope(coroutineContext + Job())
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
+            processorScope.processor(
+                CounterState(),
+                prepare = { flow { emit(IncreasePartialState) } }
+            ) {
+                sendEffect(CounterEffect)
+                flow { emit(IncreasePartialState) }
+            }
+        val effects = mutableListOf<CounterEffect>()
+        val effectJob = launch { processor.effect.collect { effects.add(it) } }
+        assertEquals(CounterState(1), processor.state.value)
+        processor.sendEvent(CounterEvent)
+        assertEquals(CounterState(2), processor.state.value)
+        assertEquals(listOf(CounterEffect), effects)
+        effectJob.cancelAndJoin()
+
+        processor.sendEvent(CounterEvent)
+        processor.sendEvent(CounterEvent)
+
+        // Test resubscribing
+        val cachedEffects = mutableListOf<CounterEffect>()
+        val cachedEffectsJob = launch { processor.effect.collect { cachedEffects.add(it) } }
+        assertEquals(listOf(CounterEffect, CounterEffect), cachedEffects)
+        assertEquals(CounterState(4), processor.state.value)
+        cachedEffectsJob.cancelAndJoin()
+        processorScope.cancel()
     }
 }

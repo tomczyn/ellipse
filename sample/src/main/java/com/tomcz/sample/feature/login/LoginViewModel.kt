@@ -3,11 +3,12 @@ package com.tomcz.sample.feature.login
 import androidx.lifecycle.ViewModel
 import com.tomcz.ellipse.Processor
 import com.tomcz.ellipse.common.processor
+import com.tomcz.ellipse.common.toNoAction
 import com.tomcz.sample.feature.login.state.LoginEffect
 import com.tomcz.sample.feature.login.state.LoginEvent
 import com.tomcz.sample.feature.login.state.LoginPartialState
 import com.tomcz.sample.feature.login.state.LoginState
-import com.tomcz.sample.util.toNoAction
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 
 typealias LoginProcessor = Processor<LoginEvent, LoginState, LoginEffect>
@@ -30,5 +31,8 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    private suspend fun loginUser(email: String, pass: String): Boolean = true
+    private suspend fun loginUser(email: String, pass: String): Boolean {
+        delay(2000)
+        return true
+    }
 }

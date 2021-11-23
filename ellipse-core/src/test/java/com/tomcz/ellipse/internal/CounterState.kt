@@ -12,4 +12,3 @@ object IncreasePartialState : PartialState<CounterState> {
     override fun reduce(oldState: CounterState): CounterState =
         oldState.copy(counter = oldState.counter + 1)
 }
-
