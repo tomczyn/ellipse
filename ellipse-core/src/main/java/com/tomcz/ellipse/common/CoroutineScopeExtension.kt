@@ -7,6 +7,7 @@ import com.tomcz.ellipse.internal.FlowEffectProcessor
 import com.tomcz.ellipse.internal.FlowProcessor
 import com.tomcz.ellipse.internal.util.consume
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
@@ -31,6 +32,7 @@ fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> CoroutineScope.process
     onEvent = onEvent
 )
 
+@FlowPreview
 fun <EV : Any, ST : Any, EF : Any> CoroutineScope.onProcessor(
     processor: () -> Processor<EV, ST, EF>,
     viewEvents: () -> List<Flow<EV>> = { emptyList() },

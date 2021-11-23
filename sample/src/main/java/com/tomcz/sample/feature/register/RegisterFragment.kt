@@ -55,7 +55,9 @@ import com.tomcz.sample.ui.MainAppTheme
 import com.tomcz.sample.ui.QuadruplePadding
 import com.tomcz.sample.ui.SampleTypography
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.FlowPreview
 
+@FlowPreview
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
@@ -223,7 +225,6 @@ private fun ProceedButton() {
         val processor = viewModel<RegisterViewModel>().processor
         FloatingActionButton(
             onClick = {
-                Log.d("Maciek", "Sending event")
                 processor.sendEvent(RegisterEvent.RegisterClicked)
             },
             backgroundColor = DarkGray,
