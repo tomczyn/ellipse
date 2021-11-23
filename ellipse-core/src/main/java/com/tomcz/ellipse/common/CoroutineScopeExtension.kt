@@ -5,7 +5,7 @@ import com.tomcz.ellipse.EffectsCollector
 import com.tomcz.ellipse.PartialState
 import com.tomcz.ellipse.Processor
 import com.tomcz.ellipse.internal.FlowEffectProcessor
-import com.tomcz.ellipse.internal.FlowStateEffectProcessor
+import com.tomcz.ellipse.internal.FlowProcessor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -23,7 +23,7 @@ fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> CoroutineScope.process
     initialState: ST,
     prepare: suspend EffectsCollector<EF>.() -> Flow<PA> = { emptyFlow() },
     onEvent: suspend EffectsCollector<EF>.(EV) -> Flow<PA> = { emptyFlow() },
-): Processor<EV, ST, EF> = FlowStateEffectProcessor(
+): Processor<EV, ST, EF> = FlowProcessor(
     scope = this,
     initialState = initialState,
     prepare = prepare,

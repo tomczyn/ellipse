@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
 internal typealias CounterStateProcessor = Processor<CounterEvent, CounterState, CounterEffect>
 
 @ExperimentalCoroutinesApi
-internal class FlowStateEffectProcessorTest : BaseCoroutineTest() {
+internal class FlowProcessorTest : BaseCoroutineTest() {
 
     @Test
     fun `test getting default state`() {
