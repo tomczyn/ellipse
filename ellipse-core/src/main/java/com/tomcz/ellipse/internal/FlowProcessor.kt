@@ -46,7 +46,7 @@ internal class FlowProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, E
     init {
         scope.launch {
             effectSharedFlow.subscriptionCount.collect { subscribers ->
-                if (subscribers != 0 && effectCache.isNotEmpty()) {
+                if (subscribers != 0) {
                     while (effectCache.isNotEmpty()) {
                         effectSharedFlow.emit(effectCache.removeFirst())
                     }
