@@ -11,12 +11,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.LinkedList
+import java.util.Queue
 
 internal class FlowProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> constructor(
     private val scope: CoroutineScope,
     initialState: ST,
-    prepare: suspend (EffectsCollector<EF>) -> Flow<PA>,
-    private val onEvent: suspend (EffectsCollector<EF>, EV) -> Flow<PA>,
+    prepare: suspend EffectsCollector<EF>.() -> Flow<PA>,
+    private val onEvent: suspend EffectsCollector<EF>.(EV) -> Flow<PA>,
 ) : Processor<EV, ST, EF> {
 
     override val effect: Flow<EF>
@@ -27,13 +29,32 @@ internal class FlowProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, E
         get() = stateFlow
     private val stateFlow: MutableStateFlow<ST> = MutableStateFlow(initialState)
 
+    private val effectCache: Queue<EF> = LinkedList()
+
     private val effectsCollector: EffectsCollector<EF> = object : EffectsCollector<EF> {
-        override fun sendEffect(effect: EF) {
-            scope.launch { effectSharedFlow.emit(effect) }
+        override fun sendEffect(vararg effect: EF) {
+            scope.launch {
+                effect.forEach {
+                    if (effectSharedFlow.subscriptionCount.value != 0) {
+                        effectSharedFlow.emit(it)
+                    } else {
+                        effectCache.add(it)
+                    }
+                }
+            }
         }
     }
 
     init {
+        scope.launch {
+            effectSharedFlow.subscriptionCount.collect { subscribers ->
+                if (subscribers != 0 && effectCache.isNotEmpty()) {
+                    while (effectCache.peek() != null) {
+                        effectCache.poll()?.let { effectSharedFlow.emit(it) }
+                    }
+                }
+            }
+        }
         scope.launch {
             prepare(effectsCollector).collect { stateFlow.reduceAndSet(it) }
         }
