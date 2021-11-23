@@ -11,8 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.util.LinkedList
-import java.util.Queue
 
 internal class FlowProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> constructor(
     private val scope: CoroutineScope,
@@ -29,7 +27,7 @@ internal class FlowProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, E
         get() = stateFlow
     private val stateFlow: MutableStateFlow<ST> = MutableStateFlow(initialState)
 
-    private val effectCache: Queue<EF> = LinkedList()
+    private val effectCache: MutableList<EF> = mutableListOf()
 
     private val effectsCollector: EffectsCollector<EF> = object : EffectsCollector<EF> {
         override fun sendEffect(vararg effect: EF) {
@@ -49,8 +47,8 @@ internal class FlowProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, E
         scope.launch {
             effectSharedFlow.subscriptionCount.collect { subscribers ->
                 if (subscribers != 0 && effectCache.isNotEmpty()) {
-                    while (effectCache.peek() != null) {
-                        effectCache.poll()?.let { effectSharedFlow.emit(it) }
+                    while (effectCache.isNotEmpty()) {
+                        effectSharedFlow.emit(effectCache.removeFirst())
                     }
                 }
             }
