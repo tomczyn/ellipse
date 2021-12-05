@@ -22,12 +22,12 @@ class LoginViewModel : ViewModel() {
                 val isSuccess = loginUser(event.email, event.pass)
                 emit(LoginPartialState.HideLoading)
                 if (isSuccess) {
-                    sendEffect(LoginEffect.GoToHome)
+                    effects.send(LoginEffect.GoToHome)
                 } else {
-                    sendEffect(LoginEffect.ShowError)
+                    effects.send(LoginEffect.ShowError)
                 }
             }
-            LoginEvent.GoToRegister -> sendEffect(LoginEffect.GoToRegister).toNoAction()
+            LoginEvent.GoToRegister -> effects.send(LoginEffect.GoToRegister).toNoAction()
         }
     }
 

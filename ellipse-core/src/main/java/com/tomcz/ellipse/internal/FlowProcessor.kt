@@ -3,6 +3,7 @@ package com.tomcz.ellipse.internal
 import com.tomcz.ellipse.EffectsCollector
 import com.tomcz.ellipse.PartialState
 import com.tomcz.ellipse.Processor
+import com.tomcz.ellipse.common.EllipseContext
 import com.tomcz.ellipse.internal.util.reduceAndSet
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -15,8 +16,8 @@ import kotlinx.coroutines.launch
 internal class FlowProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> constructor(
     private val scope: CoroutineScope,
     initialState: ST,
-    prepare: suspend EffectsCollector<EF>.() -> Flow<PA>,
-    private val onEvent: suspend EffectsCollector<EF>.(EV) -> Flow<PA>,
+    prepare: suspend EllipseContext<ST, EF>.() -> Flow<PA>,
+    private val onEvent: suspend EllipseContext<ST, EF>.(EV) -> Flow<PA>,
 ) : Processor<EV, ST, EF> {
 
     override val effect: Flow<EF>
@@ -29,8 +30,11 @@ internal class FlowProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, E
 
     private val effectCache: MutableList<EF> = mutableListOf()
 
+    private val context: EllipseContext<ST, EF>
+        get() = EllipseContext(state, effectsCollector)
+
     private val effectsCollector: EffectsCollector<EF> = object : EffectsCollector<EF> {
-        override fun sendEffect(vararg effect: EF) {
+        override fun send(vararg effect: EF) {
             scope.launch {
                 effect.forEach {
                     if (effectSharedFlow.subscriptionCount.value != 0) {
@@ -54,11 +58,11 @@ internal class FlowProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, E
             }
         }
         scope.launch {
-            prepare(effectsCollector).collect { stateFlow.reduceAndSet(it) }
+            prepare(context).collect { stateFlow.reduceAndSet(it) }
         }
     }
 
     override fun sendEvent(event: EV) {
-        scope.launch { onEvent(effectsCollector, event).collect { stateFlow.reduceAndSet(it) } }
+        scope.launch { onEvent(context, event).collect { stateFlow.reduceAndSet(it) } }
     }
 }

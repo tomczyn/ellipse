@@ -1,6 +1,5 @@
 package com.tomcz.ellipse.common
 
-import com.tomcz.ellipse.EffectsCollector
 import com.tomcz.ellipse.PartialState
 import com.tomcz.ellipse.Processor
 import com.tomcz.ellipse.internal.FlowEffectProcessor
@@ -13,8 +12,8 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 
 fun <EV : Any, EF : Any> CoroutineScope.processor(
-    prepare: suspend EffectsCollector<EF>.() -> Unit = {},
-    onEvent: suspend EffectsCollector<EF>.(EV) -> Unit = {},
+    prepare: suspend EllipseContext<Nothing, EF>.() -> Unit = {},
+    onEvent: suspend EllipseContext<Nothing, EF>.(EV) -> Unit = {},
 ): Processor<EV, Nothing, EF> = FlowEffectProcessor(
     scope = this,
     prepare = prepare,
@@ -23,8 +22,8 @@ fun <EV : Any, EF : Any> CoroutineScope.processor(
 
 fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> CoroutineScope.processor(
     initialState: ST,
-    prepare: suspend EffectsCollector<EF>.() -> Flow<PA> = { emptyFlow() },
-    onEvent: suspend EffectsCollector<EF>.(EV) -> Flow<PA> = { emptyFlow() },
+    prepare: suspend EllipseContext<ST, EF>.() -> Flow<PA> = { emptyFlow() },
+    onEvent: suspend EllipseContext<ST, EF>.(EV) -> Flow<PA> = { emptyFlow() },
 ): Processor<EV, ST, EF> = FlowProcessor(
     scope = this,
     initialState = initialState,

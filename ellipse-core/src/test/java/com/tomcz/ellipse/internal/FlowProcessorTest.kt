@@ -61,7 +61,7 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
                 CounterState(),
                 prepare = { flow { emit(IncreasePartialState) } }
             ) {
-                sendEffect(CounterEffect)
+                effects.send(CounterEffect)
                 emptyFlow()
             }
         val effects = mutableListOf<CounterEffect>()
@@ -104,7 +104,7 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
                 CounterState(),
                 prepare = { flow { emit(IncreasePartialState) } }
             ) {
-                sendEffect(CounterEffect)
+                effects.send(CounterEffect)
                 flow { emit(IncreasePartialState) }
             }
         val effects = mutableListOf<CounterEffect>()
@@ -128,7 +128,7 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
     fun `test having multiple subscribers`() = runBlockingTest {
         val processorScope = CoroutineScope(coroutineContext + Job())
         val processor: Processor<CounterEvent, CounterState, CounterEffect> =
-            processorScope.processor(CounterState()) { sendEffect(CounterEffect); emptyFlow() }
+            processorScope.processor(CounterState()) { effects.send(CounterEffect); emptyFlow() }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
         val effect2Job = launch { processor.effect.collect { effects.add(it) } }
@@ -153,7 +153,7 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
                 CounterState(),
                 prepare = { flow { emit(IncreasePartialState) } }
             ) {
-                sendEffect(CounterEffect)
+                effects.send(CounterEffect)
                 flow { emit(IncreasePartialState) }
             }
         val effects = mutableListOf<CounterEffect>()

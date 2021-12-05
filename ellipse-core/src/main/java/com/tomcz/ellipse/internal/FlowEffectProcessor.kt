@@ -2,6 +2,7 @@ package com.tomcz.ellipse.internal
 
 import com.tomcz.ellipse.EffectsCollector
 import com.tomcz.ellipse.Processor
+import com.tomcz.ellipse.common.EllipseContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -13,8 +14,8 @@ import kotlinx.coroutines.launch
 
 internal class FlowEffectProcessor<in EV : Any, EF : Any> constructor(
     private val scope: CoroutineScope,
-    prepare: suspend (EffectsCollector<EF>) -> Unit,
-    private val onEvent: suspend (EffectsCollector<EF>, EV) -> Unit
+    prepare: suspend EllipseContext<Nothing, EF>.() -> Unit,
+    private val onEvent: suspend EllipseContext<Nothing, EF>.(EV) -> Unit
 ) : Processor<EV, Nothing, EF> {
 
     override val effect: Flow<EF>
@@ -37,8 +38,11 @@ internal class FlowEffectProcessor<in EV : Any, EF : Any> constructor(
 
     private val effectCache: MutableList<EF> = mutableListOf()
 
+    private val context: EllipseContext<Nothing, EF>
+        get() = EllipseContext(state, effectsCollector)
+
     private val effectsCollector: EffectsCollector<EF> = object : EffectsCollector<EF> {
-        override fun sendEffect(vararg effect: EF) {
+        override fun send(vararg effect: EF) {
             scope.launch {
                 effect.forEach {
                     if (effectSharedFlow.subscriptionCount.value != 0) {
@@ -61,10 +65,10 @@ internal class FlowEffectProcessor<in EV : Any, EF : Any> constructor(
                 }
             }
         }
-        scope.launch { prepare(effectsCollector) }
+        scope.launch { prepare(context) }
     }
 
     override fun sendEvent(event: EV) {
-        scope.launch { onEvent(effectsCollector, event) }
+        scope.launch { onEvent(context, event) }
     }
 }
