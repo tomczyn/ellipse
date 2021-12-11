@@ -118,7 +118,7 @@ typelias LoginProcessor = Processor<LoginEvent, LoginState, LoginEffect>
 
 class LoginViewModel : ViewModel() {
 
-    val processor: LoginProcessor = processor(LoginState()) { effects, event ->
+    val processor: LoginProcessor = processor(LoginState()) { event ->
             when (event) {
                 is LoginEvent.LoginClick -> flow {
                     emit(LoginPartialState.ShowLoading)
