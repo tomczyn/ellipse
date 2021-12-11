@@ -6,4 +6,4 @@ import kotlinx.coroutines.flow.StateFlow
 class EllipseContext<ST : Any, EF : Any>(
     val state: StateFlow<ST>,
     val effects: EffectsCollector<EF>
-) : StateFlow<ST> by state
+)
