@@ -46,7 +46,11 @@ fun <EV : Any, ST : Any, EF : Any> Processor<EV, ST, EF>.collectEffect(
 fun <EV : Any, ST : Any, EF : Any> previewProcessor(
     state: ST
 ): Processor<EV, ST, EF> = object : Processor<EV, ST, EF> {
+
     override val state: StateFlow<ST> = MutableStateFlow(state)
-    override fun sendEvent(event: EV) {}
     override val effect: Flow<EF> = emptyFlow()
+
+    override fun sendEvent(event: EV) {
+        /* no-op */
+    }
 }
