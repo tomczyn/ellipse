@@ -3,8 +3,6 @@ plugins {
     id(AndroidConfig.Plugin.mavenPublish)
 }
 
-publishEllipse("ellipse-core")
-
 android {
     buildFeatures.compose = true
     composeOptions.kotlinCompilerExtensionVersion = Versions.compose

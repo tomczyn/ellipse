@@ -3,8 +3,6 @@ plugins {
     id(AndroidConfig.Plugin.mavenPublish)
 }
 
-publishEllipse("ellipse-test")
-
 dependencies {
     implementation(project(":ellipse-core"))
     implementation(Libs.Jetbrains.kotlinStdlib)
