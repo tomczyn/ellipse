@@ -23,7 +23,7 @@ internal class FlowEffectProcessorTest : BaseCoroutineTest() {
     fun `test effect`() = runBlockingTest {
         val processorScope = CoroutineScope(coroutineContext + Job())
         val processor: CounterEffectProcessor =
-            processorScope.processor { sendEffect(CounterEffect) }
+            processorScope.processor { effects.send(CounterEffect) }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
         processor.sendEvent(CounterEvent)
@@ -36,7 +36,7 @@ internal class FlowEffectProcessorTest : BaseCoroutineTest() {
     fun `test resubscribing effects`() = runBlockingTest {
         val processorScope = CoroutineScope(coroutineContext + Job())
         val processor: CounterEffectProcessor =
-            processorScope.processor { sendEffect(CounterEffect) }
+            processorScope.processor { effects.send(CounterEffect) }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
         processor.sendEvent(CounterEvent)
@@ -55,7 +55,7 @@ internal class FlowEffectProcessorTest : BaseCoroutineTest() {
     fun `test having multiple subscribers`() = runBlockingTest {
         val processorScope = CoroutineScope(coroutineContext + Job())
         val processor: CounterEffectProcessor =
-            processorScope.processor { sendEffect(CounterEffect) }
+            processorScope.processor { effects.send(CounterEffect) }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
         val effect2Job = launch { processor.effect.collect { effects.add(it) } }
@@ -76,7 +76,7 @@ internal class FlowEffectProcessorTest : BaseCoroutineTest() {
     fun `test caching effects when there are no subscribers`() = runBlockingTest {
         val processorScope = CoroutineScope(coroutineContext + Job())
         val processor: CounterEffectProcessor = processorScope.processor {
-            sendEffect(CounterEffect)
+            effects.send(CounterEffect)
         }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }

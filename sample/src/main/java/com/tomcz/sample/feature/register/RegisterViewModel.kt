@@ -32,10 +32,12 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
                 is RegisterEvent.RepeatPasswordChanged -> flowOf(
                     RegisterPartialState.RepeatPasswordChanged(event.repeatPassword)
                 )
-                RegisterEvent.GoToLogin -> sendEffect(RegisterEffect.GoToLogin)
-                    .toNoAction()
+                RegisterEvent.GoToLogin -> {
+                    effects.send(RegisterEffect.GoToLogin)
+                        .toNoAction()
+                }
                 RegisterEvent.RegisterClicked -> registerUser()
-                    .onCompletion { sendEffect(RegisterEffect.GoToHome) }
+                    .onCompletion { effects.send(RegisterEffect.GoToHome) }
                     .toNoAction()
             }
         })

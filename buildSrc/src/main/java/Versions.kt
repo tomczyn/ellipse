@@ -1,6 +1,6 @@
 object Versions {
     const val kotlin = "1.5.31"
-    const val gradle = "7.0.3"
+    const val gradle = "7.0.4"
     const val junit5Gradle = "1.8.0.0"
     const val junit5 = "5.8.0"
     const val coroutines = "1.5.2"
