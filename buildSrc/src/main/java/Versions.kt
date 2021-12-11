@@ -3,6 +3,8 @@ object Versions {
     const val gradle = "7.0.4"
     const val junit5Gradle = "1.8.0.0"
     const val junit5 = "5.8.0"
+    const val kover = "0.4.4"
+    const val detekt = "1.19.0"
     const val coroutines = "1.5.2"
     const val ktx = "1.7.0"
     const val ktxFragment = "1.4.0"

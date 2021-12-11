@@ -14,6 +14,8 @@ object AndroidConfig {
         const val hilt = "dagger.hilt.android.plugin"
         const val mavenPublish = "maven-publish"
         const val safeArgs = "androidx.navigation.safeargs.kotlin"
+        const val kover = "org.jetbrains.kotlinx.kover"
+        const val detekt = "io.gitlab.arturbosch.detekt"
     }
 
     const val sdkVersion = 31

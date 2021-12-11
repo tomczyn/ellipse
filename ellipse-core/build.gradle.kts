@@ -23,3 +23,12 @@ dependencies {
     testImplementation(Libs.Jetbrains.Coroutines.Test.coroutines)
     testImplementation(project(":ellipse-test"))
 }
+
+tasks.koverVerify {
+    rule {
+        name = "Minimal line coverage rate in percents"
+        bound {
+            minValue = 35
+        }
+    }
+}
