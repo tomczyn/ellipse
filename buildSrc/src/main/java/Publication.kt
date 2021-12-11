@@ -11,7 +11,11 @@ fun Project.publishEllipse(id: String) {
                     from(components.findByName("release"))
                     groupId = "com.tomcz.ellipse"
                     artifactId = id
-                    version = getLastTag()
+                    try {
+                        version = getLastTag()
+                    } catch (e: Throwable) {
+                        // no-op
+                    }
                 }
             }
         })
