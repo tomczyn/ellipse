@@ -68,7 +68,7 @@ internal class FlowEffectProcessor<in EV : Any, EF : Any> constructor(
         scope.launch { prepare(context) }
     }
 
-    override fun sendEvent(event: EV) {
-        scope.launch { onEvent(context, event) }
+    override fun sendEvent(vararg event: EV) {
+        scope.launch { event.forEach { onEvent(context, it) } }
     }
 }

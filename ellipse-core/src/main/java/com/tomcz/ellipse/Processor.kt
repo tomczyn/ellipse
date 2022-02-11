@@ -8,5 +8,5 @@ import kotlinx.coroutines.flow.StateFlow
 interface Processor<in EV : Any, out ST : Any, out EF : Any> {
     val state: StateFlow<ST>
     val effect: Flow<EF>
-    fun sendEvent(event: EV)
+    fun sendEvent(vararg event: EV)
 }

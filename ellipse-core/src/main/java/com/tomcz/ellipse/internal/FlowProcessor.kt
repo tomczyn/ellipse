@@ -62,7 +62,11 @@ internal class FlowProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, E
         }
     }
 
-    override fun sendEvent(event: EV) {
-        scope.launch { onEvent(context, event).collect { stateFlow.reduceAndSet(it) } }
+    override fun sendEvent(vararg event: EV) {
+        scope.launch {
+            event.forEach {
+                onEvent(context, it).collect { partial -> stateFlow.reduceAndSet(partial) }
+            }
+        }
     }
 }
