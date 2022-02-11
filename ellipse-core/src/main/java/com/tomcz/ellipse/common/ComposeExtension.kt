@@ -50,7 +50,7 @@ fun <EV : Any, ST : Any, EF : Any> previewProcessor(
     override val state: StateFlow<ST> = MutableStateFlow(state)
     override val effect: Flow<EF> = emptyFlow()
 
-    override fun sendEvent(event: EV) {
+    override fun sendEvent(vararg event: EV) {
         /* no-op */
     }
 }
