@@ -1,7 +1,6 @@
 package com.tomcz.sample.feature.register
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,11 +53,9 @@ import com.tomcz.sample.ui.DarkGray
 import com.tomcz.sample.ui.MainAppTheme
 import com.tomcz.sample.ui.QuadruplePadding
 import com.tomcz.sample.ui.SampleTypography
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 
 @FlowPreview
-@AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     private val viewModel: RegisterViewModel by viewModels()

@@ -17,7 +17,7 @@ buildscript {
         classpath(Libs.Plugins.kotlinGradle)
         classpath(Libs.Plugins.junit5)
         classpath(Libs.Plugins.ktlintGradle)
-        classpath(Libs.Plugins.hilt)
+        // classpath(Libs.Plugins.hilt)
         classpath(Libs.Plugins.safeArgs)
     }
 }
@@ -38,5 +38,13 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
         html.required.set(true)
         txt.required.set(true)
         sarif.required.set(true)
+    }
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency {
+        when (requested.name) {
+            "javapoet" -> useVersion("1.13.0")
+        }
     }
 }

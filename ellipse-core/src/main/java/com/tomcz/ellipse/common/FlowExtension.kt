@@ -8,7 +8,9 @@ import kotlinx.coroutines.flow.map
 @JvmName("toNoActionAny")
 fun <T : Any> Flow<*>.toNoAction(): Flow<PartialState<T>> = map { NoAction() }
 
+@Suppress("unused")
 @JvmName("toNoActionPartial")
 fun <T : Any> Flow<PartialState<T>>.toNoAction(): Flow<PartialState<T>> = this
 
+@Suppress("unused")
 fun <T : Any> Any?.toNoAction(): Flow<PartialState<T>> = flowOf(NoAction())

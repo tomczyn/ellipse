@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 internal class FlowEffectProcessor<in EV : Any, EF : Any> constructor(
@@ -30,9 +29,8 @@ internal class FlowEffectProcessor<in EV : Any, EF : Any> constructor(
                 get() = throw IllegalStateException("Can't access Nothing value")
 
             @OptIn(InternalCoroutinesApi::class)
-            @InternalCoroutinesApi
-            override suspend fun collect(collector: FlowCollector<Nothing>) {
-                /* Nothing */
+            override suspend fun collect(collector: FlowCollector<Nothing>): Nothing {
+                throw IllegalStateException()
             }
         }
 
