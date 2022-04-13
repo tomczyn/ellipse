@@ -5,29 +5,25 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
-import kotlinx.coroutines.test.pauseDispatcher
-import kotlinx.coroutines.test.resumeDispatcher
 
 @ExperimentalCoroutinesApi
-internal suspend fun <T : Processor<EV, ST, EF>, EV : Any, ST : Any, EF : Any> processTestData(
+internal fun <T : Processor<EV, ST, EF>, EV : Any, ST : Any, EF : Any> TestScope.getStatesAndEffects(
     processorFactory: () -> T,
     events: List<EV>,
-    processorScope: TestScope
-): Pair<ListTester<ST>, ListTester<EF>> {
-    val internalScope = TestCoroutineScope()
-    // processorScope.pauseDispatcher()
-    val processor = processorFactory()
+): Pair<TestResult<ST>, TestResult<EF>> {
     val statesList = mutableListOf<ST>()
-    val stateJob = internalScope.launch { processor.state.toList(statesList) }
     val effectsList = mutableListOf<EF>()
-    val effectJob = internalScope.launch { processor.effect.toList(effectsList) }
-    // processorScope.resumeDispatcher()
+    val processor = processorFactory()
+    val stateJob = launch { processor.state.toList(statesList) }
+    val effectJob = launch { processor.effect.toList(effectsList) }
     events.forEach { event -> processor.sendEvent(event) }
-    processorScope.advanceUntilIdle()
-    stateJob.cancelAndJoin()
-    effectJob.cancelAndJoin()
-    return ListTester(statesList) to ListTester(effectsList)
+    advanceUntilIdle()
+    launch {
+        stateJob.cancelAndJoin()
+        effectJob.cancelAndJoin()
+    }
+    advanceUntilIdle()
+    return TestResultImpl(statesList) to TestResultImpl(effectsList)
 }

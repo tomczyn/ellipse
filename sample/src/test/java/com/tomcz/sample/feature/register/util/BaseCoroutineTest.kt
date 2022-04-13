@@ -1,4 +1,4 @@
-package com.tomcz.ellipse.util
+package com.tomcz.sample.feature.register.util
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -13,5 +13,6 @@ abstract class BaseCoroutineTest(
     @JvmField
     val scopeExtension: MainCoroutineScopeExtension = MainCoroutineScopeExtension(testDispatcher)
 
-    val dispatcher: TestDispatcher = scopeExtension.dispatcher
+    val dispatcher: TestDispatcher
+        get() = scopeExtension.dispatcher
 }

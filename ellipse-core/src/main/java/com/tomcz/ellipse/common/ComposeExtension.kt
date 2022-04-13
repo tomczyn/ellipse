@@ -23,7 +23,7 @@ fun <EV : Any, ST : Any, T> Processor<EV, ST, *>.collectAsState(
     mapper: (ST) -> T
 ): State<T> {
     val initialState: ST = remember { state.value }
-    val flow = remember { state.map { mapper(it) }.distinctUntilChanged() }
+    val flow = remember(state) { state.map { mapper(it) }.distinctUntilChanged() }
     val lifecycleOwner = LocalLifecycleOwner.current
     return remember(flow, lifecycleOwner) {
         flow.flowWithLifecycle(lifecycleOwner.lifecycle, lifecycleState)
