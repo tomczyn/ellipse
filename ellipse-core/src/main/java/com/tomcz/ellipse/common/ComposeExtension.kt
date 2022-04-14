@@ -22,12 +22,12 @@ fun <EV : Any, ST : Any, T> Processor<EV, ST, *>.collectAsState(
     lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,
     mapper: (ST) -> T
 ): State<T> {
-    val initialState: ST = remember { state.value }
-    val flow = remember(state) { state.map { mapper(it) }.distinctUntilChanged() }
+    val initial: T = remember { mapper(state.value) }
     val lifecycleOwner = LocalLifecycleOwner.current
-    return remember(flow, lifecycleOwner) {
-        flow.flowWithLifecycle(lifecycleOwner.lifecycle, lifecycleState)
-    }.collectAsState(initial = mapper(initialState))
+    return remember(state, lifecycleOwner) {
+        state.map { mapper(it) }.distinctUntilChanged()
+            .flowWithLifecycle(lifecycleOwner.lifecycle, lifecycleState)
+    }.collectAsState(initial = initial)
 }
 
 @SuppressLint("ComposableNaming")
