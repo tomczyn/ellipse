@@ -6,11 +6,11 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 
 @ExperimentalCoroutinesApi
-fun <E : Any, S : Any, EF : Any, T : Processor<E, S, EF>> processorTest(
-    processor: () -> T,
+fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> processorTest(
+    processor: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
-    whenEvent: E,
-    thenStates: TestResultContext<S>.() -> Unit = {},
+    whenEvent: EV,
+    thenStates: TestResultContext<ST>.() -> Unit = {},
     thenEffects: TestResultContext<EF>.() -> Unit = {}
 ): Unit = processorTest(
     processor = processor,
@@ -21,11 +21,11 @@ fun <E : Any, S : Any, EF : Any, T : Processor<E, S, EF>> processorTest(
 )
 
 @ExperimentalCoroutinesApi
-fun <E : Any, S : Any, EF : Any, T : Processor<E, S, EF>> processorTest(
-    processor: () -> T,
+fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> processorTest(
+    processor: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
-    whenEvents: List<E> = emptyList(),
-    thenStates: TestResultContext<S>.() -> Unit = {},
+    whenEvents: List<EV> = emptyList(),
+    thenStates: TestResultContext<ST>.() -> Unit = {},
     thenEffects: TestResultContext<EF>.() -> Unit = {}
 ) = runTest {
     processorTest(
@@ -38,11 +38,11 @@ fun <E : Any, S : Any, EF : Any, T : Processor<E, S, EF>> processorTest(
 }
 
 @ExperimentalCoroutinesApi
-suspend fun <E : Any, S : Any, EF : Any, T : Processor<E, S, EF>> TestScope.processorTest(
-    processor: () -> T,
+suspend fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> TestScope.processorTest(
+    processor: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
-    whenEvent: E,
-    thenStates: TestResultContext<S>.() -> Unit = {},
+    whenEvent: EV,
+    thenStates: TestResultContext<ST>.() -> Unit = {},
     thenEffects: TestResultContext<EF>.() -> Unit = {}
 ): Unit = processorTest(
     processor = processor,
@@ -53,11 +53,11 @@ suspend fun <E : Any, S : Any, EF : Any, T : Processor<E, S, EF>> TestScope.proc
 )
 
 @ExperimentalCoroutinesApi
-suspend fun <E : Any, S : Any, EF : Any, T : Processor<E, S, EF>> TestScope.processorTest(
-    processor: () -> T,
+suspend fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> TestScope.processorTest(
+    processor: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
-    whenEvents: List<E> = emptyList(),
-    thenStates: TestResultContext<S>.() -> Unit = {},
+    whenEvents: List<EV> = emptyList(),
+    thenStates: TestResultContext<ST>.() -> Unit = {},
     thenEffects: TestResultContext<EF>.() -> Unit = {}
 ) {
     given()
