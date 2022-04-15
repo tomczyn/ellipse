@@ -121,6 +121,7 @@ internal class FooViewModelTest : BaseCoroutineTest() {
             )
         },
         thenEffects = { assertSize(3) },
+        // Manually cancel infinite flow
         cleanup = { viewModel.viewModelScope.cancel() }
     )
 }
