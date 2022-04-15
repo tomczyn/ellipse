@@ -6,6 +6,7 @@ import kotlinx.coroutines.test.TestDispatcher
 import org.junit.jupiter.api.extension.RegisterExtension
 
 @ExperimentalCoroutinesApi
+@Suppress("UnnecessaryAbstractClass")
 abstract class BaseCoroutineTest(
     testDispatcher: TestDispatcher = StandardTestDispatcher()
 ) {

@@ -30,7 +30,7 @@ internal class FlowEffectProcessor<in EV : Any, EF : Any> constructor(
 
             @OptIn(InternalCoroutinesApi::class)
             override suspend fun collect(collector: FlowCollector<Nothing>): Nothing {
-                throw IllegalStateException()
+                throw IllegalStateException("Nothing to collect")
             }
         }
 
