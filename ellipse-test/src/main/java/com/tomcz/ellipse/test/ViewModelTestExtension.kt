@@ -4,8 +4,14 @@ import com.tomcz.ellipse.Processor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlin.coroutines.CoroutineContext
+
+@ExperimentalCoroutinesApi
+private val defaultAfter: TestScope.() -> Unit = {
+    advanceUntilIdle()
+}
 
 @ExperimentalCoroutinesApi
 fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> processorTest(
@@ -13,15 +19,21 @@ fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> processorTest(
     processor: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
     whenEvent: EV,
+    afterPrepare: TestScope.() -> Unit = defaultAfter,
+    afterEvents: TestScope.() -> Unit = defaultAfter,
     thenStates: TestResultContext<ST>.() -> Unit = {},
-    thenEffects: TestResultContext<EF>.() -> Unit = {}
+    thenEffects: TestResultContext<EF>.() -> Unit = {},
+    cleanup: TestScope.() -> Unit = {}
 ): Unit = processorTest(
     processor = processor,
     context = context,
     given = given,
     whenEvents = listOf(whenEvent),
+    afterPrepare = afterPrepare,
+    afterEvents = afterEvents,
     thenStates = thenStates,
-    thenEffects = thenEffects
+    thenEffects = thenEffects,
+    cleanup = cleanup
 )
 
 @ExperimentalCoroutinesApi
@@ -30,15 +42,21 @@ fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> processorTest(
     processor: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
     whenEvents: List<EV> = emptyList(),
+    afterPrepare: TestScope.() -> Unit = defaultAfter,
+    afterEvents: TestScope.() -> Unit = defaultAfter,
     thenStates: TestResultContext<ST>.() -> Unit = {},
-    thenEffects: TestResultContext<EF>.() -> Unit = {}
+    thenEffects: TestResultContext<EF>.() -> Unit = {},
+    cleanup: TestScope.() -> Unit = {}
 ) = runTest(context) {
     processorTest(
         processor = processor,
         given = given,
         whenEvents = whenEvents,
+        afterPrepare = afterPrepare,
+        afterEvents = afterEvents,
         thenStates = thenStates,
-        thenEffects = thenEffects
+        thenEffects = thenEffects,
+        cleanup = cleanup
     )
 }
 
@@ -47,14 +65,20 @@ suspend fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> TestScope.
     processor: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
     whenEvent: EV,
+    afterPrepare: TestScope.() -> Unit = defaultAfter,
+    afterEvents: TestScope.() -> Unit = defaultAfter,
     thenStates: TestResultContext<ST>.() -> Unit = {},
-    thenEffects: TestResultContext<EF>.() -> Unit = {}
+    thenEffects: TestResultContext<EF>.() -> Unit = {},
+    cleanup: TestScope.() -> Unit = {}
 ): Unit = processorTest(
     processor = processor,
     given = given,
     whenEvents = listOf(whenEvent),
+    afterPrepare = afterPrepare,
+    afterEvents = afterEvents,
     thenStates = thenStates,
-    thenEffects = thenEffects
+    thenEffects = thenEffects,
+    cleanup = cleanup,
 )
 
 @ExperimentalCoroutinesApi
@@ -62,13 +86,22 @@ suspend fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> TestScope.
     processor: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
     whenEvents: List<EV> = emptyList(),
+    afterPrepare: TestScope.() -> Unit = defaultAfter,
+    afterEvents: TestScope.() -> Unit = defaultAfter,
     thenStates: TestResultContext<ST>.() -> Unit = {},
-    thenEffects: TestResultContext<EF>.() -> Unit = {}
+    thenEffects: TestResultContext<EF>.() -> Unit = {},
+    cleanup: TestScope.() -> Unit = {}
 ) {
     given()
-    val (states, effects) = getStatesAndEffects(processor, whenEvents)
+    val (states, effects) = getStatesAndEffects(
+        processorFactory = processor,
+        events = whenEvents,
+        afterPrepare = afterPrepare,
+        afterEvents = afterEvents,
+    )
     val stateContext = TestResultContext(states, testScheduler)
     val effectsContext = TestResultContext(effects, testScheduler)
     stateContext.thenStates()
     effectsContext.thenEffects()
+    cleanup()
 }

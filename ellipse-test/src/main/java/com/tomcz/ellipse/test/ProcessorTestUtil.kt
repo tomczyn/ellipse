@@ -11,14 +11,17 @@ import kotlinx.coroutines.test.advanceUntilIdle
 internal fun <T : Processor<EV, ST, EF>, EV : Any, ST : Any, EF : Any> TestScope.getStatesAndEffects(
     processorFactory: TestScope.() -> T,
     events: List<EV>,
+    afterPrepare: TestScope.() -> Unit = { advanceUntilIdle() },
+    afterEvents: TestScope.() -> Unit = { advanceUntilIdle() }
 ): Pair<TestResult<ST>, TestResult<EF>> {
     val statesList = mutableListOf<ST>()
     val effectsList = mutableListOf<EF>()
     val processor = processorFactory()
     val stateJob = launch { processor.state.toList(statesList) }
     val effectJob = launch { processor.effect.toList(effectsList) }
+    afterPrepare()
     events.forEach { event -> processor.sendEvent(event) }
-    advanceUntilIdle()
+    afterEvents()
     stateJob.cancel()
     effectJob.cancel()
     return TestResultImpl(statesList) to TestResultImpl(effectsList)

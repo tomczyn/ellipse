@@ -3,7 +3,7 @@ package com.tomcz.sample.feature.register
 import com.tomcz.ellipse.test.processorTest
 import com.tomcz.sample.feature.register.state.RegisterEvent
 import com.tomcz.sample.feature.register.state.RegisterState
-import com.tomcz.sample.feature.register.util.BaseCoroutineTest
+import com.tomcz.sample.feature.common.BaseCoroutineTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.jupiter.api.Test
 

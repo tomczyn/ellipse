@@ -1,3 +1,8 @@
 package com.tomcz.sample.feature.foo.state
 
-object FooEvent
+sealed interface FooEvent {
+    object FirstButtonClick : FooEvent
+    object SecondButtonClick : FooEvent
+    object ThirdButtonClick : FooEvent
+    object FourthButtonClick : FooEvent
+}

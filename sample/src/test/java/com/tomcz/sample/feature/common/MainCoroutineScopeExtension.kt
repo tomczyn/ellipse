@@ -1,4 +1,4 @@
-package com.tomcz.sample.feature.register.util
+package com.tomcz.sample.feature.common
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
