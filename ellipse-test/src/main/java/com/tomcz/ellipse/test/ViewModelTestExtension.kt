@@ -3,17 +3,21 @@ package com.tomcz.ellipse.test
 import com.tomcz.ellipse.Processor
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlin.coroutines.CoroutineContext
 
 @ExperimentalCoroutinesApi
 fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> processorTest(
     processor: TestScope.() -> T,
+    context: CoroutineContext = UnconfinedTestDispatcher(),
     given: suspend TestScope.() -> Unit = {},
     whenEvent: EV,
     thenStates: TestResultContext<ST>.() -> Unit = {},
     thenEffects: TestResultContext<EF>.() -> Unit = {}
 ): Unit = processorTest(
     processor = processor,
+    context = context,
     given = given,
     whenEvents = listOf(whenEvent),
     thenStates = thenStates,
@@ -23,11 +27,12 @@ fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> processorTest(
 @ExperimentalCoroutinesApi
 fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> processorTest(
     processor: TestScope.() -> T,
+    context: CoroutineContext = UnconfinedTestDispatcher(),
     given: suspend TestScope.() -> Unit = {},
     whenEvents: List<EV> = emptyList(),
     thenStates: TestResultContext<ST>.() -> Unit = {},
     thenEffects: TestResultContext<EF>.() -> Unit = {}
-) = runTest {
+) = runTest(context) {
     processorTest(
         processor = processor,
         given = given,
