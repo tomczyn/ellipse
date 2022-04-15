@@ -7,7 +7,7 @@ import com.tomcz.sample.feature.register.util.BaseCoroutineTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.jupiter.api.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@ExperimentalCoroutinesApi
 class RegisterViewModelTest : BaseCoroutineTest() {
 
     private val viewModel: RegisterViewModel by lazy { RegisterViewModel() }
