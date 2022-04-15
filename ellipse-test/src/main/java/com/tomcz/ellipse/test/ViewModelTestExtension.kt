@@ -9,8 +9,8 @@ import kotlin.coroutines.CoroutineContext
 
 @ExperimentalCoroutinesApi
 fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> processorTest(
-    processor: TestScope.() -> T,
     context: CoroutineContext = UnconfinedTestDispatcher(),
+    processor: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
     whenEvent: EV,
     thenStates: TestResultContext<ST>.() -> Unit = {},
@@ -26,8 +26,8 @@ fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> processorTest(
 
 @ExperimentalCoroutinesApi
 fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> processorTest(
-    processor: TestScope.() -> T,
     context: CoroutineContext = UnconfinedTestDispatcher(),
+    processor: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
     whenEvents: List<EV> = emptyList(),
     thenStates: TestResultContext<ST>.() -> Unit = {},
