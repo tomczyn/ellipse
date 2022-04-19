@@ -1,11 +1,11 @@
-@file:Suppress("unused")
-
 package com.tomcz.ellipse.test
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 
-class ListTester<T>(@Suppress("MemberVisibilityCanBePrivate") val values: List<T>) {
+interface TestResult<T : Any> {
+
+    val values: List<T>
 
     fun assertValues(vararg listToAssert: T) {
         assertEquals(listToAssert.toList(), values)
@@ -31,3 +31,5 @@ class ListTester<T>(@Suppress("MemberVisibilityCanBePrivate") val values: List<T
         assertTrue(values.isEmpty())
     }
 }
+
+internal class TestResultImpl<T : Any>(override val values: List<T>) : TestResult<T>

@@ -1,9 +1,8 @@
-package com.tomcz.sample.util
+package com.tomcz.sample.feature.common
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.TestCoroutineScope
+import kotlinx.coroutines.test.TestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.extension.AfterEachCallback
@@ -12,8 +11,8 @@ import org.junit.jupiter.api.extension.ExtensionContext
 
 @ExperimentalCoroutinesApi
 class MainCoroutineScopeExtension(
-    private val dispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
-) : BeforeEachCallback, AfterEachCallback, TestCoroutineScope by TestCoroutineScope(dispatcher) {
+    val dispatcher: TestDispatcher
+) : BeforeEachCallback, AfterEachCallback {
 
     init {
         Dispatchers.setMain(dispatcher)
@@ -24,7 +23,6 @@ class MainCoroutineScopeExtension(
     }
 
     override fun afterEach(context: ExtensionContext?) {
-        cleanupTestCoroutines()
         Dispatchers.resetMain()
     }
 }

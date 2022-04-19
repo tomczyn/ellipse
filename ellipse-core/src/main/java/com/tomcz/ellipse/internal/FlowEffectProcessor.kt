@@ -4,12 +4,10 @@ import com.tomcz.ellipse.EffectsCollector
 import com.tomcz.ellipse.Processor
 import com.tomcz.ellipse.common.EllipseContext
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 internal class FlowEffectProcessor<in EV : Any, EF : Any> constructor(
@@ -29,10 +27,8 @@ internal class FlowEffectProcessor<in EV : Any, EF : Any> constructor(
             override val value: Nothing
                 get() = throw IllegalStateException("Can't access Nothing value")
 
-            @OptIn(InternalCoroutinesApi::class)
-            @InternalCoroutinesApi
-            override suspend fun collect(collector: FlowCollector<Nothing>) {
-                /* Nothing */
+            override suspend fun collect(collector: FlowCollector<Nothing>): Nothing {
+                throw IllegalStateException("Nothing to collect")
             }
         }
 

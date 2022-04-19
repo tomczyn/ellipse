@@ -1,4 +1,4 @@
-package com.tomcz.ellipse.util
+package com.tomcz.sample.feature.common
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -6,7 +6,6 @@ import kotlinx.coroutines.test.TestDispatcher
 import org.junit.jupiter.api.extension.RegisterExtension
 
 @ExperimentalCoroutinesApi
-@Suppress("UnnecessaryAbstractClass")
 abstract class BaseCoroutineTest(
     testDispatcher: TestDispatcher = StandardTestDispatcher()
 ) {
@@ -14,5 +13,6 @@ abstract class BaseCoroutineTest(
     @JvmField
     val scopeExtension: MainCoroutineScopeExtension = MainCoroutineScopeExtension(testDispatcher)
 
-    val dispatcher: TestDispatcher = scopeExtension.dispatcher
+    val dispatcher: TestDispatcher
+        get() = scopeExtension.dispatcher
 }

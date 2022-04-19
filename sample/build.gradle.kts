@@ -11,8 +11,8 @@ android {
 dependencies {
     implementation(project(":ellipse-core"))
     kotlin()
-    dependencyInjection()
     baseAndroid()
+    dependencyInjection()
     navigation()
     coroutines()
     compose()

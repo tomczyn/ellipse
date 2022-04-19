@@ -13,7 +13,6 @@ import com.tomcz.ellipse.Processor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
@@ -23,11 +22,12 @@ fun <EV : Any, ST : Any, T> Processor<EV, ST, *>.collectAsState(
     lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,
     mapper: (ST) -> T
 ): State<T> {
-    val flow = state.map { mapper(it) }.distinctUntilChanged()
+    val initial: T = remember { mapper(state.value) }
     val lifecycleOwner = LocalLifecycleOwner.current
-    return remember(flow, lifecycleOwner) {
-        flow.flowWithLifecycle(lifecycleOwner.lifecycle, lifecycleState)
-    }.collectAsState(initial = mapper(state.value))
+    return remember(state, lifecycleOwner) {
+        state.map { mapper(it) }.distinctUntilChanged()
+            .flowWithLifecycle(lifecycleOwner.lifecycle, lifecycleState)
+    }.collectAsState(initial = initial)
 }
 
 @SuppressLint("ComposableNaming")

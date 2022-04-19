@@ -1,26 +1,107 @@
 package com.tomcz.ellipse.test
 
 import com.tomcz.ellipse.Processor
-import kotlinx.coroutines.test.TestCoroutineScope
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
+import kotlin.coroutines.CoroutineContext
 
-fun <E : Any, S : Any, EF : Any, T : Processor<E, S, EF>> TestCoroutineScope.processorTest(
-    processor: () -> T,
-    given: suspend () -> Unit = {},
-    whenEvent: E,
-    thenStates: ListTester<S>.() -> Unit = {},
-    thenEffects: ListTester<EF>.() -> Unit = {}
-): Unit = processorTest(processor, given, listOf(whenEvent), thenStates, thenEffects)
+@ExperimentalCoroutinesApi
+private val defaultAfter: TestScope.() -> Unit = {
+    advanceUntilIdle()
+}
 
-fun <E : Any, S : Any, EF : Any, T : Processor<E, S, EF>> TestCoroutineScope.processorTest(
-    processor: () -> T,
-    given: suspend () -> Unit = {},
-    whenEvents: List<E> = emptyList(),
-    thenStates: ListTester<S>.() -> Unit = {},
-    thenEffects: ListTester<EF>.() -> Unit = {}
-): Unit = runBlockingTest {
+@ExperimentalCoroutinesApi
+fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> processorTest(
+    context: CoroutineContext = UnconfinedTestDispatcher(),
+    processor: TestScope.() -> T,
+    given: suspend TestScope.() -> Unit = {},
+    whenEvent: EV,
+    afterPrepare: TestScope.() -> Unit = defaultAfter,
+    afterEvents: TestScope.() -> Unit = defaultAfter,
+    thenStates: TestResultContext<ST>.() -> Unit = {},
+    thenEffects: TestResultContext<EF>.() -> Unit = {},
+    cleanup: TestScope.() -> Unit = {}
+): Unit = processorTest(
+    processor = processor,
+    context = context,
+    given = given,
+    whenEvents = listOf(whenEvent),
+    afterPrepare = afterPrepare,
+    afterEvents = afterEvents,
+    thenStates = thenStates,
+    thenEffects = thenEffects,
+    cleanup = cleanup
+)
+
+@ExperimentalCoroutinesApi
+fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> processorTest(
+    context: CoroutineContext = UnconfinedTestDispatcher(),
+    processor: TestScope.() -> T,
+    given: suspend TestScope.() -> Unit = {},
+    whenEvents: List<EV> = emptyList(),
+    afterPrepare: TestScope.() -> Unit = defaultAfter,
+    afterEvents: TestScope.() -> Unit = defaultAfter,
+    thenStates: TestResultContext<ST>.() -> Unit = {},
+    thenEffects: TestResultContext<EF>.() -> Unit = {},
+    cleanup: TestScope.() -> Unit = {}
+) = runTest(context) {
+    processorTest(
+        processor = processor,
+        given = given,
+        whenEvents = whenEvents,
+        afterPrepare = afterPrepare,
+        afterEvents = afterEvents,
+        thenStates = thenStates,
+        thenEffects = thenEffects,
+        cleanup = cleanup
+    )
+}
+
+@ExperimentalCoroutinesApi
+suspend fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> TestScope.processorTest(
+    processor: TestScope.() -> T,
+    given: suspend TestScope.() -> Unit = {},
+    whenEvent: EV,
+    afterPrepare: TestScope.() -> Unit = defaultAfter,
+    afterEvents: TestScope.() -> Unit = defaultAfter,
+    thenStates: TestResultContext<ST>.() -> Unit = {},
+    thenEffects: TestResultContext<EF>.() -> Unit = {},
+    cleanup: TestScope.() -> Unit = {}
+): Unit = processorTest(
+    processor = processor,
+    given = given,
+    whenEvents = listOf(whenEvent),
+    afterPrepare = afterPrepare,
+    afterEvents = afterEvents,
+    thenStates = thenStates,
+    thenEffects = thenEffects,
+    cleanup = cleanup,
+)
+
+@ExperimentalCoroutinesApi
+suspend fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> TestScope.processorTest(
+    processor: TestScope.() -> T,
+    given: suspend TestScope.() -> Unit = {},
+    whenEvents: List<EV> = emptyList(),
+    afterPrepare: TestScope.() -> Unit = defaultAfter,
+    afterEvents: TestScope.() -> Unit = defaultAfter,
+    thenStates: TestResultContext<ST>.() -> Unit = {},
+    thenEffects: TestResultContext<EF>.() -> Unit = {},
+    cleanup: TestScope.() -> Unit = {}
+) {
     given()
-    val (states, effects) = processTestData(processor, whenEvents, this)
-    states.thenStates()
-    effects.thenEffects()
+    val (states, effects) = getStatesAndEffects(
+        processorFactory = processor,
+        events = whenEvents,
+        afterPrepare = afterPrepare,
+        afterEvents = afterEvents,
+    )
+    val stateContext = TestResultContext(states, testScheduler)
+    val effectsContext = TestResultContext(effects, testScheduler)
+    stateContext.thenStates()
+    effectsContext.thenEffects()
+    cleanup()
 }

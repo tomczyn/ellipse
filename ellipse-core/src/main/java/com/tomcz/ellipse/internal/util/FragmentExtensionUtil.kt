@@ -4,7 +4,6 @@ import com.tomcz.ellipse.Processor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @FlowPreview
@@ -26,7 +25,7 @@ internal suspend fun <EV : Any, ST : Any, EF : Any> Processor<EV, ST, EF>.proces
 
 internal suspend fun <EV : Any, ST : Any, EF : Any> Processor<EV, ST, EF>.onState(
     render: (ST) -> Unit
-) = state.collect { state -> render(state) }
+): Nothing = state.collect { state -> render(state) }
 
 internal suspend fun <EV : Any, ST : Any, EF : Any> Processor<EV, ST, EF>.onEffect(
     trigger: (EF) -> Unit
