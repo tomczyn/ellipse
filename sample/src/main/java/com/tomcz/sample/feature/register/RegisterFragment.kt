@@ -53,9 +53,11 @@ import com.tomcz.sample.ui.DarkGray
 import com.tomcz.sample.ui.MainAppTheme
 import com.tomcz.sample.ui.QuadruplePadding
 import com.tomcz.sample.ui.SampleTypography
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 
 @FlowPreview
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     private val viewModel: RegisterViewModel by viewModels()

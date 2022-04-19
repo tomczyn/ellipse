@@ -23,7 +23,6 @@ fun DependencyHandler.dependencyInjection() {
     implementation(Libs.Google.hilt)
     kapt(Libs.Google.Annotation.dagger)
     kapt(Libs.Google.Annotation.hilt)
-    implementation("com.squareup:javapoet:1.13.0")
 }
 
 fun DependencyHandler.compose() {

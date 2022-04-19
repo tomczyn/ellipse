@@ -8,12 +8,15 @@ import com.tomcz.sample.feature.login.state.LoginEffect
 import com.tomcz.sample.feature.login.state.LoginEvent
 import com.tomcz.sample.feature.login.state.LoginPartialState
 import com.tomcz.sample.feature.login.state.LoginState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
 typealias LoginProcessor = Processor<LoginEvent, LoginState, LoginEffect>
 
-class LoginViewModel : ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor() : ViewModel() {
 
     val processor: LoginProcessor = processor(initialState = LoginState()) { event ->
         when (event) {

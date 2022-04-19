@@ -7,7 +7,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
         project.addPlugin(AndroidConfig.Plugin.junit5)
         project.addPlugin(AndroidConfig.Plugin.kotlinAndroid)
         project.addPlugin(AndroidConfig.Plugin.kapt)
-        // project.addPlugin(AndroidConfig.Plugin.hilt)
+        project.addPlugin(AndroidConfig.Plugin.hilt)
         project.addPlugin(AndroidConfig.Plugin.safeArgs)
         project.androidConfiguration { defaultConfig() }
         project.kotlinCompileOptions()
