@@ -25,8 +25,8 @@ Add the dependency:
 
 ```kotlin
 dependencies {
-    implementation("com.github.mtomczynski.ellipse:ellipse-core:0.9.9")
-    testImplementation("com.github.mtomczynski.ellipse:ellipse-test:0.9.9")
+    implementation("com.github.tomczyn.ellipse:ellipse-core:0.9.9")
+    testImplementation("com.github.tomczyn.ellipse:ellipse-test:0.9.9")
 }
 ```
 
