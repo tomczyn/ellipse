@@ -1,4 +1,4 @@
-package com.tomcz.sample.feature.foo.state
+package com.tomcz.sample.common
 
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.FlowCollector

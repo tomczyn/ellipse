@@ -26,3 +26,20 @@ internal fun <T : Processor<EV, ST, EF>, EV : Any, ST : Any, EF : Any> TestScope
     effectJob.cancel()
     return TestResultImpl(statesList) to TestResultImpl(effectsList)
 }
+
+@ExperimentalCoroutinesApi
+internal fun <T : Processor<EV, ST, EF>, EV : Any, ST : Any, EF : Any> TestScope.getEffects(
+    processorFactory: TestScope.() -> T,
+    events: List<EV>,
+    afterPrepare: TestScope.() -> Unit = { advanceUntilIdle() },
+    afterEvents: TestScope.() -> Unit = { advanceUntilIdle() }
+): TestResult<EF> {
+    val effectsList = mutableListOf<EF>()
+    val processor = processorFactory()
+    val effectJob = launch { processor.effect.toList(effectsList) }
+    afterPrepare()
+    events.forEach { event -> processor.sendEvent(event) }
+    afterEvents()
+    effectJob.cancel()
+    return TestResultImpl(effectsList)
+}

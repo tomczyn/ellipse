@@ -28,6 +28,20 @@ fun <EV : Any, ST : Any, EF : Any> Fragment.onProcessor(
     )
 }
 
+@FlowPreview
+fun <EV : Any, EF : Any> Fragment.onProcessor(
+    lifecycleState: Lifecycle.State,
+    processor: () -> Processor<EV, Nothing, EF>,
+    viewEvents: () -> List<Flow<EV>> = { emptyList() },
+    onEffect: (EF) -> Unit = {}
+) = launch(lifecycleState) {
+    consume(
+        processor = processor(),
+        trigger = onEffect,
+        viewEvents = viewEvents()
+    )
+}
+
 private fun Fragment.launch(
     lifecycleState: Lifecycle.State,
     action: suspend CoroutineScope.() -> Unit

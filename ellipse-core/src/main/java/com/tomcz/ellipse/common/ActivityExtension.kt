@@ -23,6 +23,14 @@ fun <EV : Any, ST : Any, EF : Any> AppCompatActivity.onProcessor(
 ) = launch(lifecycleState) { consume(processor(), viewEvents(), onState, onEffect) }
 
 @FlowPreview
+fun <EV : Any, EF : Any> AppCompatActivity.onProcessor(
+    lifecycleState: Lifecycle.State,
+    processor: () -> Processor<EV, Nothing, EF>,
+    viewEvents: () -> List<Flow<EV>> = { emptyList() },
+    onEffect: (EF) -> Unit = {}
+) = launch(lifecycleState) { consume(processor(), viewEvents(), onEffect) }
+
+@FlowPreview
 fun <EV : Any, ST : Any, EF : Any> ComponentActivity.onProcessor(
     lifecycleState: Lifecycle.State,
     processor: () -> Processor<EV, ST, EF>,
@@ -30,6 +38,14 @@ fun <EV : Any, ST : Any, EF : Any> ComponentActivity.onProcessor(
     onState: (ST) -> Unit = {},
     onEffect: (EF) -> Unit = {}
 ) = launch(lifecycleState) { consume(processor(), viewEvents(), onState, onEffect) }
+
+@FlowPreview
+fun <EV : Any, EF : Any> ComponentActivity.onProcessor(
+    lifecycleState: Lifecycle.State,
+    processor: () -> Processor<EV, Nothing, EF>,
+    viewEvents: () -> List<Flow<EV>> = { emptyList() },
+    onEffect: (EF) -> Unit = {}
+) = launch(lifecycleState) { consume(processor(), viewEvents(), onEffect) }
 
 private fun AppCompatActivity.launch(
     lifecycleState: Lifecycle.State,

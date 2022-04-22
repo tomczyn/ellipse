@@ -17,8 +17,8 @@ import com.tomcz.sample.feature.foo.state.FooEvent.ThirdButtonClick
 import com.tomcz.sample.feature.foo.state.FooPartial.Decrease
 import com.tomcz.sample.feature.foo.state.FooPartial.Increase
 import com.tomcz.sample.feature.foo.state.FooState
-import com.tomcz.sample.feature.foo.state.emitAbort
-import com.tomcz.sample.feature.foo.state.onCancel
+import com.tomcz.sample.common.emitAbort
+import com.tomcz.sample.common.onCancel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flatMapConcat

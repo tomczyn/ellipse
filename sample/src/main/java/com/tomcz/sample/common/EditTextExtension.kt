@@ -1,4 +1,4 @@
-package com.tomcz.sample.util
+package com.tomcz.sample.common
 
 import android.text.Editable
 import android.text.TextWatcher
