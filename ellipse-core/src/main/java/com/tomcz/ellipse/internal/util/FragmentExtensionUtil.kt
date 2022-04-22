@@ -19,6 +19,16 @@ internal fun <EV : Any, ST : Any, EF : Any> CoroutineScope.consume(
 }
 
 @FlowPreview
+internal fun <EV : Any, EF : Any> CoroutineScope.consume(
+    processor: Processor<EV, Nothing, EF>,
+    viewEvents: List<Flow<EV>> = emptyList(),
+    trigger: (EF) -> Unit
+) {
+    launch { processor.onEffect(trigger) }
+    launch { processor.process(viewEvents) }
+}
+
+@FlowPreview
 internal suspend fun <EV : Any, ST : Any, EF : Any> Processor<EV, ST, EF>.process(
     viewEvents: List<Flow<EV>> = emptyList()
 ) = viewEvents.mergeEvents().collect { event -> sendEvent(event) }
