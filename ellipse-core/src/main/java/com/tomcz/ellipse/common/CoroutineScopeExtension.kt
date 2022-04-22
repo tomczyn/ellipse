@@ -45,3 +45,16 @@ fun <EV : Any, ST : Any, EF : Any> CoroutineScope.onProcessor(
         viewEvents = viewEvents()
     )
 }
+
+@FlowPreview
+fun <EV : Any, EF : Any> CoroutineScope.onProcessor(
+    processor: () -> Processor<EV, Nothing, EF>,
+    viewEvents: () -> List<Flow<EV>> = { emptyList() },
+    onEffect: (EF) -> Unit = {},
+) = launch {
+    consume(
+        processor = processor(),
+        trigger = onEffect,
+        viewEvents = viewEvents()
+    )
+}
