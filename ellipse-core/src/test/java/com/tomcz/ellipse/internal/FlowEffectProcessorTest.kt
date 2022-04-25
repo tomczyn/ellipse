@@ -13,7 +13,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-internal typealias CounterEffectProcessor = Processor<CounterEvent, Nothing, CounterEffect>
+internal typealias CounterEffectProcessor = Processor<CounterEvent, Unit, CounterEffect>
 
 @ExperimentalCoroutinesApi
 internal class FlowEffectProcessorTest : BaseCoroutineTest() {
