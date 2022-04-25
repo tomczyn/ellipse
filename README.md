@@ -1,5 +1,3 @@
-[![](https://jitpack.io/v/tomczyn/ellipse.svg)](https://jitpack.io/#tomczyn/ellipse)
-
 ## Ellipse
 
 ### Pragmatic Unidirectional Data Flow for Android
@@ -25,8 +23,8 @@ Add the dependency:
 
 ```kotlin
 dependencies {
-    implementation("com.github.tomczyn.ellipse:ellipse-core:0.9.12")
-    testImplementation("com.github.tomczyn.ellipse:ellipse-test:0.9.12")
+    implementation("com.github.tomczyn.ellipse:ellipse-core:0.9.9")
+    testImplementation("com.github.tomczyn.ellipse:ellipse-test:0.9.9")
 }
 ```
 
