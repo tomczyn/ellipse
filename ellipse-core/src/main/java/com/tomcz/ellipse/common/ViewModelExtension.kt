@@ -8,11 +8,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
 fun <EV : Any, EF : Any> ViewModel.processor(
-    prepare: suspend EllipseContext<Nothing, EF>.() -> Unit = {},
-    onEvent: suspend EllipseContext<Nothing, EF>.(EV) -> Unit = {},
-): Processor<EV, Nothing, EF> = viewModelScope.processor(
-    prepare = prepare,
-    onEvent = onEvent
+    prepare: suspend EllipseContext<Unit, EF>.() -> Unit = {},
+    onEvent: suspend EllipseContext<Unit, EF>.(EV) -> Unit = {},
+): Processor<EV, Unit, EF> = viewModelScope.processor(
+    initialState = Unit,
+    prepare = { prepare(); emptyFlow() },
+    onEvent = { onEvent(it); emptyFlow() }
 )
 
 fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> ViewModel.processor(
