@@ -70,12 +70,12 @@ val processor: LoginProcessor = processor(
 )
 ```
 
-- If you don't need for example effects, or states you can put `Unit` as generic definition, then you won't have to supply `initialState`:
+- If you don't need effects, states or events you can put `Unit` as generic definition. For state you won't have to supply `initialState` and you won't have to return `Flow<PartialState<...>>` from `prepare` and `onEvent`. Example:
 
 ```kotlin
-val processor: Processor<MyEvent, Unit, Unit> = processor(
-    prepare = { /* ... */ },
-    onEvent = { /* ... */ }
+val processor: Processor<Unit, Unit, Unit> = processor(
+    prepare = { /* Returns Unit instead of Flow */ },
+    onEvent = { /* Returns Unit instead of Flow */ }
 )
 ```
 
