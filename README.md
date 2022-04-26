@@ -1,3 +1,5 @@
+[![](https://jitpack.io/v/tomczyn/ellipse.svg)](https://jitpack.io/#tomczyn/ellipse)
+
 ## Ellipse
 
 ### Pragmatic Unidirectional Data Flow for Android
