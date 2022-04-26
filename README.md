@@ -70,10 +70,10 @@ val processor: LoginProcessor = processor(
 )
 ```
 
-- If you don't need for example effects, or states you can put `Nothing` as generic definition:
+- If you don't need for example effects, or states you can put `Unit` as generic definition, then you won't have to supply `initialState`:
 
 ```kotlin
-val processor: Processor<MyEvent, Nothing, Nothing> = processor(
+val processor: Processor<MyEvent, Unit, Unit> = processor(
     prepare = { /* ... */ },
     onEvent = { /* ... */ }
 )
