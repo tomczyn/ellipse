@@ -31,7 +31,7 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
     fun `test default state and prepare`() = runTest {
         val scope = TestScope(testScheduler)
         val processor: Processor<CounterEvent, CounterState, CounterEffect> =
-            scope.processor(CounterState(), prepare = { flow { emit(IncreasePartialState) } })
+            scope.processor(CounterState(), prepare = { flow { emit(IncreasePartial) } })
         runCurrent()
         assertEquals(CounterState(1), processor.state.value)
         scope.cancel()
@@ -41,7 +41,7 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
     fun `test state change after event`() = runTest {
         val scope = TestScope(testScheduler)
         val processor: Processor<CounterEvent, CounterState, CounterEffect> =
-            scope.processor(CounterState()) { flow { emit(IncreasePartialState) } }
+            scope.processor(CounterState()) { flow { emit(IncreasePartial) } }
         assertEquals(CounterState(0), processor.state.value)
         processor.sendEvent(CounterEvent)
         runCurrent()
@@ -54,8 +54,8 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
         val scope = TestScope(testScheduler)
         val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             scope.processor(
-                CounterState(), prepare = { flow { emit(IncreasePartialState) } }
-            ) { flow { emit(IncreasePartialState) } }
+                CounterState(), prepare = { flow { emit(IncreasePartial) } }
+            ) { flow { emit(IncreasePartial) } }
         runCurrent()
         assertEquals(CounterState(1), processor.state.value)
         processor.sendEvent(CounterEvent)
@@ -70,7 +70,7 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
         val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             scope.processor(
                 CounterState(),
-                prepare = { flow { emit(IncreasePartialState) } }
+                prepare = { flow { emit(IncreasePartial) } }
             ) {
                 effects.send(CounterEffect)
                 emptyFlow()
@@ -90,9 +90,9 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
         val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             processorScope.processor(
                 CounterState(),
-                prepare = { flow { emit(IncreasePartialState) } }
+                prepare = { flow { emit(IncreasePartial) } }
             ) {
-                flow { emit(IncreasePartialState) }
+                flow { emit(IncreasePartial) }
             }
         val stateEvents = mutableListOf<CounterState>()
         val job = launch { processor.state.collect { stateEvents.add(it) } }
@@ -117,10 +117,10 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
         val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             processorScope.processor(
                 CounterState(),
-                prepare = { flow { emit(IncreasePartialState) } }
+                prepare = { flow { emit(IncreasePartial) } }
             ) {
                 effects.send(CounterEffect)
-                flow { emit(IncreasePartialState) }
+                flow { emit(IncreasePartial) }
             }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
@@ -171,10 +171,10 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
         val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             processorScope.processor(
                 CounterState(),
-                prepare = { flow { emit(IncreasePartialState) } }
+                prepare = { flow { emit(IncreasePartial) } }
             ) {
                 effects.send(CounterEffect)
-                flow { emit(IncreasePartialState) }
+                flow { emit(IncreasePartial) }
             }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }

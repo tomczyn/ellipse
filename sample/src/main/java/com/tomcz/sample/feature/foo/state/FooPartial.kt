@@ -1,8 +1,8 @@
 package com.tomcz.sample.feature.foo.state
 
-import com.tomcz.ellipse.PartialState
+import com.tomcz.ellipse.Partial
 
-sealed interface FooPartial : PartialState<FooState> {
+sealed interface FooPartial : Partial<FooState> {
 
     object Increase : FooPartial {
         override fun reduce(oldState: FooState): FooState =
