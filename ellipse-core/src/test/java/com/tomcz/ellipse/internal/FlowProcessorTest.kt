@@ -2,11 +2,11 @@ package com.tomcz.ellipse.internal
 
 import com.tomcz.ellipse.Processor
 import com.tomcz.ellipse.common.processor
+import com.tomcz.ellipse.common.setState
 import com.tomcz.ellipse.util.BaseCoroutineTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
@@ -31,7 +31,7 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
     fun `test default state and prepare`() = runTest {
         val scope = TestScope(testScheduler)
         val processor: Processor<CounterEvent, CounterState, CounterEffect> =
-            scope.processor(CounterState(), prepare = { flow { emit(IncreasePartial) } })
+            scope.processor(CounterState(), prepare = { setState(IncreasePartial) })
         runCurrent()
         assertEquals(CounterState(1), processor.state.value)
         scope.cancel()
@@ -41,7 +41,7 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
     fun `test state change after event`() = runTest {
         val scope = TestScope(testScheduler)
         val processor: Processor<CounterEvent, CounterState, CounterEffect> =
-            scope.processor(CounterState()) { flow { emit(IncreasePartial) } }
+            scope.processor(CounterState()) { setState(IncreasePartial) }
         assertEquals(CounterState(0), processor.state.value)
         processor.sendEvent(CounterEvent)
         runCurrent()
@@ -54,8 +54,23 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
         val scope = TestScope(testScheduler)
         val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             scope.processor(
-                CounterState(), prepare = { flow { emit(IncreasePartial) } }
-            ) { flow { emit(IncreasePartial) } }
+                CounterState(), prepare = { setState(IncreasePartial) }
+            ) { setState(IncreasePartial) }
+        runCurrent()
+        assertEquals(CounterState(1), processor.state.value)
+        processor.sendEvent(CounterEvent)
+        runCurrent()
+        assertEquals(CounterState(2), processor.state.value)
+        scope.cancel()
+    }
+
+    @Test
+    fun `test another prepare and state change after event`() = runTest {
+        val scope = TestScope(testScheduler)
+        val processor: Processor<CounterEvent, CounterState, CounterEffect> =
+            scope.processor(
+                CounterState(), prepare = { setState(flow { emit(IncreasePartial) }) }
+            ) { setState(flow { emit(IncreasePartial) }) }
         runCurrent()
         assertEquals(CounterState(1), processor.state.value)
         processor.sendEvent(CounterEvent)
@@ -70,10 +85,9 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
         val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             scope.processor(
                 CounterState(),
-                prepare = { flow { emit(IncreasePartial) } }
+                prepare = { setState(IncreasePartial) }
             ) {
-                effects.send(CounterEffect)
-                emptyFlow()
+                sendEffect(CounterEffect)
             }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
@@ -90,9 +104,9 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
         val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             processorScope.processor(
                 CounterState(),
-                prepare = { flow { emit(IncreasePartial) } }
+                prepare = { setState(IncreasePartial) }
             ) {
-                flow { emit(IncreasePartial) }
+                setState(IncreasePartial)
             }
         val stateEvents = mutableListOf<CounterState>()
         val job = launch { processor.state.collect { stateEvents.add(it) } }
@@ -117,10 +131,10 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
         val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             processorScope.processor(
                 CounterState(),
-                prepare = { flow { emit(IncreasePartial) } }
+                prepare = { setState(IncreasePartial) }
             ) {
-                effects.send(CounterEffect)
-                flow { emit(IncreasePartial) }
+                sendEffect(CounterEffect)
+                setState(IncreasePartial)
             }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
@@ -146,7 +160,7 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
     fun `test having multiple subscribers`() = runTest {
         val processorScope = TestScope(testScheduler)
         val processor: Processor<CounterEvent, CounterState, CounterEffect> =
-            processorScope.processor(CounterState()) { effects.send(CounterEffect); emptyFlow() }
+            processorScope.processor(CounterState()) { sendEffect(CounterEffect) }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
         val effect2Job = launch { processor.effect.collect { effects.add(it) } }
@@ -171,10 +185,11 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
         val processor: Processor<CounterEvent, CounterState, CounterEffect> =
             processorScope.processor(
                 CounterState(),
-                prepare = { flow { emit(IncreasePartial) } }
+                prepare = { setState(IncreasePartial) }
             ) {
-                effects.send(CounterEffect)
-                flow { emit(IncreasePartial) }
+                println("state $state")
+                sendEffect(CounterEffect)
+                setState(IncreasePartial)
             }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
@@ -186,8 +201,7 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
         assertEquals(listOf(CounterEffect), effects)
         effectJob.cancelAndJoin()
 
-        processor.sendEvent(CounterEvent)
-        processor.sendEvent(CounterEvent)
+        processor.sendEvent(CounterEvent, CounterEvent)
 
         // Test resubscribing
         val cachedEffects = mutableListOf<CounterEffect>()

@@ -1,10 +1,8 @@
 package com.tomcz.ellipse
 
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.CoroutineScope
 
-interface EllipseContext<ST : Any, EF : Any> {
+interface EllipseContext<ST : Any, EF : Any> : CoroutineScope {
     var state: ST
-    fun setState(vararg partial: Partial<ST>)
-    fun setState(vararg flow: Flow<Partial<ST>>)
     fun sendEffect(vararg effect: EF)
 }

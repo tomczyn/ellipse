@@ -1,17 +1,12 @@
 package com.tomcz.ellipse.internal
 
-import com.tomcz.ellipse.Partial
-import com.tomcz.ellipse.Processor
 import com.tomcz.ellipse.EllipseContext
-import com.tomcz.ellipse.internal.util.reduceAndSet
+import com.tomcz.ellipse.Processor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 internal class FlowProcessor<in EV : Any, ST : Any, EF : Any> constructor(
@@ -31,32 +26,21 @@ internal class FlowProcessor<in EV : Any, ST : Any, EF : Any> constructor(
 
     private val effectCache: MutableList<EF> = mutableListOf()
 
-    private val context: EllipseContext<ST, EF> = object : EllipseContext<ST, EF> {
+    private val context: EllipseContext<ST, EF> =
+        object : EllipseContext<ST, EF>, CoroutineScope by scope {
 
-        override var state: ST
-            get() = stateFlow.value
-            set(value) {
-                stateFlow.value = value
-            }
+            override var state: ST
+                get() = stateFlow.value
+                set(value) {
+                    stateFlow.value = value
+                }
 
-        override fun setState(vararg partial: Partial<ST>) {
-            scope.launch {
-                partial.onEach { stateFlow.value = it.reduce(stateFlow.value) }
-            }
-        }
-
-        override fun setState(vararg flow: Flow<Partial<ST>>) {
-            merge(*flow)
-                .onEach { stateFlow.reduceAndSet(it) }
-                .launchIn(scope)
-        }
-
-        override fun sendEffect(vararg effect: EF) {
-            scope.launch {
-                this@FlowProcessor.sendEffect(*effect)
+            override fun sendEffect(vararg effect: EF) {
+                scope.launch {
+                    this@FlowProcessor.sendEffect(*effect)
+                }
             }
         }
-    }
 
     init {
         scope.launch {
@@ -72,6 +56,7 @@ internal class FlowProcessor<in EV : Any, ST : Any, EF : Any> constructor(
     }
 
     override fun sendEvent(vararg event: EV) {
+        println("yo ${event.joinToString(" ")}")
         scope.launch { event.forEach { onEvent(context, it) } }
     }
 

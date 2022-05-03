@@ -3,6 +3,7 @@ package com.tomcz.sample.feature.login
 import androidx.lifecycle.ViewModel
 import com.tomcz.ellipse.Processor
 import com.tomcz.ellipse.common.processor
+import com.tomcz.ellipse.common.setState
 import com.tomcz.sample.feature.login.state.LoginEffect
 import com.tomcz.sample.feature.login.state.LoginEvent
 import com.tomcz.sample.feature.login.state.LoginPartial
@@ -34,6 +35,6 @@ class LoginViewModel @Inject constructor() : ViewModel() {
 
     private suspend fun loginUser(email: String, pass: String): Boolean {
         delay(2000)
-        return true
+        return email == "a" && pass == "b"
     }
 }

@@ -7,7 +7,6 @@ import com.tomcz.ellipse.util.BaseCoroutineTest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Test
 
@@ -18,13 +17,13 @@ class ProcessorExtensionsTest : BaseCoroutineTest() {
 
     private val unitProcessor: Processor<Unit, Unit, Unit> = scope.processor(
         prepare = {},
-        onEvent = { effects.send(Unit) }
+        onEvent = { sendEffect(Unit) }
     )
 
     private val standardProcessor: Processor<Unit, String, Unit> = scope.processor(
         initialState = "",
-        prepare = { emptyFlow() },
-        onEvent = { effects.send(Unit); emptyFlow() }
+        prepare = {},
+        onEvent = { sendEffect(Unit) }
     )
 
     @Test

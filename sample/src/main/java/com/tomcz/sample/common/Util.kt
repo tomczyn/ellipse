@@ -5,7 +5,11 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.callbackFlow
 import kotlin.coroutines.cancellation.CancellationException
 
-fun <T> onCancel(action: () -> Unit) = callbackFlow<T> {
+// fun <T> onCancel(action: () -> Unit) = callbackFlow<T> {
+//     awaitClose { action() }
+// }
+
+fun onCancel(action: () -> Unit) = callbackFlow<Unit> {
     awaitClose { action() }
 }
 

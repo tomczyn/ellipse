@@ -3,6 +3,7 @@ package com.tomcz.sample.feature.register
 import androidx.lifecycle.ViewModel
 import com.tomcz.ellipse.Processor
 import com.tomcz.ellipse.common.processor
+import com.tomcz.ellipse.common.setState
 import com.tomcz.sample.feature.register.state.RegisterEffect
 import com.tomcz.sample.feature.register.state.RegisterEvent
 import com.tomcz.sample.feature.register.state.RegisterPartial.EmailChanged
@@ -26,6 +27,7 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
         initialState = RegisterState(),
         prepare = { },
         onEvent = { event ->
+            state = state.copy(email = "")
             when (event) {
                 is RegisterEvent.EmailChanged -> setState(EmailChanged(event.email))
                 is RegisterEvent.PasswordChanged -> setState(flowOf(PasswordChanged(event.password)))
