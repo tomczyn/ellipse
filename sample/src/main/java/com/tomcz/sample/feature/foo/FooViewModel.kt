@@ -25,7 +25,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.launchIn
 
 typealias FooProcessor = Processor<FooEvent, FooState, FooEffect>
 typealias FooContext = EllipseContext<FooState, FooEffect>
@@ -47,7 +46,6 @@ class FooViewModel(
             sendEffect(BarEffect)
             secondPrepareFlow()
             onCancel { bar.close() }
-                .launchIn(this)
         },
         onEvent = { event ->
             when (event) {

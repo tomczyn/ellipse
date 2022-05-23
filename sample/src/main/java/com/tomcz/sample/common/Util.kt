@@ -1,17 +1,15 @@
 package com.tomcz.sample.common
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.launchIn
 import kotlin.coroutines.cancellation.CancellationException
 
-// fun <T> onCancel(action: () -> Unit) = callbackFlow<T> {
-//     awaitClose { action() }
-// }
-
-fun onCancel(action: () -> Unit) = callbackFlow<Unit> {
+fun CoroutineScope.onCancel(action: () -> Unit) = callbackFlow<Unit> {
     awaitClose { action() }
-}
+}.launchIn(this)
 
 suspend fun <T> FlowCollector<T>.emitAbort(value: T): Nothing {
     emit(value)
