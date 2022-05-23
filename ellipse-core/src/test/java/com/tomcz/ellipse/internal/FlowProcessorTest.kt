@@ -187,7 +187,6 @@ internal class FlowProcessorTest : BaseCoroutineTest() {
                 CounterState(),
                 prepare = { setState(IncreasePartial) }
             ) {
-                println("state $state")
                 sendEffect(CounterEffect)
                 setState(IncreasePartial)
             }

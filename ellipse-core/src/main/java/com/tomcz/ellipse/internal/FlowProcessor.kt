@@ -56,7 +56,6 @@ internal class FlowProcessor<in EV : Any, ST : Any, EF : Any> constructor(
     }
 
     override fun sendEvent(vararg event: EV) {
-        println("yo ${event.joinToString(" ")}")
         scope.launch { event.forEach { onEvent(context, it) } }
     }
 
