@@ -10,21 +10,22 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 
-fun <EV : Any, EF : Any> CoroutineScope.processor(
-    prepare: suspend EllipseContext<Unit, EF>.() -> Unit = {},
-    onEvent: suspend EllipseContext<Unit, EF>.(EV) -> Unit = {},
+inline fun <EV : Any, reified EF : Any> CoroutineScope.processor(
+    noinline prepare: suspend EllipseContext<Unit, EF>.() -> Unit = {},
+    noinline onEvent: suspend EllipseContext<Unit, EF>.(EV) -> Unit = {},
 ): Processor<EV, Unit, EF> = processor(
     initialState = Unit,
     { prepare(); emptyFlow() },
     { onEvent(it); emptyFlow() }
 )
 
-fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> CoroutineScope.processor(
+inline fun <EV : Any, ST : Any, PA : PartialState<ST>, reified EF : Any> CoroutineScope.processor(
     initialState: ST,
-    prepare: suspend EllipseContext<ST, EF>.() -> Flow<PA> = { emptyFlow() },
-    onEvent: suspend EllipseContext<ST, EF>.(EV) -> Flow<PA> = { emptyFlow() },
+    noinline prepare: suspend EllipseContext<ST, EF>.() -> Flow<PA> = { emptyFlow() },
+    noinline onEvent: suspend EllipseContext<ST, EF>.(EV) -> Flow<PA> = { emptyFlow() },
 ): Processor<EV, ST, EF> = FlowProcessor(
     scope = this,
+    effectClass = EF::class,
     initialState = initialState,
     prepare = prepare,
     onEvent = onEvent

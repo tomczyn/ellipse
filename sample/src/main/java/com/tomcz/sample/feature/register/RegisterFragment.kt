@@ -46,6 +46,8 @@ import com.tomcz.ellipse.common.collectAsState
 import com.tomcz.ellipse.common.onProcessor
 import com.tomcz.sample.R
 import com.tomcz.sample.feature.register.state.RegisterEffect
+import com.tomcz.sample.feature.register.state.RegisterEffect.GoToHome
+import com.tomcz.sample.feature.register.state.RegisterEffect.GoToLogin
 import com.tomcz.sample.feature.register.state.RegisterEvent
 import com.tomcz.sample.ui.BasePadding
 import com.tomcz.sample.ui.BezierBackground
@@ -86,11 +88,11 @@ class RegisterFragment : Fragment() {
 
     private fun trigger(effect: RegisterEffect) {
         when (effect) {
-            RegisterEffect.GoToLogin ->
+            GoToLogin ->
                 findNavController().navigate(
                     RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
                 )
-            RegisterEffect.GoToHome -> TODO()
+            GoToHome -> TODO()
         }
     }
 }

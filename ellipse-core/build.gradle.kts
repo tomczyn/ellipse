@@ -12,6 +12,7 @@ android {
 
 dependencies {
     implementation(Libs.Jetbrains.kotlinStdlib)
+    implementation(Libs.Jetbrains.kotlinReflect)
     implementation(Libs.AndroidX.appCompat)
     implementation(Libs.AndroidX.vmKtx)
     implementation(Libs.AndroidX.lifecycleRuntimeKtx)
