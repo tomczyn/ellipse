@@ -2,8 +2,8 @@ package com.tomcz.ellipse.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tomcz.ellipse.Processor
 import com.tomcz.ellipse.PartialState
+import com.tomcz.ellipse.Processor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 
