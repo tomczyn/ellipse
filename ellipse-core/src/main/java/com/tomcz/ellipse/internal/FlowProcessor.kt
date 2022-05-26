@@ -33,7 +33,9 @@ class FlowProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> 
     override val effect: Flow<EF>
         get() = effect(effectClass)
 
-    private val effectFlows: MutableMap<KClass<out EF>, MutableSharedFlow<Any>> = mutableMapOf()
+    private val effectFlows: MutableMap<KClass<out EF>, MutableSharedFlow<Any>> = mutableMapOf(
+        effectClass to mutableEffectFlow(effectClass)
+    )
 
     override val state: StateFlow<ST>
         get() = stateFlow
@@ -48,6 +50,8 @@ class FlowProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> 
         override fun send(vararg effect: EF) {
             scope.launch {
                 effect.forEach { effect ->
+                    if (effectFlows[effect::class] == null)
+                        effectFlows[effect::class] = mutableEffectFlow(effect::class)
                     effectFlows.keys
                         .filter { key -> effect::class.isSubclassOf(key) }
                         .onEach { key -> emitEffect(key, effect) }
@@ -82,15 +86,14 @@ class FlowProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> 
         if (effectFlows.contains(filterClass)) {
             effectFlows[filterClass] as Flow<T>
         } else {
-            val sharedFlow = MutableSharedFlow<Any>()
-            effectFlows[filterClass] = sharedFlow
-            sharedFlow.addCacheObserver(filterClass)
-            sharedFlow as Flow<T>
+            val effectFlow = mutableEffectFlow(filterClass)
+            effectFlows[filterClass] = effectFlow
+            effectFlow as Flow<T>
         }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun <T : EF> MutableSharedFlow<Any>.addCacheObserver(filterClass: KClass<T>) {
+    private fun <T : EF> MutableSharedFlow<Any>.addCacheObserver(filterClass: KClass<T>): MutableSharedFlow<Any> {
         subscriptionCount
             .flatMapLatest { subscribers ->
                 if (subscribers != 0) {
@@ -103,6 +106,7 @@ class FlowProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> 
                 flowOf(Unit)
             }
             .launchIn(scope)
+        return this
     }
 
     private suspend fun emitEffect(key: KClass<out EF>, effect: EF) {
@@ -110,12 +114,11 @@ class FlowProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> 
         if (flow != null && flow.subscriptionCount.value != 0) {
             flow.emit(effect)
         } else {
-            val cache = effectCache[key]
-            if (cache != null) {
-                cache.add(effect)
-            } else {
-                effectCache[key] = mutableListOf(effect)
-            }
+            if (effectCache[key] == null) effectCache[key] = mutableListOf()
+            effectCache[key]!!.add(effect)
         }
     }
+
+    private fun <T : EF> mutableEffectFlow(effectClass: KClass<T>) =
+        MutableSharedFlow<Any>().addCacheObserver(effectClass)
 }
