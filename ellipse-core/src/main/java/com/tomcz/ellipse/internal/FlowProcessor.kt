@@ -114,9 +114,7 @@ class FlowProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> 
             if (cache != null) {
                 cache.add(effect)
             } else {
-                effectCache[key] = mutableListOf<Any>().also {
-                    it.add(effect)
-                }
+                effectCache[key] = mutableListOf(effect)
             }
         }
     }
