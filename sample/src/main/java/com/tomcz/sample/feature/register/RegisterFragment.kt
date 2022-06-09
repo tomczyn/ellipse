@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -74,10 +75,15 @@ class RegisterFragment : Fragment() {
         )
         return ComposeView(requireContext()).apply {
             setContent {
+                val processor = viewModel<RegisterViewModel>().processor
+                val blind by processor.collectAsState { it.blind }
                 MainAppTheme {
                     Surface(color = MaterialTheme.colors.background) {
                         BezierBackground()
                         RegisterScreen()
+                        blind?.let {
+                            ShowBlind(it) { processor.sendEvent(RegisterEvent.HideBlind) }
+                        }
                     }
                 }
             }
@@ -93,6 +99,11 @@ class RegisterFragment : Fragment() {
             RegisterEffect.GoToHome -> TODO()
         }
     }
+}
+
+@Composable
+fun ShowBlind(blind: String, onDismiss: () -> Unit) {
+    Text(text = blind, modifier = Modifier.clickable { onDismiss() })
 }
 
 @Composable
