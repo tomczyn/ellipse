@@ -22,12 +22,12 @@ internal class FlowEffectProcessorTest : BaseCoroutineTest() {
     fun `test effect`() = runTest {
         val processorScope = TestScope(testScheduler)
         val processor: CounterEffectProcessor =
-            processorScope.processor { effects.send(CounterEffect) }
+            processorScope.processor { effects.send(CounterEffect.Effect1) }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
-        processor.sendEvent(CounterEvent)
+        processor.sendEvent(CounterEvent.Event1)
         runCurrent()
-        assertEquals(listOf(CounterEffect), effects)
+        assertEquals(listOf(CounterEffect.Effect1), effects)
         effectJob.cancelAndJoin()
         processorScope.cancel()
     }
@@ -36,12 +36,12 @@ internal class FlowEffectProcessorTest : BaseCoroutineTest() {
     fun `test resubscribing effects`() = runTest {
         val processorScope = TestScope(testScheduler)
         val processor: CounterEffectProcessor =
-            processorScope.processor { effects.send(CounterEffect) }
+            processorScope.processor { effects.send(CounterEffect.Effect1) }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
-        processor.sendEvent(CounterEvent)
+        processor.sendEvent(CounterEvent.Event1)
         runCurrent()
-        assertEquals(listOf(CounterEffect), effects)
+        assertEquals(listOf(CounterEffect.Effect1), effects)
         effectJob.cancelAndJoin()
 
         // Test resubscribing
@@ -56,13 +56,14 @@ internal class FlowEffectProcessorTest : BaseCoroutineTest() {
     fun `test having multiple subscribers`() = runTest {
         val processorScope = TestScope(testScheduler)
         val processor: CounterEffectProcessor =
-            processorScope.processor { effects.send(CounterEffect) }
+            processorScope.processor { effects.send(CounterEffect.Effect1) }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
         val effect2Job = launch { processor.effect.collect { effects.add(it) } }
-        processor.sendEvent(CounterEvent)
         runCurrent()
-        assertEquals(listOf(CounterEffect, CounterEffect), effects)
+        processor.sendEvent(CounterEvent.Event1)
+        runCurrent()
+        assertEquals(listOf(CounterEffect.Effect1, CounterEffect.Effect1), effects)
         effectJob.cancelAndJoin()
         effect2Job.cancelAndJoin()
 
@@ -78,23 +79,23 @@ internal class FlowEffectProcessorTest : BaseCoroutineTest() {
     fun `test caching effects when there are no subscribers`() = runTest {
         val processorScope = TestScope(testScheduler)
         val processor: CounterEffectProcessor = processorScope.processor {
-            effects.send(CounterEffect)
+            effects.send(CounterEffect.Effect1)
         }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { processor.effect.collect { effects.add(it) } }
-        processor.sendEvent(CounterEvent)
+        processor.sendEvent(CounterEvent.Event1)
         runCurrent()
-        assertEquals(listOf(CounterEffect), effects)
+        assertEquals(listOf(CounterEffect.Effect1), effects)
         effectJob.cancelAndJoin()
 
-        processor.sendEvent(CounterEvent)
-        processor.sendEvent(CounterEvent)
+        processor.sendEvent(CounterEvent.Event1)
+        processor.sendEvent(CounterEvent.Event1)
 
         // Test resubscribing
         val cachedEffects = mutableListOf<CounterEffect>()
         val cachedEffectsJob = launch { processor.effect.collect { cachedEffects.add(it) } }
         runCurrent()
-        assertEquals(listOf(CounterEffect, CounterEffect), cachedEffects)
+        assertEquals(listOf(CounterEffect.Effect1, CounterEffect.Effect1), cachedEffects)
         cachedEffectsJob.cancelAndJoin()
         processorScope.cancel()
     }

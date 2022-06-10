@@ -2,6 +2,7 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 
 fun DependencyHandler.kotlin() {
     implementation(Libs.Jetbrains.kotlinStdlib)
+    implementation(Libs.Jetbrains.kotlinReflect)
 }
 
 fun DependencyHandler.baseAndroid() {

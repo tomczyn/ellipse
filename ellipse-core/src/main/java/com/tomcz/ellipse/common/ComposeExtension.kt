@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
+import kotlin.reflect.KClass
 
 @Composable
 fun <EV : Any, ST : Any, T> Processor<EV, ST, *>.collectAsState(
@@ -32,13 +33,15 @@ fun <EV : Any, ST : Any, T> Processor<EV, ST, *>.collectAsState(
 
 @SuppressLint("ComposableNaming")
 @Composable
-fun <EV : Any, ST : Any, EF : Any> Processor<EV, ST, EF>.collectEffect(
+inline fun <EV : Any, ST : Any, reified EF : Any, reified T : EF> Processor<EV, ST, EF>.collectEffect(
+    effectClass: KClass<T>,
     lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,
-    collect: suspend (EF) -> Unit
+    noinline collect: suspend (T) -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
-    val flow = remember(effect, lifecycleOwner) {
-        effect.flowWithLifecycle(lifecycleOwner.lifecycle, lifecycleState)
+    val filteredFlow = remember(this, effectClass) { effect(effectClass) }
+    val flow = remember(filteredFlow, lifecycleOwner) {
+        filteredFlow.flowWithLifecycle(lifecycleOwner.lifecycle, lifecycleState)
     }
     LaunchedEffect(flow) { flow.collect { collect(it) } }
 }
@@ -49,6 +52,7 @@ fun <EV : Any, ST : Any, EF : Any> previewProcessor(
 
     override val state: StateFlow<ST> = MutableStateFlow(state)
     override val effect: Flow<EF> = emptyFlow()
+    override fun <T : EF> effect(filterClass: KClass<T>): Flow<T> = emptyFlow()
 
     override fun sendEvent(vararg event: EV) {
         /* no-op */
