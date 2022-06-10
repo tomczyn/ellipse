@@ -34,12 +34,12 @@ fun <EV : Any, ST : Any, T> Processor<EV, ST, *>.collectAsState(
 @SuppressLint("ComposableNaming")
 @Composable
 inline fun <EV : Any, ST : Any, reified EF : Any, reified T : EF> Processor<EV, ST, EF>.collectEffect(
-    effectClass: KClass<T> = T::class,
+    effectClass: KClass<T>,
     lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,
     noinline collect: suspend (T) -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
-    val filteredFlow = remember(this) { effect(effectClass) }
+    val filteredFlow = remember(this, effectClass) { effect(effectClass) }
     val flow = remember(filteredFlow, lifecycleOwner) {
         filteredFlow.flowWithLifecycle(lifecycleOwner.lifecycle, lifecycleState)
     }
