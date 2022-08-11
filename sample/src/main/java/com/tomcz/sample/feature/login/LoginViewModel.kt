@@ -36,6 +36,6 @@ class LoginViewModel @Inject constructor() : ViewModel() {
 
     private suspend fun loginUser(email: String, pass: String): Boolean {
         delay(2000)
-        return true
+        return email == pass
     }
 }

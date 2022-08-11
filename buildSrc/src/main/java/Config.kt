@@ -10,7 +10,7 @@ fun Project.kotlinCompileOptions() = tasks.withType<KotlinCompile>().configureEa
     kotlinOptions {
         jvmTarget = AndroidConfig.javaVersion.majorVersion
         kotlinOptions.freeCompilerArgs = kotlinOptions.freeCompilerArgs + listOf(
-            "-Xopt-in=kotlin.RequiresOptIn"
+            "-opt-in=kotlin.RequiresOptIn"
         )
     }
 }
