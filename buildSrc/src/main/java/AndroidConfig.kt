@@ -18,7 +18,7 @@ object AndroidConfig {
         const val detekt = "io.gitlab.arturbosch.detekt"
     }
 
-    const val sdkVersion = 31
+    const val sdkVersion = 33
     const val minSdkVersion = 21
     val javaVersion = JavaVersion.VERSION_11
 }

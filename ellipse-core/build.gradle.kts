@@ -7,7 +7,7 @@ publishEllipse("ellipse-core")
 
 android {
     buildFeatures.compose = true
-    composeOptions.kotlinCompilerExtensionVersion = Versions.compose
+    composeOptions.kotlinCompilerExtensionVersion = Versions.composeCompiler
 }
 
 dependencies {

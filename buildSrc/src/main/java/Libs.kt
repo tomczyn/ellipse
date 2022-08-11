@@ -13,9 +13,9 @@ object Libs {
     object AndroidX {
         const val coreKtx = "androidx.core:core-ktx:${Versions.ktx}"
         const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.ktxFragment}"
-        const val vmKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.ktxViewModel}"
+        const val vmKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.ktxLifecycle}"
         const val lifecycleRuntimeKtx =
-            "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.ktxLifecycleRuntime}"
+            "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.ktxLifecycle}"
         const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
         const val navFragment = "androidx.navigation:navigation-fragment-ktx:${Versions.nav}"
         const val navUi = "androidx.navigation:navigation-ui-ktx:${Versions.nav}"
@@ -34,7 +34,7 @@ object Libs {
 
             const val activity = "androidx.activity:activity-compose:${Versions.composeActivity}"
             const val viewModel =
-                "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.composeViewModel}"
+                "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.ktxLifecycle}"
 
             object AndroidTest {
                 const val uiTest = "androidx.compose.ui:ui-test-junit4:${Versions.compose}"
