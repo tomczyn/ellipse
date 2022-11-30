@@ -2,9 +2,15 @@ package com.tomcz.ellipse.internal
 
 import com.tomcz.ellipse.PartialState
 
-object CounterEvent
+sealed interface CounterEvent {
+    object Event1 : CounterEvent
+    object Event2 : CounterEvent
+}
 
-object CounterEffect
+sealed interface CounterEffect {
+    object Effect1 : CounterEffect
+    object Effect2 : CounterEffect
+}
 
 data class CounterState(val counter: Int = 0)
 
