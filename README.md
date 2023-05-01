@@ -1,5 +1,4 @@
-[![](https://jitpack.io/v/tomczyn/ellipse.svg)](https://jitpack.io/#tomczyn/ellipse)
-
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.tomczyn.ellipse/ellipse-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.tomczyn.ellipse/ellipse-core)
 ## Ellipse
 
 ### Pragmatic Unidirectional Data Flow for Android
@@ -13,20 +12,10 @@ or [Dagger/Dagger Hilt](https://dagger.dev/).
 
 ### Adding dependency
 
-Add `jitpack` to your repositories:
-
-```
-repositories {
-    maven("https://jitpack.io")
-}
-```
-
-Add the dependency:
-
 ```kotlin
 dependencies {
-    implementation("com.github.tomczyn.ellipse:ellipse-core:0.9.15")
-    testImplementation("com.github.tomczyn.ellipse:ellipse-test:0.9.15")
+    implementation("com.tomczyn.ellipse:ellipse-core:1.0.0")
+    testImplementation("com.tomczyn.ellipse:ellipse-test:1.0.0")
 }
 ```
 
