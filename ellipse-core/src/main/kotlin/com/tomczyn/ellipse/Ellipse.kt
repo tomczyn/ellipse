@@ -5,12 +5,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 /**
- * Ellipse is a generic, stable interface representing an Ellipse model.
- * It provides a mechanism to manage state and effects by sending events.
+ * Represents an `Ellipse`, a state management system with event handling and effects.
  *
- * @param EV The event type this Ellipse accepts. Must be a subtype of [Any].
- * @param ST The state type this Ellipse produces. Must be a subtype of [Any].
- * @param EF The effect type this Ellipse produces. Must be a subtype of [Any].
+ * This interface defines an `Ellipse` that can handle events, manage state, and emit effects.
+ * It exposes the current state as a [StateFlow], effects as a [Flow], and provides a `sendEvent` method to send events.
+ *
+ * @param EV The type of the event that the `Ellipse` can handle.
+ * @param ST The type of the state managed by the `Ellipse`.
+ * @param EF The type of the effect emitted by the `Ellipse`.
  */
 @Stable
 interface Ellipse<in EV : Any, out ST : Any, out EF : Any> {
