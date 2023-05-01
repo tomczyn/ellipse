@@ -1,6 +1,7 @@
 plugins {
     id("android-library-plugin")
     id(AndroidConfig.Plugin.mavenPublish)
+    id(AndroidConfig.Plugin.gradleNexus).version(Versions.gradleNexus)
 }
 
 publishEllipse("ellipse-core")

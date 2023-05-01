@@ -20,4 +20,5 @@ object Versions {
     const val compose = "1.4.2"
     const val composeConstraint = "1.0.1"
     const val composeActivity = "1.7.1"
+    const val gradleNexus = "1.1.0"
 }

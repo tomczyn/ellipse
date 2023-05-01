@@ -16,6 +16,7 @@ object AndroidConfig {
         const val safeArgs = "androidx.navigation.safeargs.kotlin"
         const val kover = "org.jetbrains.kotlinx.kover"
         const val detekt = "io.gitlab.arturbosch.detekt"
+        const val gradleNexus = "io.github.gradle-nexus.publish-plugin"
     }
 
     const val sdkVersion = 33
