@@ -6,7 +6,7 @@ plugins {
 publishEllipse("ellipse-core")
 
 android {
-    namespace = "com.tomcz.ellipse"
+    namespace = "com.tomczyn.ellipse"
     buildFeatures.compose = true
     composeOptions.kotlinCompilerExtensionVersion = Versions.composeCompiler
 }

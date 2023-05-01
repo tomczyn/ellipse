@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.tomcz.sample"
+    namespace = "com.tomczyn.sample"
     viewBinding.isEnabled = true
     buildFeatures.compose = true
     composeOptions.kotlinCompilerExtensionVersion = Versions.composeCompiler

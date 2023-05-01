@@ -6,7 +6,7 @@ plugins {
 publishEllipse("ellipse-test")
 
 android {
-    namespace = "com.tomcz.ellipse.test"
+    namespace = "com.tomczyn.ellipse.test"
 }
 
 dependencies {
