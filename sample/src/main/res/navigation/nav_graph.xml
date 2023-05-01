@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.tomcz.sample.feature.register.RegisterFragment">
+        android:name="com.tomczyn.sample.feature.register.RegisterFragment">
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.tomcz.sample.feature.login.LoginFragment">
+        android:name="com.tomczyn.sample.feature.login.LoginFragment">
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />

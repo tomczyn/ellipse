@@ -9,7 +9,7 @@ fun Project.publishEllipse(id: String) {
             publications {
                 register("release", MavenPublication::class.java) {
                     from(components.findByName("release"))
-                    groupId = "com.tomcz.ellipse"
+                    groupId = "com.tomczyn.ellipse"
                     artifactId = id
                     try {
                         version = getLastTag()
