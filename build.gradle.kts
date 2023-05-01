@@ -45,12 +45,3 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
         sarif.required.set(true)
     }
 }
-
-nexusPublishing {
-    repositories {
-        sonatype {
-            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
-            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
-        }
-    }
-}

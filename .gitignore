@@ -89,5 +89,5 @@ lint/tmp/
 # Android Profiling
 *.hprof
 
-# Maven
-scripts
+maven.properties
+maven.gpg
