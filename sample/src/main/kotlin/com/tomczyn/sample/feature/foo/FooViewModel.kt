@@ -1,7 +1,7 @@
 package com.tomczyn.sample.feature.foo
 
 import androidx.lifecycle.ViewModel
-import com.tomczyn.ellipse.Processor
+import com.tomczyn.ellipse.Ellipse
 import com.tomczyn.ellipse.common.NoAction
 import com.tomczyn.ellipse.common.processor
 import com.tomczyn.ellipse.common.toNoAction
@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.merge
 
-typealias FooProcessor = Processor<FooEvent, FooState, FooEffect>
+typealias FooProcessor = Ellipse<FooEvent, FooState, FooEffect>
 
 @FlowPreview
 class FooViewModel(

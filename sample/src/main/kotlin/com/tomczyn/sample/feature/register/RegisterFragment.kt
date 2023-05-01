@@ -69,7 +69,7 @@ class RegisterFragment : Fragment() {
     ): View {
         onProcessor(
             lifecycleState = Lifecycle.State.RESUMED,
-            processor = viewModel::processor,
+            ellipse = viewModel::processor,
             onEffect = ::trigger
         )
         return ComposeView(requireContext()).apply {

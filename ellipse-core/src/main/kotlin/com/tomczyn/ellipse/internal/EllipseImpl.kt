@@ -2,7 +2,7 @@ package com.tomczyn.ellipse.internal
 
 import com.tomczyn.ellipse.EffectsCollector
 import com.tomczyn.ellipse.PartialState
-import com.tomczyn.ellipse.Processor
+import com.tomczyn.ellipse.Ellipse
 import com.tomczyn.ellipse.common.EllipseContext
 import com.tomczyn.ellipse.internal.util.reduceAndSet
 import kotlinx.coroutines.CoroutineScope
@@ -12,12 +12,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-internal class FlowProcessor<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> constructor(
+internal class EllipseImpl<in EV : Any, ST : Any, out PA : PartialState<ST>, EF : Any> constructor(
     private val scope: CoroutineScope,
     initialState: ST,
     prepare: suspend EllipseContext<ST, EF>.() -> Flow<PA>,
     private val onEvent: suspend EllipseContext<ST, EF>.(EV) -> Flow<PA>,
-) : Processor<EV, ST, EF> {
+) : Ellipse<EV, ST, EF> {
 
     override val effect: Flow<EF>
         get() = effectSharedFlow

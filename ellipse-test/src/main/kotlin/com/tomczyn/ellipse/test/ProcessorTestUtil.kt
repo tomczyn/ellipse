@@ -1,6 +1,6 @@
 package com.tomczyn.ellipse.test
 
-import com.tomczyn.ellipse.Processor
+import com.tomczyn.ellipse.Ellipse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
@@ -8,7 +8,7 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 
 @ExperimentalCoroutinesApi
-internal fun <T : Processor<EV, ST, EF>, EV : Any, ST : Any, EF : Any> TestScope.getStatesAndEffects(
+internal fun <T : Ellipse<EV, ST, EF>, EV : Any, ST : Any, EF : Any> TestScope.getStatesAndEffects(
     processorFactory: TestScope.() -> T,
     events: List<EV>,
     afterPrepare: TestScope.() -> Unit = { advanceUntilIdle() },
@@ -28,7 +28,7 @@ internal fun <T : Processor<EV, ST, EF>, EV : Any, ST : Any, EF : Any> TestScope
 }
 
 @ExperimentalCoroutinesApi
-internal fun <T : Processor<EV, ST, EF>, EV : Any, ST : Any, EF : Any> TestScope.getEffects(
+internal fun <T : Ellipse<EV, ST, EF>, EV : Any, ST : Any, EF : Any> TestScope.getEffects(
     processorFactory: TestScope.() -> T,
     events: List<EV>,
     afterPrepare: TestScope.() -> Unit = { advanceUntilIdle() },

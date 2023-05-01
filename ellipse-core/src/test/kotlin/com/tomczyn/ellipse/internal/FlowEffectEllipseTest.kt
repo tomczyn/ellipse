@@ -1,6 +1,6 @@
 package com.tomczyn.ellipse.internal
 
-import com.tomczyn.ellipse.Processor
+import com.tomczyn.ellipse.Ellipse
 import com.tomczyn.ellipse.common.processor
 import com.tomczyn.ellipse.util.BaseCoroutineTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -13,10 +13,10 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-internal typealias CounterEffectProcessor = Processor<CounterEvent, Unit, CounterEffect>
+internal typealias CounterEffectProcessor = Ellipse<CounterEvent, Unit, CounterEffect>
 
 @ExperimentalCoroutinesApi
-internal class FlowEffectProcessorTest : BaseCoroutineTest() {
+internal class FlowEffectEllipseTest : BaseCoroutineTest() {
 
     @Test
     fun `test effect`() = runTest {

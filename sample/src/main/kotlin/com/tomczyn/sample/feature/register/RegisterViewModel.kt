@@ -1,7 +1,7 @@
 package com.tomczyn.sample.feature.register
 
 import androidx.lifecycle.ViewModel
-import com.tomczyn.ellipse.Processor
+import com.tomczyn.ellipse.Ellipse
 import com.tomczyn.ellipse.common.processor
 import com.tomczyn.ellipse.common.toNoAction
 import com.tomczyn.sample.feature.register.state.RegisterEffect
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onCompletion
 import javax.inject.Inject
 
-typealias RegisterProcessor = Processor<RegisterEvent, RegisterState, RegisterEffect>
+typealias RegisterProcessor = Ellipse<RegisterEvent, RegisterState, RegisterEffect>
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor() : ViewModel() {

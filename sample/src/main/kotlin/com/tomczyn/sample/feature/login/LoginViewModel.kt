@@ -1,7 +1,7 @@
 package com.tomczyn.sample.feature.login
 
 import androidx.lifecycle.ViewModel
-import com.tomczyn.ellipse.Processor
+import com.tomczyn.ellipse.Ellipse
 import com.tomczyn.ellipse.common.processor
 import com.tomczyn.ellipse.common.toNoAction
 import com.tomczyn.sample.feature.login.state.LoginEffect
@@ -13,7 +13,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-typealias LoginProcessor = Processor<LoginEvent, LoginState, LoginEffect>
+typealias LoginProcessor = Ellipse<LoginEvent, LoginState, LoginEffect>
 
 @HiltViewModel
 class LoginViewModel @Inject constructor() : ViewModel() {

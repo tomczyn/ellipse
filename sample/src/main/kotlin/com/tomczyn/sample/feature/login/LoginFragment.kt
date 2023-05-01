@@ -33,7 +33,7 @@ class LoginFragment : Fragment() {
     ): View {
         onProcessor(
             lifecycleState = Lifecycle.State.RESUMED,
-            processor = viewModel::processor,
+            ellipse = viewModel::processor,
             viewEvents = ::viewEvents,
             onState = ::render,
             onEffect = ::trigger

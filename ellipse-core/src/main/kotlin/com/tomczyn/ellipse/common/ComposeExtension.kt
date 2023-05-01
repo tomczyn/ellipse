@@ -9,7 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
-import com.tomczyn.ellipse.Processor
+import com.tomczyn.ellipse.Ellipse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.map
 
 @Composable
-fun <EV : Any, ST : Any, T> Processor<EV, ST, *>.collectAsState(
+fun <EV : Any, ST : Any, T> Ellipse<EV, ST, *>.collectAsState(
     lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,
     mapper: (ST) -> T
 ): State<T> {
@@ -32,7 +32,7 @@ fun <EV : Any, ST : Any, T> Processor<EV, ST, *>.collectAsState(
 
 @SuppressLint("ComposableNaming")
 @Composable
-fun <EV : Any, ST : Any, EF : Any> Processor<EV, ST, EF>.collectEffect(
+fun <EV : Any, ST : Any, EF : Any> Ellipse<EV, ST, EF>.collectEffect(
     lifecycleState: Lifecycle.State = Lifecycle.State.STARTED,
     collect: suspend (EF) -> Unit
 ) {
@@ -45,7 +45,7 @@ fun <EV : Any, ST : Any, EF : Any> Processor<EV, ST, EF>.collectEffect(
 
 fun <EV : Any, ST : Any, EF : Any> previewProcessor(
     state: ST
-): Processor<EV, ST, EF> = object : Processor<EV, ST, EF> {
+): Ellipse<EV, ST, EF> = object : Ellipse<EV, ST, EF> {
 
     override val state: StateFlow<ST> = MutableStateFlow(state)
     override val effect: Flow<EF> = emptyFlow()

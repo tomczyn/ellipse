@@ -1,6 +1,6 @@
 package com.tomczyn.ellipse.test
 
-import com.tomczyn.ellipse.Processor
+import com.tomczyn.ellipse.Ellipse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
@@ -17,7 +17,7 @@ private val defaultAfter: TestScope.() -> Unit = { advanceUntilIdle() }
 private val defaultCleanup: TestScope.() -> Unit = {}
 
 @ExperimentalCoroutinesApi
-fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> processorTest(
+fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> processorTest(
     context: CoroutineContext = UnconfinedTestDispatcher(),
     processor: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
@@ -40,7 +40,7 @@ fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> processorTest(
 )
 
 @ExperimentalCoroutinesApi
-fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> processorTest(
+fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> processorTest(
     context: CoroutineContext = UnconfinedTestDispatcher(),
     processor: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
@@ -64,7 +64,7 @@ fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> processorTest(
 }
 
 @ExperimentalCoroutinesApi
-fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> TestScope.processorTest(
+fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> TestScope.processorTest(
     processor: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
     whenEvent: EV,
@@ -85,7 +85,7 @@ fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> TestScope.processo
 )
 
 @ExperimentalCoroutinesApi
-fun <EV : Any, ST : Any, EF : Any, T : Processor<EV, ST, EF>> TestScope.processorTest(
+fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> TestScope.processorTest(
     processor: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
     whenEvents: List<EV> = emptyList(),
