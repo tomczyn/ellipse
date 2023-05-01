@@ -5,6 +5,10 @@ plugins {
 
 publishEllipse("ellipse-test")
 
+android {
+    namespace = "com.tomcz.ellipse.test"
+}
+
 dependencies {
     implementation(project(":ellipse-core"))
     implementation(Libs.Jetbrains.kotlinStdlib)

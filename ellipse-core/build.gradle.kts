@@ -6,6 +6,7 @@ plugins {
 publishEllipse("ellipse-core")
 
 android {
+    namespace = "com.tomcz.ellipse"
     buildFeatures.compose = true
     composeOptions.kotlinCompilerExtensionVersion = Versions.composeCompiler
 }
@@ -15,6 +16,7 @@ dependencies {
     implementation(Libs.AndroidX.appCompat)
     implementation(Libs.AndroidX.vmKtx)
     implementation(Libs.AndroidX.lifecycleRuntimeKtx)
+    implementation(Libs.AndroidX.lifecycleRuntimeCompose)
     implementation(Libs.AndroidX.Compose.ui)
     implementation(Libs.Jetbrains.Coroutines.android)
     testRuntimeOnly(Libs.JUnit.Runtime.jupiterEngine)

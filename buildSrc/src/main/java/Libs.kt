@@ -16,6 +16,8 @@ object Libs {
         const val vmKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.ktxLifecycle}"
         const val lifecycleRuntimeKtx =
             "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.ktxLifecycle}"
+        const val lifecycleRuntimeCompose =
+            "androidx.lifecycle:lifecycle-runtime-compose:${Versions.ktxLifecycle}"
         const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompat}"
         const val navFragment = "androidx.navigation:navigation-fragment-ktx:${Versions.nav}"
         const val navUi = "androidx.navigation:navigation-ui-ktx:${Versions.nav}"
