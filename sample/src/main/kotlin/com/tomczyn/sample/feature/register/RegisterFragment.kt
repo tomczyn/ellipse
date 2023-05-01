@@ -43,7 +43,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
 import com.tomczyn.ellipse.common.collectAsState
-import com.tomczyn.ellipse.common.onProcessor
+import com.tomczyn.ellipse.common.onEllipse
 import com.tomczyn.sample.R
 import com.tomczyn.sample.feature.register.state.RegisterEffect
 import com.tomczyn.sample.feature.register.state.RegisterEvent
@@ -67,9 +67,9 @@ class RegisterFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        onProcessor(
+        onEllipse(
             lifecycleState = Lifecycle.State.RESUMED,
-            ellipse = viewModel::processor,
+            ellipse = viewModel::ellipse,
             onEffect = ::trigger
         )
         return ComposeView(requireContext()).apply {
@@ -138,8 +138,8 @@ fun RegisterScreen() {
 
 @Composable
 private fun GoToLoginButton() {
-    val processor = viewModel<RegisterViewModel>().processor
-    TextButton(onClick = { processor.sendEvent(RegisterEvent.GoToLogin) }) {
+    val ellipse = viewModel<RegisterViewModel>().ellipse
+    TextButton(onClick = { ellipse.sendEvent(RegisterEvent.GoToLogin) }) {
         Text(
             text = "Already have an account?",
             fontStyle = SampleTypography.body2.fontStyle,
@@ -162,13 +162,13 @@ private fun RegisterTitle() {
 private fun EmailField(
     keyboardActions: KeyboardActions,
 ) {
-    val processor = viewModel<RegisterViewModel>().processor
-    val email by processor.collectAsState { it.email }
+    val ellipse = viewModel<RegisterViewModel>().ellipse
+    val email by ellipse.collectAsState { it.email }
     TextField(
         value = email,
         modifier = Modifier.fillMaxWidth(),
         colors = textFieldColors(backgroundColor = Color.Transparent),
-        onValueChange = { processor.sendEvent(RegisterEvent.EmailChanged(it)) },
+        onValueChange = { ellipse.sendEvent(RegisterEvent.EmailChanged(it)) },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
         keyboardActions = keyboardActions,
         singleLine = true,
@@ -180,13 +180,13 @@ private fun PasswordField(
     modifier: Modifier,
     keyboardActions: KeyboardActions
 ) {
-    val processor = viewModel<RegisterViewModel>().processor
-    val password by processor.collectAsState { it.password }
+    val ellipse = viewModel<RegisterViewModel>().ellipse
+    val password by ellipse.collectAsState { it.password }
     TextField(
         value = password,
         modifier = modifier.fillMaxWidth(),
         colors = textFieldColors(backgroundColor = Color.Transparent),
-        onValueChange = { processor.sendEvent(RegisterEvent.PasswordChanged(it)) },
+        onValueChange = { ellipse.sendEvent(RegisterEvent.PasswordChanged(it)) },
         singleLine = true,
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
         keyboardActions = keyboardActions,
@@ -199,8 +199,8 @@ private fun RepeatPasswordField(
     modifier: Modifier,
     keyboardActions: KeyboardActions
 ) {
-    val processor = viewModel<RegisterViewModel>().processor
-    val repeatPassword by processor.collectAsState { it.repeatPassword }
+    val ellipse = viewModel<RegisterViewModel>().ellipse
+    val repeatPassword by ellipse.collectAsState { it.repeatPassword }
     TextField(
         value = repeatPassword,
         modifier = modifier.fillMaxWidth(),
@@ -209,7 +209,7 @@ private fun RepeatPasswordField(
         singleLine = true,
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = keyboardActions,
-        onValueChange = { processor.sendEvent(RegisterEvent.RepeatPasswordChanged(it)) },
+        onValueChange = { ellipse.sendEvent(RegisterEvent.RepeatPasswordChanged(it)) },
         label = { Text(text = "Repeat password") },
     )
 }
@@ -221,10 +221,10 @@ private fun ProceedButton() {
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val processor = viewModel<RegisterViewModel>().processor
+        val ellipse = viewModel<RegisterViewModel>().ellipse
         FloatingActionButton(
             onClick = {
-                processor.sendEvent(RegisterEvent.RegisterClicked)
+                ellipse.sendEvent(RegisterEvent.RegisterClicked)
             },
             backgroundColor = DarkGray,
             modifier = Modifier.size(64.dp),

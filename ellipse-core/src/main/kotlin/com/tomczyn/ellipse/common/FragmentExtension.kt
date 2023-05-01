@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @FlowPreview
-fun <EV : Any, ST : Any, EF : Any> Fragment.onProcessor(
+fun <EV : Any, ST : Any, EF : Any> Fragment.onEllipse(
     lifecycleState: Lifecycle.State,
     ellipse: () -> Ellipse<EV, ST, EF>,
     viewEvents: () -> List<Flow<EV>> = { emptyList() },

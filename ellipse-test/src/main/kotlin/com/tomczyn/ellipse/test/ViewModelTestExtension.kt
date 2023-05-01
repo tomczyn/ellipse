@@ -17,9 +17,9 @@ private val defaultAfter: TestScope.() -> Unit = { advanceUntilIdle() }
 private val defaultCleanup: TestScope.() -> Unit = {}
 
 @ExperimentalCoroutinesApi
-fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> processorTest(
+fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> ellipseTest(
     context: CoroutineContext = UnconfinedTestDispatcher(),
-    processor: TestScope.() -> T,
+    ellipse: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
     whenEvent: EV,
     afterPrepare: TestScope.() -> Unit = defaultAfter,
@@ -27,8 +27,8 @@ fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> processorTest(
     thenStates: TestResultContext<ST>.() -> Unit = {},
     thenEffects: TestResultContext<EF>.() -> Unit = {},
     cleanup: TestScope.() -> Unit = defaultCleanup
-): Unit = processorTest(
-    processor = processor,
+): Unit = ellipseTest(
+    ellipse = ellipse,
     context = context,
     given = given,
     whenEvents = listOf(whenEvent),
@@ -40,9 +40,9 @@ fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> processorTest(
 )
 
 @ExperimentalCoroutinesApi
-fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> processorTest(
+fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> ellipseTest(
     context: CoroutineContext = UnconfinedTestDispatcher(),
-    processor: TestScope.() -> T,
+    ellipse: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
     whenEvents: List<EV> = emptyList(),
     afterPrepare: TestScope.() -> Unit = defaultAfter,
@@ -51,8 +51,8 @@ fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> processorTest(
     thenEffects: TestResultContext<EF>.() -> Unit = {},
     cleanup: TestScope.() -> Unit = defaultCleanup
 ) = runTest(context) {
-    processorTest(
-        processor = processor,
+    ellipseTest(
+        ellipse = ellipse,
         given = given,
         whenEvents = whenEvents,
         afterPrepare = afterPrepare,
@@ -64,8 +64,8 @@ fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> processorTest(
 }
 
 @ExperimentalCoroutinesApi
-fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> TestScope.processorTest(
-    processor: TestScope.() -> T,
+fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> TestScope.ellipseTest(
+    ellipse: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
     whenEvent: EV,
     afterPrepare: TestScope.() -> Unit = defaultAfter,
@@ -73,8 +73,8 @@ fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> TestScope.processorT
     thenStates: TestResultContext<ST>.() -> Unit = {},
     thenEffects: TestResultContext<EF>.() -> Unit = {},
     cleanup: TestScope.() -> Unit = defaultCleanup
-): Unit = processorTest(
-    processor = processor,
+): Unit = ellipseTest(
+    ellipse = ellipse,
     given = given,
     whenEvents = listOf(whenEvent),
     afterPrepare = afterPrepare,
@@ -85,8 +85,8 @@ fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> TestScope.processorT
 )
 
 @ExperimentalCoroutinesApi
-fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> TestScope.processorTest(
-    processor: TestScope.() -> T,
+fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> TestScope.ellipseTest(
+    ellipse: TestScope.() -> T,
     given: suspend TestScope.() -> Unit = {},
     whenEvents: List<EV> = emptyList(),
     afterPrepare: TestScope.() -> Unit = defaultAfter,
@@ -98,7 +98,7 @@ fun <EV : Any, ST : Any, EF : Any, T : Ellipse<EV, ST, EF>> TestScope.processorT
     launch { given() }
     runCurrent()
     val (states, effects) = getStatesAndEffects(
-        processorFactory = processor,
+        ellipseFactory = ellipse,
         events = whenEvents,
         afterPrepare = afterPrepare,
         afterEvents = afterEvents,

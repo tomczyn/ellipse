@@ -32,21 +32,21 @@ dependencies {
 
 ### Glossary
 
-- **Processor** - object that creates the unidirectional data flow loop.
-- **Event** - Event produced by the view and consumed by the processor. E.g. button click.
+- **Ellipse** - object that creates the unidirectional data flow loop.
+- **Event** - Event produced by the view and consumed by the ellipse. E.g. button click.
 - **State** - View's state.
-- **Effect** - Events sent from the processor to the view, effects aren't cached for new
+- **Effect** - Events sent from the ellipse to the view, effects aren't cached for new
   subscribers, e.g. effects won't be resend during configuration change. They're useful for
   navigation, or showing popups and messages on the UI. E.g. `GoToHomeScreenEffect`.
 - **PartialState** - Object to help modify the view state through `reduce` method.
 
-View creates view events, which are sent to the processor. Processor maps view events to partial
+View creates view events, which are sent to the ellipse. Ellipse maps view events to partial
 states. Partial state modifies the view's state, which is sent back to view to be rendered.
 
-Processor have minimal public API that is needed to create unidirectional data flow:
+Ellipse have minimal public API that is needed to create unidirectional data flow:
 
 ```kotlin
-interface Processor<in EV : Any, out ST : Any, out EF : Any> {
+interface Ellipse<in EV : Any, out ST : Any, out EF : Any> {
     val state: StateFlow<ST>
     val effect: Flow<EF>
     fun sendEvent(event: EV)
@@ -55,15 +55,15 @@ interface Processor<in EV : Any, out ST : Any, out EF : Any> {
 
 ### How to use it
 
-1. Create processor object with one of the extension functions on `ViewModel` or `CoroutineScope`:
+1. Create ellipse object with one of the extension functions on `ViewModel` or `CoroutineScope`:
 
-- `processor(...)`
-    - It's good to define `typealias` for processor. So you won't have to write the generic types if you want to send it as an argument (for example to a Composable function).
+- `ellipse(...)`
+    - It's good to define `typealias` for ellipse. So you won't have to write the generic types if you want to send it as an argument (for example to a Composable function).
 
 ```kotlin
-typelias LoginProcessor = Processor<LoginEvent, LoginState, LoginEffect>
+typelias LoginEllipse = Ellipse<LoginEvent, LoginState, LoginEffect>
 
-val processor: LoginProcessor = processor(
+val ellipse: LoginEllipse = ellipse(
   initialState = LoginState(),
   prepare = { flowOf(/* ... */) },
   onEvent = { flowOf(/* ... */) }
@@ -73,23 +73,23 @@ val processor: LoginProcessor = processor(
 - If you don't need effects, states or events you can put `Unit` as generic definition. For state you won't have to supply `initialState` and you won't have to return `Flow<PartialState<...>>` from `prepare` and `onEvent`. Example:
 
 ```kotlin
-val processor: Processor<Unit, Unit, Unit> = processor(
+val ellipse: Ellipse<Unit, Unit, Unit> = ellipse(
     prepare = { /* Returns Unit instead of Flow */ },
     onEvent = { /* Returns Unit instead of Flow */ }
 )
 ```
 
-2. Subscribe to processor in view layer (Activity, Fragment):
+2. Subscribe to ellipse in view layer (Activity, Fragment):
 
-- `onProcessor(lifecycleState = Lifecycle.State.###, ...)`
+- `onEllipse(lifecycleState = Lifecycle.State.###, ...)`
 
 3. Or in Composable:
 
-- `viewModel.processor.collectAsState { ... }`
+- `viewModel.ellipse.collectAsState { ... }`
 
 #### Real world example - Login screen
 
-First create state, effects, events and partial state classes. Then create processor in
+First create state, effects, events and partial state classes. Then create ellipse in
 the `ViewModel`.
 
 ```kotlin
@@ -114,11 +114,11 @@ sealed interface LoginPartialState : PartialState<LoginState> {
     }
 }
 
-typelias LoginProcessor = Processor<LoginEvent, LoginState, LoginEffect>
+typelias LoginEllipse = Ellipse<LoginEvent, LoginState, LoginEffect>
 
 class LoginViewModel : ViewModel() {
 
-    val processor: LoginProcessor = processor(LoginState()) { event ->
+    val ellipse: LoginEllipse = ellipse(LoginState()) { event ->
             when (event) {
                 is LoginEvent.LoginClick -> flow {
                     emit(LoginPartialState.ShowLoading)
@@ -140,12 +140,12 @@ Then you can use it from view's layer
 // Compose
 @Composable
 private fun EmailField() {
-    val processor = viewModel<RegisterViewModel>().processor
-    val email by processor.collectAsState { it.email }
+    val ellipse = viewModel<RegisterViewModel>().ellipse
+    val email by ellipse.collectAsState { it.email }
     TextField(
         value = email,
         modifier = Modifier.fillMaxWidth(),
-        onValueChange = { processor.sendEvent(RegisterEvent.EmailChanged(it)) },
+        onValueChange = { ellipse.sendEvent(RegisterEvent.EmailChanged(it)) },
         label = { Text(text = "Email") })
 }
 
@@ -159,9 +159,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        onProcessor(
+        onEllipse(
             lifecycleState = Lifecycle.State.STARTED,
-            processor = viewModel::processor,
+            ellipse = viewModel::ellipse,
             viewEvents = ::viewEvents,
             onState = ::render,
             onEffect = ::trigger

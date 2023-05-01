@@ -1,7 +1,7 @@
 package com.tomczyn.ellipse.internal
 
 import com.tomczyn.ellipse.Ellipse
-import com.tomczyn.ellipse.common.processor
+import com.tomczyn.ellipse.common.ellipse
 import com.tomczyn.ellipse.util.BaseCoroutineTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
@@ -22,7 +22,7 @@ internal class EllipseImplTest : BaseCoroutineTest() {
     fun `test getting default state`() = runTest {
         val scope = TestScope(testScheduler)
         val ellipse: Ellipse<CounterEvent, CounterState, CounterEffect> =
-            scope.processor(CounterState())
+            scope.ellipse(CounterState())
         assertEquals(CounterState(), ellipse.state.value)
         scope.cancel()
     }
@@ -31,7 +31,7 @@ internal class EllipseImplTest : BaseCoroutineTest() {
     fun `test default state and prepare`() = runTest {
         val scope = TestScope(testScheduler)
         val ellipse: Ellipse<CounterEvent, CounterState, CounterEffect> =
-            scope.processor(CounterState(), prepare = { flow { emit(IncreasePartialState) } })
+            scope.ellipse(CounterState(), prepare = { flow { emit(IncreasePartialState) } })
         runCurrent()
         assertEquals(CounterState(1), ellipse.state.value)
         scope.cancel()
@@ -41,7 +41,7 @@ internal class EllipseImplTest : BaseCoroutineTest() {
     fun `test state change after event`() = runTest {
         val scope = TestScope(testScheduler)
         val ellipse: Ellipse<CounterEvent, CounterState, CounterEffect> =
-            scope.processor(CounterState()) { flow { emit(IncreasePartialState) } }
+            scope.ellipse(CounterState()) { flow { emit(IncreasePartialState) } }
         assertEquals(CounterState(0), ellipse.state.value)
         ellipse.sendEvent(CounterEvent)
         runCurrent()
@@ -53,7 +53,7 @@ internal class EllipseImplTest : BaseCoroutineTest() {
     fun `test prepare and state change after event`() = runTest {
         val scope = TestScope(testScheduler)
         val ellipse: Ellipse<CounterEvent, CounterState, CounterEffect> =
-            scope.processor(
+            scope.ellipse(
                 CounterState(), prepare = { flow { emit(IncreasePartialState) } }
             ) { flow { emit(IncreasePartialState) } }
         runCurrent()
@@ -68,7 +68,7 @@ internal class EllipseImplTest : BaseCoroutineTest() {
     fun `test effect`() = runTest {
         val scope = TestScope(testScheduler)
         val ellipse: Ellipse<CounterEvent, CounterState, CounterEffect> =
-            scope.processor(
+            scope.ellipse(
                 CounterState(),
                 prepare = { flow { emit(IncreasePartialState) } }
             ) {
@@ -86,9 +86,9 @@ internal class EllipseImplTest : BaseCoroutineTest() {
 
     @Test
     fun `test resubscribing state`() = runTest {
-        val processorScope = TestScope(testScheduler)
+        val ellipseScope = TestScope(testScheduler)
         val ellipse: Ellipse<CounterEvent, CounterState, CounterEffect> =
-            processorScope.processor(
+            ellipseScope.ellipse(
                 CounterState(),
                 prepare = { flow { emit(IncreasePartialState) } }
             ) {
@@ -108,14 +108,14 @@ internal class EllipseImplTest : BaseCoroutineTest() {
         runCurrent()
         assertEquals(listOf(CounterState(2)), resubscribedEvents)
         resubscribedJob.cancelAndJoin()
-        processorScope.cancel()
+        ellipseScope.cancel()
     }
 
     @Test
     fun `test resubscribing effects`() = runTest {
-        val processorScope = TestScope(testScheduler)
+        val ellipseScope = TestScope(testScheduler)
         val ellipse: Ellipse<CounterEvent, CounterState, CounterEffect> =
-            processorScope.processor(
+            ellipseScope.ellipse(
                 CounterState(),
                 prepare = { flow { emit(IncreasePartialState) } }
             ) {
@@ -139,14 +139,14 @@ internal class EllipseImplTest : BaseCoroutineTest() {
         assertEquals(emptyList<CounterEffect>(), emptyEffects)
         assertEquals(CounterState(2), ellipse.state.value)
         emptyEffectJob.cancelAndJoin()
-        processorScope.cancel()
+        ellipseScope.cancel()
     }
 
     @Test
     fun `test having multiple subscribers`() = runTest {
-        val processorScope = TestScope(testScheduler)
+        val ellipseScope = TestScope(testScheduler)
         val ellipse: Ellipse<CounterEvent, CounterState, CounterEffect> =
-            processorScope.processor(CounterState()) { effects.send(CounterEffect); emptyFlow() }
+            ellipseScope.ellipse(CounterState()) { effects.send(CounterEffect); emptyFlow() }
         val effects = mutableListOf<CounterEffect>()
         val effectJob = launch { ellipse.effect.collect { effects.add(it) } }
         val effect2Job = launch { ellipse.effect.collect { effects.add(it) } }
@@ -162,14 +162,14 @@ internal class EllipseImplTest : BaseCoroutineTest() {
         runCurrent()
         assertEquals(emptyList<CounterEffect>(), emptyEffects)
         emptyEffectJob.cancelAndJoin()
-        processorScope.cancel()
+        ellipseScope.cancel()
     }
 
     @Test
     fun `test caching effects when there are no subscribers`() = runTest {
-        val processorScope = TestScope(testScheduler)
+        val ellipseScope = TestScope(testScheduler)
         val ellipse: Ellipse<CounterEvent, CounterState, CounterEffect> =
-            processorScope.processor(
+            ellipseScope.ellipse(
                 CounterState(),
                 prepare = { flow { emit(IncreasePartialState) } }
             ) {
@@ -196,6 +196,6 @@ internal class EllipseImplTest : BaseCoroutineTest() {
         assertEquals(listOf(CounterEffect, CounterEffect), cachedEffects)
         assertEquals(CounterState(4), ellipse.state.value)
         cachedEffectsJob.cancelAndJoin()
-        processorScope.cancel()
+        ellipseScope.cancel()
     }
 }

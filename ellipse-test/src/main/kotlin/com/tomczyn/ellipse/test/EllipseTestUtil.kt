@@ -9,18 +9,18 @@ import kotlinx.coroutines.test.advanceUntilIdle
 
 @ExperimentalCoroutinesApi
 internal fun <T : Ellipse<EV, ST, EF>, EV : Any, ST : Any, EF : Any> TestScope.getStatesAndEffects(
-    processorFactory: TestScope.() -> T,
+    ellipseFactory: TestScope.() -> T,
     events: List<EV>,
     afterPrepare: TestScope.() -> Unit = { advanceUntilIdle() },
     afterEvents: TestScope.() -> Unit = { advanceUntilIdle() }
 ): Pair<TestResult<ST>, TestResult<EF>> {
     val statesList = mutableListOf<ST>()
     val effectsList = mutableListOf<EF>()
-    val processor = processorFactory()
-    val stateJob = launch { processor.state.toList(statesList) }
-    val effectJob = launch { processor.effect.toList(effectsList) }
+    val ellipse = ellipseFactory()
+    val stateJob = launch { ellipse.state.toList(statesList) }
+    val effectJob = launch { ellipse.effect.toList(effectsList) }
     afterPrepare()
-    events.forEach { event -> processor.sendEvent(event) }
+    events.forEach { event -> ellipse.sendEvent(event) }
     afterEvents()
     stateJob.cancel()
     effectJob.cancel()
@@ -29,16 +29,16 @@ internal fun <T : Ellipse<EV, ST, EF>, EV : Any, ST : Any, EF : Any> TestScope.g
 
 @ExperimentalCoroutinesApi
 internal fun <T : Ellipse<EV, ST, EF>, EV : Any, ST : Any, EF : Any> TestScope.getEffects(
-    processorFactory: TestScope.() -> T,
+    ellipseFactory: TestScope.() -> T,
     events: List<EV>,
     afterPrepare: TestScope.() -> Unit = { advanceUntilIdle() },
     afterEvents: TestScope.() -> Unit = { advanceUntilIdle() }
 ): TestResult<EF> {
     val effectsList = mutableListOf<EF>()
-    val processor = processorFactory()
-    val effectJob = launch { processor.effect.toList(effectsList) }
+    val ellipse = ellipseFactory()
+    val effectJob = launch { ellipse.effect.toList(effectsList) }
     afterPrepare()
-    events.forEach { event -> processor.sendEvent(event) }
+    events.forEach { event -> ellipse.sendEvent(event) }
     afterEvents()
     effectJob.cancel()
     return TestResultImpl(effectsList)

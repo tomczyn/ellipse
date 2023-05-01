@@ -43,7 +43,7 @@ fun <EV : Any, ST : Any, EF : Any> Ellipse<EV, ST, EF>.collectEffect(
     LaunchedEffect(flow) { flow.collect { collect(it) } }
 }
 
-fun <EV : Any, ST : Any, EF : Any> previewProcessor(
+fun <EV : Any, ST : Any, EF : Any> previewEllipse(
     state: ST
 ): Ellipse<EV, ST, EF> = object : Ellipse<EV, ST, EF> {
 

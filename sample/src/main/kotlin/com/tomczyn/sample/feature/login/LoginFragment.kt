@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.tomczyn.ellipse.common.clicks
-import com.tomczyn.ellipse.common.onProcessor
+import com.tomczyn.ellipse.common.onEllipse
 import com.tomczyn.sample.databinding.FragmentLoginBinding
 import com.tomczyn.sample.feature.login.state.LoginEffect
 import com.tomczyn.sample.feature.login.state.LoginEvent
@@ -31,9 +31,9 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        onProcessor(
+        onEllipse(
             lifecycleState = Lifecycle.State.RESUMED,
-            ellipse = viewModel::processor,
+            ellipse = viewModel::ellipse,
             viewEvents = ::viewEvents,
             onState = ::render,
             onEffect = ::trigger

@@ -3,7 +3,7 @@ package com.tomczyn.sample.feature.foo
 import androidx.lifecycle.ViewModel
 import com.tomczyn.ellipse.Ellipse
 import com.tomczyn.ellipse.common.NoAction
-import com.tomczyn.ellipse.common.processor
+import com.tomczyn.ellipse.common.ellipse
 import com.tomczyn.ellipse.common.toNoAction
 import com.tomczyn.sample.common.AndroidDispatcherProvider
 import com.tomczyn.sample.common.DispatcherProvider
@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.merge
 
-typealias FooProcessor = Ellipse<FooEvent, FooState, FooEffect>
+typealias FooEllipse = Ellipse<FooEvent, FooState, FooEffect>
 
 @FlowPreview
 class FooViewModel(
@@ -35,7 +35,7 @@ class FooViewModel(
 
     private val bar: Bar = Bar(dispatchers)
 
-    val processor: FooProcessor = processor(
+    val ellipse: FooEllipse = ellipse(
         initialState = FooState(),
         prepare = {
             effects.send(BarEffect)

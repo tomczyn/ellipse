@@ -10,16 +10,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 
-fun <EV : Any, EF : Any> CoroutineScope.processor(
+fun <EV : Any, EF : Any> CoroutineScope.ellipse(
     prepare: suspend EllipseContext<Unit, EF>.() -> Unit = {},
     onEvent: suspend EllipseContext<Unit, EF>.(EV) -> Unit = {},
-): Ellipse<EV, Unit, EF> = processor(
+): Ellipse<EV, Unit, EF> = ellipse(
     initialState = Unit,
     { prepare(); emptyFlow() },
     { onEvent(it); emptyFlow() }
 )
 
-fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> CoroutineScope.processor(
+fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> CoroutineScope.ellipse(
     initialState: ST,
     prepare: suspend EllipseContext<ST, EF>.() -> Flow<PA> = { emptyFlow() },
     onEvent: suspend EllipseContext<ST, EF>.(EV) -> Flow<PA> = { emptyFlow() },
@@ -31,7 +31,7 @@ fun <EV : Any, ST : Any, PA : PartialState<ST>, EF : Any> CoroutineScope.process
 )
 
 @FlowPreview
-fun <EV : Any, ST : Any, EF : Any> CoroutineScope.onProcessor(
+fun <EV : Any, ST : Any, EF : Any> CoroutineScope.onEllipse(
     ellipse: () -> Ellipse<EV, ST, EF>,
     viewEvents: () -> List<Flow<EV>> = { emptyList() },
     onState: (ST) -> Unit = {},

@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 @FlowPreview
-fun <EV : Any, ST : Any, EF : Any> AppCompatActivity.onProcessor(
+fun <EV : Any, ST : Any, EF : Any> AppCompatActivity.onEllipse(
     lifecycleState: Lifecycle.State,
     ellipse: () -> Ellipse<EV, ST, EF>,
     viewEvents: () -> List<Flow<EV>> = { emptyList() },
@@ -23,7 +23,7 @@ fun <EV : Any, ST : Any, EF : Any> AppCompatActivity.onProcessor(
 ) = launch(lifecycleState) { consume(ellipse(), viewEvents(), onState, onEffect) }
 
 @FlowPreview
-fun <EV : Any, ST : Any, EF : Any> ComponentActivity.onProcessor(
+fun <EV : Any, ST : Any, EF : Any> ComponentActivity.onEllipse(
     lifecycleState: Lifecycle.State,
     ellipse: () -> Ellipse<EV, ST, EF>,
     viewEvents: () -> List<Flow<EV>> = { emptyList() },
