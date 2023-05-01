@@ -2,6 +2,11 @@ plugins {
     id(AndroidConfig.Plugin.kover).version(Versions.kover)
     id(AndroidConfig.Plugin.detekt).version(Versions.detekt)
     id(AndroidConfig.Plugin.ktlint).version(Versions.ktlint)
+    id(AndroidConfig.Plugin.gradleNexus).version(Versions.gradleNexus)
+}
+
+apply {
+    from("scripts/publish-root.gradle")
 }
 
 buildscript {
@@ -38,5 +43,14 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
         html.required.set(true)
         txt.required.set(true)
         sarif.required.set(true)
+    }
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+        }
     }
 }
